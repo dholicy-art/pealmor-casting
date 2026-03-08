@@ -1,51 +1,80 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, ShieldCheck, FileCheck, AlertTriangle, ScrollText, Settings } from "lucide-react";
+import { LayoutDashboard, Users, ShieldCheck, FileCheck, AlertTriangle, ScrollText, Settings, Menu, X } from "lucide-react";
 
 const navItems = [
   { icon: LayoutDashboard, label: "Overview", path: "/admin" },
-  { icon: Users, label: "Users", path: "/admin" },
-  { icon: ShieldCheck, label: "Verification", path: "/admin" },
-  { icon: FileCheck, label: "Requests", path: "/admin" },
-  { icon: AlertTriangle, label: "Disputes", path: "/admin" },
-  { icon: ScrollText, label: "Audit Logs", path: "/admin" },
-  { icon: Settings, label: "Settings", path: "/admin" },
+  { icon: Users, label: "Users", path: "/admin/users" },
+  { icon: ShieldCheck, label: "Verification", path: "/admin/verification" },
+  { icon: FileCheck, label: "Requests", path: "/admin/requests" },
+  { icon: AlertTriangle, label: "Disputes", path: "/admin/disputes" },
+  { icon: ScrollText, label: "Audit Logs", path: "/admin/audit" },
+  { icon: Settings, label: "Settings", path: "/admin/settings" },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const nav = (
+    <>
+      <Link to="/" className="flex items-center gap-2 px-3 py-4 mb-6" onClick={() => setMobileOpen(false)}>
+        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+          <span className="text-primary-foreground font-display font-bold text-sm">P</span>
+        </div>
+        <span className="font-display font-bold text-lg" style={{ color: "hsl(var(--admin-fg))" }}>Admin</span>
+      </Link>
+      <nav className="flex flex-col gap-1 flex-1">
+        {navItems.map((item) => {
+          const active = location.pathname === item.path;
+          return (
+            <Link
+              key={item.label}
+              to={item.path}
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                active ? "bg-primary/10 text-primary" : "hover:bg-gray-100"
+              }`}
+              style={!active ? { color: "hsl(var(--admin-muted-fg))" } : undefined}
+            >
+              <item.icon className="w-4 h-4" />
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+      <div className="border-t pt-4 mt-4" style={{ borderColor: "hsl(var(--admin-border))" }}>
+        <div className="flex items-center gap-3 px-3">
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-semibold text-primary">AK</div>
+          <div>
+            <p className="text-sm font-medium" style={{ color: "hsl(var(--admin-fg))" }}>Admin Kim</p>
+            <p className="text-xs" style={{ color: "hsl(var(--admin-muted-fg))" }}>Super Admin</p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 
   return (
     <div className="flex min-h-screen" style={{ background: "hsl(var(--admin-bg))" }}>
-      <aside className="hidden lg:flex w-60 flex-col border-r p-4" style={{ borderColor: "hsl(var(--admin-border))", background: "hsl(var(--admin-card))" }}>
-        <Link to="/" className="flex items-center gap-2 px-3 py-4 mb-6">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-display font-bold text-sm">P</span>
-          </div>
-          <span className="font-display font-bold text-lg" style={{ color: "hsl(var(--admin-fg))" }}>Admin</span>
-        </Link>
-        <nav className="flex flex-col gap-1 flex-1">
-          {navItems.map((item) => {
-            const active = location.pathname === item.path;
-            return (
-              <Link
-                key={item.label}
-                to={item.path}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-primary/10 text-primary"
-                    : "hover:bg-gray-100"
-                }`}
-                style={!active ? { color: "hsl(var(--admin-muted-fg))" } : undefined}
-              >
-                <item.icon className="w-4 h-4" />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
+      <aside className="hidden lg:flex w-60 flex-col border-r p-4 shrink-0" style={{ borderColor: "hsl(var(--admin-border))", background: "hsl(var(--admin-card))" }}>
+        {nav}
       </aside>
-      <main className="flex-1 overflow-auto">{children}</main>
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-4 border-b" style={{ background: "hsl(var(--admin-card))", borderColor: "hsl(var(--admin-border))" }}>
+        <button onClick={() => setMobileOpen(true)}><Menu className="w-5 h-5" style={{ color: "hsl(var(--admin-fg))" }} /></button>
+        <span className="font-display font-bold text-sm" style={{ color: "hsl(var(--admin-fg))" }}>Admin Portal</span>
+        <div className="w-5" />
+      </div>
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 z-[100]">
+          <div className="absolute inset-0 bg-black/30" onClick={() => setMobileOpen(false)} />
+          <aside className="absolute left-0 top-0 bottom-0 w-64 p-4 border-r flex flex-col" style={{ background: "hsl(var(--admin-card))", borderColor: "hsl(var(--admin-border))" }}>
+            <button onClick={() => setMobileOpen(false)} className="absolute top-4 right-4" style={{ color: "hsl(var(--admin-muted-fg))" }}><X className="w-5 h-5" /></button>
+            {nav}
+          </aside>
+        </div>
+      )}
+      <main className="flex-1 overflow-auto pt-14 lg:pt-0">{children}</main>
     </div>
   );
 }
