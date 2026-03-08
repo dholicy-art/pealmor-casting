@@ -6,6 +6,7 @@ import { autocast } from "@/services/pealmorApi";
 import { talents } from "@/data/mockData";
 import type { AutoCastingResult } from "@/types/pealmor";
 import { Link } from "react-router-dom";
+import { useI18n } from "@/i18n/I18nContext";
 
 const roleColors: Record<string, string> = {
   lead: "bg-primary/10 text-primary border-primary/30",
