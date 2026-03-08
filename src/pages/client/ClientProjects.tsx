@@ -33,7 +33,7 @@ export default function ClientProjects() {
         </div>
 
         <div className="flex gap-2 flex-wrap">
-          {["all", "casting", "pending_approval", "licensed", "completed"].map((s) => (
+          {["all", "casting", "pending_approval", "in_production", "completed"].map((s) => (
             <button
               key={s}
               onClick={() => setFilter(s)}
