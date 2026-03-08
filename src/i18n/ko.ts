@@ -32,6 +32,9 @@ export const ko: Translations = {
     notifications: '알림',
     general: '일반',
     account: '계정',
+    themeDescription: '라이트 또는 다크 모드를 선택하세요',
+    darkMode: '다크 모드',
+    lightMode: '라이트 모드',
   },
   landing: {
     title: 'PEALMOR Casting',

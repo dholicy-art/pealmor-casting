@@ -53,6 +53,9 @@ export interface Translations {
     notifications: string;
     general: string;
     account: string;
+    themeDescription: string;
+    darkMode: string;
+    lightMode: string;
   };
 
   // Landing

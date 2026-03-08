@@ -32,6 +32,9 @@ export const en: Translations = {
     notifications: 'Notifications',
     general: 'General',
     account: 'Account',
+    themeDescription: 'Choose light or dark mode',
+    darkMode: 'Dark Mode',
+    lightMode: 'Light Mode',
   },
   landing: {
     title: 'PEALMOR Casting',
