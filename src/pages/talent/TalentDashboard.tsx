@@ -5,11 +5,9 @@ import { usePlatformStore } from "@/store/platformStore";
 import { getLocalizedTalents } from "@/data/localizedData";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { getSettlementStatus } from "@/services/pealmorApi";
 import type { PealmorSettlement } from "@/types/pealmor";
-
-const currentTalent = talents[0];
 
 export default function TalentDashboard() {
   const { t } = useI18n();

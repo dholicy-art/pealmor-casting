@@ -6,11 +6,12 @@ import { getLocalizedTalentById } from "@/data/localizedData";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useI18n } from "@/i18n/I18nContext";
+import type { TalentProfile } from "@/types/platform";
 
 export default function ClientCompare() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const { compareTalents, removeFromCompare, clearCompare } = usePlatformStore();
-  const actors = compareTalents.map(getTalentById).filter(Boolean);
+  const actors = compareTalents.map(id => getLocalizedTalentById(id, language)).filter(Boolean) as TalentProfile[];
 
   if (actors.length === 0) {
     return (

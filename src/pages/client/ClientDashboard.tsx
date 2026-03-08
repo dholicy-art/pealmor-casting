@@ -8,7 +8,8 @@ import { usePlatformStore } from "@/store/platformStore";
 import { useI18n } from "@/i18n/I18nContext";
 
 export default function ClientDashboard() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
   const requests = usePlatformStore((s) => s.requests);
   const pendingRequests = requests.filter((r) => r.status === "pending");
   const bookmarked = usePlatformStore((s) => s.bookmarkedTalents);

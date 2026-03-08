@@ -1,12 +1,15 @@
 import ClientLayout from "@/components/layouts/ClientLayout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Globe, Star, Tag } from "lucide-react";
 import { getLocalizedTalents } from "@/data/localizedData";
 import { getActorUniversesApi } from "@/services/pealmorApi";
 import type { ActorUniverse } from "@/types/pealmor";
+import { useI18n } from "@/i18n/I18nContext";
 
 export default function ActorUniverses() {
+  const { language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
   const [universes, setUniverses] = useState<ActorUniverse[]>([]);
 
   useEffect(() => {

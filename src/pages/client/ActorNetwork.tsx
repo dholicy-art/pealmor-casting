@@ -27,7 +27,8 @@ const relationColors: Record<string, string> = {
 };
 
 export default function ActorNetwork() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
   const [edges, setEdges] = useState<ActorGraphEdge[]>([]);
   const [filterType, setFilterType] = useState<string>("all");
 

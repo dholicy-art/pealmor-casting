@@ -23,6 +23,8 @@ const teamTypeColors: Record<string, string> = {
 };
 
 export default function ActorTeams() {
+  const { language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
   const [teams, setTeams] = useState<ActorTeam[]>([]);
 
   useEffect(() => {
