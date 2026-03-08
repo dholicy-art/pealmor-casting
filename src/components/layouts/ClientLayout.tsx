@@ -53,8 +53,9 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
           );
         })}
       </nav>
-      <div className="border-t border-border pt-3 mt-3">
-        <p className="text-[10px] text-muted-foreground px-3 mb-2 font-mono">PEALMOR Connected</p>
+      <div className="border-t border-border pt-3 mt-3 flex items-center justify-between px-3">
+        <p className="text-[10px] text-muted-foreground font-mono">PEALMOR Connected</p>
+        <HelpGuide />
       </div>
       <div className="border-t border-border pt-4 mt-1">
         <div className="flex items-center gap-3 px-3">
