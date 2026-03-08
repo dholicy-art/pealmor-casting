@@ -10,6 +10,7 @@ import type { CastingRequest, AssetType } from "@/types/platform";
 import { useI18n } from "@/i18n/I18nContext";
 
 export default function ClientCastingRequest() {
+  const { t } = useI18n();
   const { talentId } = useParams();
   const navigate = useNavigate();
   const talent = getTalentById(talentId || "");
