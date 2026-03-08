@@ -2,6 +2,7 @@ import TalentLayout from "@/components/layouts/TalentLayout";
 import { usePlatformStore } from "@/store/platformStore";
 import { Bell, CheckCircle, AlertTriangle, DollarSign, FileCheck, Info } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useI18n } from "@/i18n/I18nContext";
 
 const iconMap: Record<string, typeof Bell> = {
   request: FileCheck,
@@ -22,14 +23,15 @@ const colorMap: Record<string, string> = {
 };
 
 export default function TalentNotifications() {
+  const { t } = useI18n();
   const { notifications, markNotificationRead } = usePlatformStore();
 
   return (
     <TalentLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <h1 className="font-display text-2xl font-bold text-foreground">Notifications</h1>
-          <p className="text-muted-foreground text-sm mt-1">{notifications.filter((n) => !n.read).length} unread</p>
+          <h1 className="font-display text-2xl font-bold text-foreground">{t.common.notifications}</h1>
+          <p className="text-muted-foreground text-sm mt-1">{notifications.filter((n) => !n.read).length} {t.talent.unread}</p>
         </div>
 
         <div className="space-y-2">
@@ -54,7 +56,7 @@ export default function TalentNotifications() {
                   <p className="text-[10px] text-muted-foreground mt-1">{n.createdAt}</p>
                 </div>
                 {n.link && (
-                  <Link to={n.link} className="text-xs text-primary hover:underline shrink-0">View</Link>
+                  <Link to={n.link} className="text-xs text-primary hover:underline shrink-0">{t.common.viewAll}</Link>
                 )}
               </div>
             );

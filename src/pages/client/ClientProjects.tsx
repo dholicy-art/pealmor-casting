@@ -1,9 +1,10 @@
 import ClientLayout from "@/components/layouts/ClientLayout";
 import { Button } from "@/components/ui/button";
-import { Plus, MoreHorizontal, Search } from "lucide-react";
+import { Plus, MoreHorizontal } from "lucide-react";
 import { projects } from "@/data/mockData";
 import { usePlatformStore } from "@/store/platformStore";
 import { useState } from "react";
+import { useI18n } from "@/i18n/I18nContext";
 
 const statusColors: Record<string, string> = {
   draft: "bg-muted text-muted-foreground",
@@ -15,6 +16,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function ClientProjects() {
+  const { t } = useI18n();
   const requests = usePlatformStore((s) => s.requests);
   const [filter, setFilter] = useState("all");
 
@@ -25,10 +27,10 @@ export default function ClientProjects() {
       <div className="p-6 lg:p-8 space-y-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="font-display text-2xl font-bold text-foreground">Projects</h1>
-            <p className="text-muted-foreground text-sm mt-1">{projects.length} total projects</p>
+            <h1 className="font-display text-2xl font-bold text-foreground">{t.client.projects}</h1>
+            <p className="text-muted-foreground text-sm mt-1">{projects.length} {t.client.totalProjects}</p>
           </div>
-          <Button variant="hero"><Plus className="w-4 h-4" /> New Project</Button>
+          <Button variant="hero"><Plus className="w-4 h-4" /> {t.client.newProject}</Button>
         </div>
 
         <div className="flex gap-2 flex-wrap">
@@ -40,7 +42,7 @@ export default function ClientProjects() {
                 filter === s ? "gradient-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"
               }`}
             >
-              {s === "all" ? "All" : s.replace("_", " ")}
+              {s === "all" ? t.common.all : s.replace("_", " ")}
             </button>
           ))}
         </div>
@@ -50,8 +52,8 @@ export default function ClientProjects() {
             <table className="w-full min-w-[700px]">
               <thead>
                 <tr className="border-b border-border">
-                  {["Project", "Brand", "Status", "Requests", "Budget", "Period", ""].map((h) => (
-                    <th key={h} className="px-5 py-3 text-left text-xs font-medium text-muted-foreground">{h}</th>
+                  {[t.client.project, t.client.brand, t.client.status, t.client.requests, t.client.budget, t.client.period, ""].map((h) => (
+                    <th key={h} className="px-5 py-3 text-start text-xs font-medium text-muted-foreground">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -74,8 +76,8 @@ export default function ClientProjects() {
                       <td className="px-5 py-4">
                         <span className="text-sm text-foreground">{projRequests.length}</span>
                         {pendingCount > 0 && (
-                          <span className="ml-2 text-[10px] px-1.5 py-0.5 rounded-full bg-warning/10 text-warning font-medium">
-                            {pendingCount} pending
+                          <span className="ms-2 text-[10px] px-1.5 py-0.5 rounded-full bg-warning/10 text-warning font-medium">
+                            {pendingCount} {t.common.pending.toLowerCase()}
                           </span>
                         )}
                       </td>

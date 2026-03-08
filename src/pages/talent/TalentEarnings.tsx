@@ -1,6 +1,7 @@
 import TalentLayout from "@/components/layouts/TalentLayout";
 import { talents } from "@/data/mockData";
-import { DollarSign, TrendingUp, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { TrendingUp, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { useI18n } from "@/i18n/I18nContext";
 
 const currentTalent = talents[0];
 
@@ -20,38 +21,40 @@ const projectEarnings = [
 ];
 
 export default function TalentEarnings() {
+  const { t } = useI18n();
+
   return (
     <TalentLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <h1 className="font-display text-2xl font-bold text-foreground">Earnings</h1>
-          <p className="text-muted-foreground text-sm mt-1">Revenue overview and settlement</p>
+          <h1 className="font-display text-2xl font-bold text-foreground">{t.talent.earnings}</h1>
+          <p className="text-muted-foreground text-sm mt-1">{t.talent.earningsOverview}</p>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-card rounded-xl p-5 border border-border">
-            <p className="text-xs text-muted-foreground mb-2">Total Earnings</p>
+            <p className="text-xs text-muted-foreground mb-2">{t.talent.totalEarnings}</p>
             <p className="font-display text-2xl font-bold text-foreground">${currentTalent.totalEarnings.toLocaleString()}</p>
           </div>
           <div className="bg-card rounded-xl p-5 border border-border">
-            <p className="text-xs text-muted-foreground mb-2">This Month</p>
+            <p className="text-xs text-muted-foreground mb-2">{t.talent.thisMonth}</p>
             <div className="flex items-center gap-2">
               <p className="font-display text-2xl font-bold text-foreground">${currentTalent.monthlyEarnings.toLocaleString()}</p>
               <span className="text-xs text-success flex items-center gap-0.5"><TrendingUp className="w-3 h-3" />+23%</span>
             </div>
           </div>
           <div className="bg-card rounded-xl p-5 border border-border">
-            <p className="text-xs text-muted-foreground mb-2">Available for Withdrawal</p>
+            <p className="text-xs text-muted-foreground mb-2">{t.talent.availableWithdrawal}</p>
             <p className="font-display text-2xl font-bold text-success">$3,200</p>
           </div>
           <div className="bg-card rounded-xl p-5 border border-border">
-            <p className="text-xs text-muted-foreground mb-2">Pending Settlement</p>
+            <p className="text-xs text-muted-foreground mb-2">{t.talent.pendingSettlement}</p>
             <p className="font-display text-2xl font-bold text-warning">$1,800</p>
           </div>
         </div>
 
         <div className="bg-card rounded-xl border border-border p-6">
-          <h2 className="font-display font-semibold text-foreground mb-4">Monthly Revenue</h2>
+          <h2 className="font-display font-semibold text-foreground mb-4">{t.talent.monthlyRevenue}</h2>
           <div className="space-y-3">
             {monthlyData.map((m) => (
               <div key={m.month} className="flex items-center gap-4">
@@ -59,8 +62,8 @@ export default function TalentEarnings() {
                 <div className="flex-1 h-6 bg-secondary/50 rounded-full overflow-hidden">
                   <div className="h-full rounded-full gradient-primary" style={{ width: `${(m.amount / 4200) * 100}%` }} />
                 </div>
-                <span className="text-sm font-medium text-foreground w-16 text-right">${m.amount.toLocaleString()}</span>
-                <span className={`text-xs w-14 text-right flex items-center justify-end gap-0.5 ${m.change >= 0 ? "text-success" : "text-destructive"}`}>
+                <span className="text-sm font-medium text-foreground w-16 text-end">${m.amount.toLocaleString()}</span>
+                <span className={`text-xs w-14 text-end flex items-center justify-end gap-0.5 ${m.change >= 0 ? "text-success" : "text-destructive"}`}>
                   {m.change >= 0 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                   {Math.abs(m.change)}%
                 </span>
@@ -70,7 +73,7 @@ export default function TalentEarnings() {
         </div>
 
         <div className="bg-card rounded-xl border border-border p-6">
-          <h2 className="font-display font-semibold text-foreground mb-4">Project Earnings</h2>
+          <h2 className="font-display font-semibold text-foreground mb-4">{t.talent.projectEarnings}</h2>
           <div className="space-y-3">
             {projectEarnings.map((p) => (
               <div key={p.project} className="flex items-center justify-between py-3 border-b border-border last:border-0">

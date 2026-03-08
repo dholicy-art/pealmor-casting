@@ -5,10 +5,12 @@ import { Search, Filter, Star, Bookmark, BookmarkCheck, ChevronDown } from "luci
 import { useState, useMemo } from "react";
 import { talents } from "@/data/mockData";
 import { usePlatformStore } from "@/store/platformStore";
+import { useI18n } from "@/i18n/I18nContext";
 
 const filterCategories = ["All", "Ad", "Short-form", "Educational", "Gaming", "Corporate", "Entertainment"];
 
 export default function ClientSearch() {
+  const { t } = useI18n();
   const [query, setQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
   const [showFilters, setShowFilters] = useState(false);
@@ -43,30 +45,30 @@ export default function ClientSearch() {
     <ClientLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <h1 className="font-display text-2xl font-bold text-foreground">Find AI Actors</h1>
-          <p className="text-muted-foreground text-sm mt-1">Search {talents.length} verified AI actors</p>
+          <h1 className="font-display text-2xl font-bold text-foreground">{t.client.findAIActors}</h1>
+          <p className="text-muted-foreground text-sm mt-1">{talents.length} {t.client.actorsFound}</p>
         </div>
 
         <div className="flex gap-3">
           <div className="flex-1 relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute start-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search by name, style, mood, language..."
+              placeholder={t.client.searchPlaceholder}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full h-11 pl-11 pr-4 rounded-lg bg-card border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full h-11 ps-11 pe-4 rounded-lg bg-card border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
             />
           </div>
           <Button variant="glass" className="gap-2" onClick={() => setShowFilters(!showFilters)}>
-            <Filter className="w-4 h-4" /> Filters <ChevronDown className={`w-3 h-3 transition-transform ${showFilters ? "rotate-180" : ""}`} />
+            <Filter className="w-4 h-4" /> {t.common.filters} <ChevronDown className={`w-3 h-3 transition-transform ${showFilters ? "rotate-180" : ""}`} />
           </Button>
         </div>
 
         {showFilters && (
           <div className="bg-card rounded-xl border border-border p-4 space-y-3">
             <div>
-              <p className="text-xs text-muted-foreground mb-2">Gender</p>
+              <p className="text-xs text-muted-foreground mb-2">{t.client.gender}</p>
               <div className="flex gap-2">
                 {[null, "Female", "Male"].map((g) => (
                   <button
@@ -76,13 +78,13 @@ export default function ClientSearch() {
                       genderFilter === g ? "gradient-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"
                     }`}
                   >
-                    {g ?? "All"}
+                    {g ?? t.common.all}
                   </button>
                 ))}
               </div>
             </div>
             <div>
-              <p className="text-xs text-muted-foreground mb-2">Region Availability</p>
+              <p className="text-xs text-muted-foreground mb-2">{t.client.regionAvailability}</p>
               <div className="flex gap-2 flex-wrap">
                 {[null, "Korea", "Japan", "Global", "Southeast Asia"].map((r) => (
                   <button
@@ -92,7 +94,7 @@ export default function ClientSearch() {
                       regionFilter === r ? "gradient-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"
                     }`}
                   >
-                    {r ?? "All"}
+                    {r ?? t.common.all}
                   </button>
                 ))}
               </div>
@@ -109,12 +111,12 @@ export default function ClientSearch() {
                 activeFilter === f ? "gradient-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
               }`}
             >
-              {f}
+              {f === "All" ? t.common.all : f}
             </button>
           ))}
         </div>
 
-        <p className="text-xs text-muted-foreground">{filtered.length} actors found</p>
+        <p className="text-xs text-muted-foreground">{filtered.length} {t.client.actorsFound}</p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((a) => {
@@ -138,13 +140,13 @@ export default function ClientSearch() {
                   </div>
                   <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{a.intro}</p>
                   <div className="flex flex-wrap gap-1 mb-3">
-                    {a.tags.slice(0, 4).map((t) => (
-                      <span key={t} className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">{t}</span>
+                    {a.tags.slice(0, 4).map((tag) => (
+                      <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">{tag}</span>
                     ))}
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-xs mb-3">
-                    <div><span className="text-muted-foreground">Mood: </span><span className="text-foreground">{a.moodTags[0]}</span></div>
-                    <div><span className="text-muted-foreground">Voice: </span><span className="text-foreground">{a.voiceTags[0]}</span></div>
+                    <div><span className="text-muted-foreground">{t.client.mood}: </span><span className="text-foreground">{a.moodTags[0]}</span></div>
+                    <div><span className="text-muted-foreground">{t.client.voice}: </span><span className="text-foreground">{a.voiceTags[0]}</span></div>
                   </div>
                   <div className="flex items-center justify-between pt-3 border-t border-border">
                     <div className="flex gap-1">
@@ -160,7 +162,7 @@ export default function ClientSearch() {
                 </Link>
                 <div className="px-5 pb-4 flex gap-2">
                   <Button variant="hero" size="sm" className="flex-1" asChild>
-                    <Link to={`/client/casting-request/${a.id}`}>Cast</Link>
+                    <Link to={`/client/casting-request/${a.id}`}>{t.client.cast}</Link>
                   </Button>
                   <Button
                     variant="glass"
@@ -176,7 +178,7 @@ export default function ClientSearch() {
           })}
           {filtered.length === 0 && (
             <div className="col-span-full text-center py-12">
-              <p className="text-muted-foreground">No actors match your search criteria.</p>
+              <p className="text-muted-foreground">{t.common.noResults}</p>
             </div>
           )}
         </div>

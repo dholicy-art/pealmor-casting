@@ -3,8 +3,10 @@ import { verificationCases } from "@/data/mockData";
 import { useState } from "react";
 import { toast } from "sonner";
 import { CheckCircle, XCircle, AlertTriangle, FileText, Eye } from "lucide-react";
+import { useI18n } from "@/i18n/I18nContext";
 
 export default function AdminVerification() {
+  const { t } = useI18n();
   const [cases, setCases] = useState(verificationCases);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const fg = "hsl(var(--admin-fg))";
@@ -16,30 +18,29 @@ export default function AdminVerification() {
 
   const handleVerify = (id: string) => {
     setCases((prev) => prev.map((c) => c.id === id ? { ...c, status: "verified" as const } : c));
-    toast.success("사용자 인증이 승인되었습니다");
+    toast.success(t.toast.verificationApproved);
   };
 
   const handleReject = (id: string) => {
     setCases((prev) => prev.map((c) => c.id === id ? { ...c, status: "rejected" as const } : c));
-    toast.info("인증이 거부되었습니다");
+    toast.info(t.toast.verificationRejected);
   };
 
   return (
     <AdminLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <h1 className="font-display text-2xl font-bold" style={{ color: fg }}>Verification Queue</h1>
-          <p className="text-sm mt-1" style={{ color: mfg }}>{cases.filter((c) => c.status === "pending").length} pending verifications</p>
+          <h1 className="font-display text-2xl font-bold" style={{ color: fg }}>{t.admin.verificationQueue}</h1>
+          <p className="text-sm mt-1" style={{ color: mfg }}>{cases.filter((c) => c.status === "pending").length} {t.admin.pendingVerifications.toLowerCase()}</p>
         </div>
 
         <div className="grid lg:grid-cols-5 gap-6">
-          {/* List */}
           <div className="lg:col-span-2 space-y-2">
             {cases.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setSelectedId(c.id)}
-                className={`w-full text-left rounded-xl p-4 border transition-all ${
+                className={`w-full text-start rounded-xl p-4 border transition-all ${
                   selectedId === c.id ? "ring-2 ring-purple-500" : ""
                 }`}
                 style={{ background: card, borderColor: border }}
@@ -68,14 +69,13 @@ export default function AdminVerification() {
             ))}
           </div>
 
-          {/* Detail */}
           <div className="lg:col-span-3">
             {selected ? (
               <div className="rounded-xl border p-6 space-y-5" style={{ background: card, borderColor: border }}>
                 <div className="flex items-center justify-between">
                   <div>
                     <h2 className="font-display text-lg font-bold" style={{ color: fg }}>{selected.userName}</h2>
-                    <p className="text-sm capitalize" style={{ color: mfg }}>{selected.userType} • Submitted {selected.submittedAt}</p>
+                    <p className="text-sm capitalize" style={{ color: mfg }}>{selected.userType} • {selected.submittedAt}</p>
                   </div>
                   <span className={`text-xs px-3 py-1 rounded-full font-medium ${
                     selected.status === "pending" ? "bg-yellow-100 text-yellow-800" :
@@ -87,14 +87,14 @@ export default function AdminVerification() {
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-medium mb-2" style={{ color: fg }}>Documents</h3>
+                  <h3 className="text-sm font-medium mb-2" style={{ color: fg }}>{t.admin.documents}</h3>
                   <div className="space-y-2">
                     {selected.documents.map((doc) => (
                       <div key={doc} className="flex items-center gap-3 p-3 rounded-lg" style={{ background: "hsl(var(--admin-muted))" }}>
                         <FileText className="w-4 h-4" style={{ color: "#7c5cfc" }} />
                         <span className="text-sm flex-1" style={{ color: fg }}>{doc}</span>
                         <button className="text-xs flex items-center gap-1" style={{ color: "#7c5cfc" }}>
-                          <Eye className="w-3 h-3" /> View
+                          <Eye className="w-3 h-3" /> {t.common.viewAll}
                         </button>
                       </div>
                     ))}
@@ -104,7 +104,7 @@ export default function AdminVerification() {
                 {selected.riskFlags.length > 0 && (
                   <div className="bg-red-50 rounded-lg p-4">
                     <h3 className="text-sm font-medium text-red-800 mb-2 flex items-center gap-2">
-                      <AlertTriangle className="w-4 h-4" /> Risk Flags
+                      <AlertTriangle className="w-4 h-4" /> {t.admin.riskFlags}
                     </h3>
                     <ul className="space-y-1">
                       {selected.riskFlags.map((f) => (
@@ -116,7 +116,7 @@ export default function AdminVerification() {
 
                 {selected.notes && (
                   <div>
-                    <h3 className="text-sm font-medium mb-1" style={{ color: fg }}>Notes</h3>
+                    <h3 className="text-sm font-medium mb-1" style={{ color: fg }}>{t.admin.notes}</h3>
                     <p className="text-xs" style={{ color: mfg }}>{selected.notes}</p>
                   </div>
                 )}
@@ -127,23 +127,23 @@ export default function AdminVerification() {
                       onClick={() => handleVerify(selected.id)}
                       className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-green-600 text-white hover:bg-green-700 transition-colors"
                     >
-                      <CheckCircle className="w-4 h-4" /> Approve
+                      <CheckCircle className="w-4 h-4" /> {t.talent.approve}
                     </button>
                     <button
                       onClick={() => handleReject(selected.id)}
                       className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-red-600 text-white hover:bg-red-700 transition-colors"
                     >
-                      <XCircle className="w-4 h-4" /> Reject
+                      <XCircle className="w-4 h-4" /> {t.talent.reject}
                     </button>
                     <button className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border" style={{ borderColor: border, color: mfg }}>
-                      Request More Info
+                      {t.admin.requestMoreInfo}
                     </button>
                   </div>
                 )}
               </div>
             ) : (
               <div className="rounded-xl border p-12 text-center" style={{ background: card, borderColor: border }}>
-                <p style={{ color: mfg }}>Select a verification case to review</p>
+                <p style={{ color: mfg }}>{t.admin.selectCase}</p>
               </div>
             )}
           </div>
