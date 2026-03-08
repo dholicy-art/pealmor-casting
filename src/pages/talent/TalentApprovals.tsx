@@ -1,110 +1,203 @@
 import TalentLayout from "@/components/layouts/TalentLayout";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, MessageSquare, AlertTriangle, Shield } from "lucide-react";
-
-const requests = [
-  {
-    id: "r1",
-    company: "LuxeBeauty Co.",
-    project: "Summer Campaign 2026",
-    purpose: "Commercial Ad",
-    assets: ["Face", "Voice"],
-    channels: ["YouTube", "Instagram"],
-    region: "Korea, Japan",
-    term: "60 days",
-    fee: "$2,400",
-    revenueShare: "15%",
-    riskLevel: "Low",
-    policyConflict: false,
-  },
-  {
-    id: "r2",
-    company: "TechFlow Inc.",
-    project: "AI Product Demo",
-    purpose: "Educational / Demo",
-    assets: ["Face", "Voice", "Persona"],
-    channels: ["Website", "YouTube"],
-    region: "Global",
-    term: "90 days",
-    fee: "$1,800",
-    revenueShare: "—",
-    riskLevel: "Medium",
-    policyConflict: true,
-  },
-];
+import { usePlatformStore } from "@/store/platformStore";
+import { toast } from "sonner";
+import { useState } from "react";
 
 export default function TalentApprovals() {
+  const { requests, updateRequestStatus, addNotification } = usePlatformStore();
+  const talentRequests = requests.filter((r) => r.talentId === "t1");
+  const [counterModal, setCounterModal] = useState<string | null>(null);
+  const [counterNotes, setCounterNotes] = useState("");
+  const [filter, setFilter] = useState<string>("all");
+
+  const filtered = filter === "all" ? talentRequests : talentRequests.filter((r) => r.status === filter);
+
+  const handleApprove = (requestId: string, companyName: string) => {
+    updateRequestStatus(requestId, "approved");
+    addNotification({
+      id: `n${Date.now()}`,
+      title: "Request Approved",
+      message: `You approved ${companyName}'s casting request.`,
+      type: "approval",
+      read: false,
+      createdAt: new Date().toISOString(),
+    });
+    toast.success("요청이 승인되었습니다");
+  };
+
+  const handleReject = (requestId: string, companyName: string) => {
+    updateRequestStatus(requestId, "rejected");
+    addNotification({
+      id: `n${Date.now()}`,
+      title: "Request Rejected",
+      message: `You rejected ${companyName}'s casting request.`,
+      type: "rejection",
+      read: false,
+      createdAt: new Date().toISOString(),
+    });
+    toast.info("요청이 거절되었습니다");
+  };
+
+  const handleCounterOffer = (requestId: string) => {
+    if (!counterNotes.trim()) {
+      toast.error("조건을 입력해주세요");
+      return;
+    }
+    updateRequestStatus(requestId, "counter_offered", counterNotes);
+    addNotification({
+      id: `n${Date.now()}`,
+      title: "Counter-Offer Sent",
+      message: `You sent a counter-offer for the casting request.`,
+      type: "request",
+      read: false,
+      createdAt: new Date().toISOString(),
+    });
+    setCounterModal(null);
+    setCounterNotes("");
+    toast.success("조건부 승인이 전송되었습니다");
+  };
+
   return (
     <TalentLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground">Approval Center</h1>
-          <p className="text-muted-foreground text-sm mt-1">Review and manage incoming casting requests</p>
+          <p className="text-muted-foreground text-sm mt-1">{talentRequests.length} total requests</p>
+        </div>
+
+        <div className="flex gap-2 flex-wrap">
+          {["all", "pending", "approved", "rejected", "counter_offered"].map((s) => (
+            <button
+              key={s}
+              onClick={() => setFilter(s)}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                filter === s ? "gradient-accent text-accent-foreground" : "bg-secondary text-secondary-foreground"
+              }`}
+            >
+              {s === "all" ? `All (${talentRequests.length})` : `${s.replace("_", " ")} (${talentRequests.filter((r) => r.status === s).length})`}
+            </button>
+          ))}
         </div>
 
         <div className="space-y-4">
-          {requests.map((r) => (
+          {filtered.map((r) => (
             <div key={r.id} className="bg-card rounded-xl border border-border p-6">
               <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 mb-4">
                 <div>
-                  <div className="flex items-center gap-3 mb-1">
-                    <h3 className="font-display font-semibold text-lg text-foreground">{r.company}</h3>
+                  <div className="flex items-center gap-3 mb-1 flex-wrap">
+                    <h3 className="font-display font-semibold text-lg text-foreground">{r.companyName}</h3>
                     <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
-                      r.riskLevel === "Low" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"
+                      r.riskLevel === "low" ? "bg-success/10 text-success" :
+                      r.riskLevel === "medium" ? "bg-warning/10 text-warning" :
+                      "bg-destructive/10 text-destructive"
                     }`}>
                       {r.riskLevel} Risk
                     </span>
-                    {r.policyConflict && (
+                    <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
+                      r.status === "pending" ? "bg-warning/10 text-warning" :
+                      r.status === "approved" ? "bg-success/10 text-success" :
+                      r.status === "rejected" ? "bg-destructive/10 text-destructive" :
+                      "bg-info/10 text-info"
+                    }`}>
+                      {r.status.replace("_", " ")}
+                    </span>
+                    {r.policyConflicts.length > 0 && (
                       <span className="flex items-center gap-1 text-xs text-destructive">
                         <AlertTriangle className="w-3 h-3" /> Policy Conflict
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground">{r.project} — {r.purpose}</p>
+                  <p className="text-sm text-muted-foreground">{r.projectTitle} — {r.requestedPurpose}</p>
                 </div>
-                <p className="font-display text-xl font-bold text-foreground">{r.fee}</p>
+                <p className="font-display text-xl font-bold text-foreground">${r.proposedFee.toLocaleString()}</p>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5 text-sm">
                 <div>
                   <span className="text-muted-foreground text-xs">Assets</span>
                   <div className="flex flex-wrap gap-1 mt-1">
-                    {r.assets.map((a) => (
-                      <span key={a} className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-medium">{a}</span>
+                    {r.requestedAssets.map((a) => (
+                      <span key={a} className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-medium capitalize">{a}</span>
                     ))}
                   </div>
                 </div>
                 <div>
                   <span className="text-muted-foreground text-xs">Channels</span>
-                  <p className="text-foreground mt-1">{r.channels.join(", ")}</p>
+                  <p className="text-foreground mt-1">{r.requestedChannels.join(", ")}</p>
                 </div>
                 <div>
                   <span className="text-muted-foreground text-xs">Region</span>
-                  <p className="text-foreground mt-1">{r.region}</p>
+                  <p className="text-foreground mt-1">{r.requestedRegions}</p>
                 </div>
                 <div>
                   <span className="text-muted-foreground text-xs">Term</span>
-                  <p className="text-foreground mt-1">{r.term}</p>
+                  <p className="text-foreground mt-1">{r.requestedTermDays} days</p>
                 </div>
               </div>
 
-              {r.policyConflict && (
+              {r.notes && (
+                <p className="text-sm text-muted-foreground mb-4 italic">"{r.notes}"</p>
+              )}
+
+              {r.policyConflicts.length > 0 && (
                 <div className="bg-destructive/5 rounded-lg p-3 mb-4 flex items-start gap-2">
                   <Shield className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
-                  <p className="text-xs text-destructive">
-                    Global region exceeds your policy limit (KR, JP, SEA only). You may counter-offer with restricted regions.
-                  </p>
+                  <div>
+                    {r.policyConflicts.map((c, i) => (
+                      <p key={i} className="text-xs text-destructive">{c}</p>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-2 pt-4 border-t border-border">
-                <Button variant="hero" size="sm"><CheckCircle className="w-4 h-4" /> Approve</Button>
-                <Button variant="destructive" size="sm"><XCircle className="w-4 h-4" /> Reject</Button>
-                <Button variant="glass" size="sm"><MessageSquare className="w-4 h-4" /> Counter-Offer</Button>
-                <Button variant="ghost" size="sm">Request Admin Review</Button>
-              </div>
+              {r.counterOfferNotes && (
+                <div className="bg-info/5 rounded-lg p-3 mb-4">
+                  <p className="text-xs font-medium text-info mb-1">Counter-Offer Notes:</p>
+                  <p className="text-xs text-foreground">{r.counterOfferNotes}</p>
+                </div>
+              )}
+
+              {r.status === "pending" && (
+                <div className="flex flex-wrap gap-2 pt-4 border-t border-border">
+                  <Button variant="hero" size="sm" onClick={() => handleApprove(r.id, r.companyName)}>
+                    <CheckCircle className="w-4 h-4" /> Approve
+                  </Button>
+                  <Button variant="destructive" size="sm" onClick={() => handleReject(r.id, r.companyName)}>
+                    <XCircle className="w-4 h-4" /> Reject
+                  </Button>
+                  <Button variant="glass" size="sm" onClick={() => { setCounterModal(r.id); setCounterNotes(""); }}>
+                    <MessageSquare className="w-4 h-4" /> Counter-Offer
+                  </Button>
+                </div>
+              )}
+
+              {/* Counter-offer modal */}
+              {counterModal === r.id && (
+                <div className="mt-4 bg-secondary/50 rounded-lg p-4 space-y-3">
+                  <p className="text-sm font-medium text-foreground">Counter-Offer Conditions</p>
+                  <textarea
+                    rows={3}
+                    placeholder="e.g., Japan only, face only (no voice), 30 days max, $3,000 minimum..."
+                    value={counterNotes}
+                    onChange={(e) => setCounterNotes(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg bg-card border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
+                  />
+                  <div className="flex gap-2">
+                    <Button variant="hero" size="sm" onClick={() => handleCounterOffer(r.id)}>Send Counter-Offer</Button>
+                    <Button variant="ghost" size="sm" onClick={() => setCounterModal(null)}>Cancel</Button>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
+
+          {filtered.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">No requests matching this filter.</p>
+            </div>
+          )}
         </div>
       </div>
     </TalentLayout>

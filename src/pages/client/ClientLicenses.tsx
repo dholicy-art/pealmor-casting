@@ -1,0 +1,77 @@
+import ClientLayout from "@/components/layouts/ClientLayout";
+import { licenses } from "@/data/mockData";
+import { FileCheck, Clock, AlertTriangle } from "lucide-react";
+
+const statusColors: Record<string, string> = {
+  active: "bg-success/10 text-success",
+  expired: "bg-muted text-muted-foreground",
+  revoked: "bg-destructive/10 text-destructive",
+  pending: "bg-warning/10 text-warning",
+};
+
+export default function ClientLicenses() {
+  return (
+    <ClientLayout>
+      <div className="p-6 lg:p-8 space-y-6">
+        <div>
+          <h1 className="font-display text-2xl font-bold text-foreground">Licenses</h1>
+          <p className="text-muted-foreground text-sm mt-1">Active and past license grants</p>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          <div className="bg-card rounded-xl p-5 border border-border">
+            <div className="flex items-center gap-2 mb-2"><FileCheck className="w-4 h-4 text-success" /><span className="text-xs text-muted-foreground">Active</span></div>
+            <p className="font-display text-2xl font-bold text-foreground">{licenses.filter((l) => l.status === "active").length}</p>
+          </div>
+          <div className="bg-card rounded-xl p-5 border border-border">
+            <div className="flex items-center gap-2 mb-2"><Clock className="w-4 h-4 text-warning" /><span className="text-xs text-muted-foreground">Expiring Soon</span></div>
+            <p className="font-display text-2xl font-bold text-foreground">1</p>
+          </div>
+          <div className="bg-card rounded-xl p-5 border border-border">
+            <div className="flex items-center gap-2 mb-2"><AlertTriangle className="w-4 h-4 text-muted-foreground" /><span className="text-xs text-muted-foreground">Expired</span></div>
+            <p className="font-display text-2xl font-bold text-foreground">{licenses.filter((l) => l.status === "expired").length}</p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          {licenses.map((l) => (
+            <div key={l.id} className="bg-card rounded-xl border border-border p-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <div>
+                  <h3 className="font-semibold text-foreground">{l.projectTitle}</h3>
+                  <p className="text-sm text-muted-foreground">{l.talentName} • {l.companyName}</p>
+                </div>
+                <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusColors[l.status]}`}>
+                  {l.status}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                  <span className="text-muted-foreground text-xs">Assets</span>
+                  <div className="flex gap-1 mt-1">
+                    {l.grantedAssets.map((a) => (
+                      <span key={a} className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-medium capitalize">{a}</span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <span className="text-muted-foreground text-xs">Period</span>
+                  <p className="text-foreground mt-1">{l.startAt} — {l.endAt}</p>
+                </div>
+                <div>
+                  <span className="text-muted-foreground text-xs">Fee</span>
+                  <p className="text-foreground mt-1 font-medium">${l.fee.toLocaleString()}</p>
+                </div>
+                <div>
+                  <span className="text-muted-foreground text-xs">Revenue Share</span>
+                  <p className="text-foreground mt-1">{l.revenueShare}</p>
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-border">{l.grantedScope}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </ClientLayout>
+  );
+}

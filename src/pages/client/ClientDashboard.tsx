@@ -1,44 +1,37 @@
 import ClientLayout from "@/components/layouts/ClientLayout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Search, FolderOpen, Clock, AlertTriangle, ArrowRight, Star } from "lucide-react";
-
-const recentActors = [
-  { id: "1", name: "Yuna Park", tags: ["Korean", "20s", "Elegant"], image: "YP", rating: 4.9 },
-  { id: "2", name: "Alex Chen", tags: ["Chinese", "30s", "Warm"], image: "AC", rating: 4.7 },
-  { id: "3", name: "Mika Tanaka", tags: ["Japanese", "20s", "Energetic"], image: "MT", rating: 4.8 },
-  { id: "4", name: "Seo-jin Lee", tags: ["Korean", "30s", "Professional"], image: "SL", rating: 4.6 },
-];
-
-const activeProjects = [
-  { id: "p1", title: "Summer Campaign 2026", status: "Casting", actors: 3, budget: "$12,000" },
-  { id: "p2", title: "Brand Ambassador Video", status: "Pending Approval", actors: 1, budget: "$5,500" },
-];
+import { Search, FolderOpen, Clock, AlertTriangle, ArrowRight, Star, FileCheck } from "lucide-react";
+import { talents, projects } from "@/data/mockData";
+import { usePlatformStore } from "@/store/platformStore";
 
 export default function ClientDashboard() {
+  const requests = usePlatformStore((s) => s.requests);
+  const pendingRequests = requests.filter((r) => r.status === "pending");
+  const bookmarked = usePlatformStore((s) => s.bookmarkedTalents);
+
+  const recentTalents = talents.slice(0, 4);
+  const activeProjects = projects.filter((p) => p.status !== "completed");
+
   return (
     <ClientLayout>
       <div className="p-6 lg:p-8 space-y-8">
-        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="font-display text-2xl font-bold text-foreground">Welcome back, Jun</h1>
             <p className="text-muted-foreground text-sm mt-1">Manage your AI casting projects</p>
           </div>
           <Button variant="hero" asChild>
-            <Link to="/client/search">
-              <Search className="w-4 h-4" /> Find AI Actors
-            </Link>
+            <Link to="/client/search"><Search className="w-4 h-4" /> Find AI Actors</Link>
           </Button>
         </div>
 
-        {/* Quick Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
-            { icon: FolderOpen, label: "Active Projects", value: "4", color: "text-primary" },
-            { icon: Clock, label: "Pending Approvals", value: "2", color: "text-warning" },
-            { icon: Star, label: "Bookmarked", value: "12", color: "text-accent" },
-            { icon: AlertTriangle, label: "Expiring Licenses", value: "1", color: "text-destructive" },
+            { icon: FolderOpen, label: "Active Projects", value: String(activeProjects.length), color: "text-primary" },
+            { icon: Clock, label: "Pending Approvals", value: String(pendingRequests.length), color: "text-warning" },
+            { icon: Star, label: "Bookmarked", value: String(bookmarked.length), color: "text-accent" },
+            { icon: FileCheck, label: "Active Licenses", value: "1", color: "text-success" },
           ].map((stat) => (
             <div key={stat.label} className="bg-card rounded-xl p-5 border border-border">
               <div className="flex items-center gap-3 mb-2">
@@ -50,7 +43,6 @@ export default function ClientDashboard() {
           ))}
         </div>
 
-        {/* Active Projects */}
         <div>
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-lg font-semibold text-foreground">Active Projects</h2>
@@ -59,27 +51,35 @@ export default function ClientDashboard() {
             </Button>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
-            {activeProjects.map((p) => (
-              <div key={p.id} className="bg-card rounded-xl p-5 border border-border hover:border-primary/30 transition-colors">
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className="font-semibold text-foreground">{p.title}</h3>
-                  <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${
-                    p.status === "Casting" ? "bg-primary/10 text-primary" : "bg-warning/10 text-warning"
-                  }`}>
-                    {p.status}
-                  </span>
-                </div>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <span>{p.actors} actors</span>
-                  <span>•</span>
-                  <span>{p.budget}</span>
-                </div>
-              </div>
-            ))}
+            {activeProjects.slice(0, 4).map((p) => {
+              const projectRequests = requests.filter((r) => r.projectId === p.id);
+              const statusColors: Record<string, string> = {
+                casting: "bg-primary/10 text-primary",
+                pending_approval: "bg-warning/10 text-warning",
+                licensed: "bg-success/10 text-success",
+                draft: "bg-muted text-muted-foreground",
+              };
+              return (
+                <Link key={p.id} to="/client/projects" className="bg-card rounded-xl p-5 border border-border hover:border-primary/30 transition-colors">
+                  <div className="flex items-start justify-between mb-3">
+                    <h3 className="font-semibold text-foreground">{p.title}</h3>
+                    <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusColors[p.status] || "bg-muted text-muted-foreground"}`}>
+                      {p.status.replace("_", " ")}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <span>{p.brand}</span>
+                    <span>•</span>
+                    <span>{projectRequests.length} requests</span>
+                    <span>•</span>
+                    <span>${p.budget.toLocaleString()}</span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
 
-        {/* Recent Actors */}
         <div>
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-lg font-semibold text-foreground">Recently Viewed</h2>
@@ -88,14 +88,10 @@ export default function ClientDashboard() {
             </Button>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {recentActors.map((a) => (
-              <Link
-                key={a.id}
-                to={`/client/actor/${a.id}`}
-                className="bg-card rounded-xl p-5 border border-border hover:border-primary/30 transition-colors group"
-              >
+            {recentTalents.map((a) => (
+              <Link key={a.id} to={`/client/actor/${a.id}`} className="bg-card rounded-xl p-5 border border-border hover:border-primary/30 transition-colors group">
                 <div className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center font-display font-bold text-secondary-foreground mb-3 text-lg">
-                  {a.image}
+                  {a.initials}
                 </div>
                 <h3 className="font-semibold text-foreground text-sm group-hover:text-primary transition-colors">{a.name}</h3>
                 <div className="flex items-center gap-1 mt-1 mb-2">
@@ -103,7 +99,7 @@ export default function ClientDashboard() {
                   <span className="text-xs text-muted-foreground">{a.rating}</span>
                 </div>
                 <div className="flex flex-wrap gap-1">
-                  {a.tags.map((t) => (
+                  {a.tags.slice(0, 3).map((t) => (
                     <span key={t} className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">{t}</span>
                   ))}
                 </div>
