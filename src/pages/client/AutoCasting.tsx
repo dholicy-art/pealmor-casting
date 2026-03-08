@@ -61,15 +61,13 @@ export default function AutoCasting() {
             onClick={handleAutocast}
           >
             <Sparkles className="w-4 h-4" />
-            {loading ? t.client.analyzingScript : t.client.autoCastButton}
-          </Button>
+            {loading ? t.client.analyzingScript : t.client.autoCastButton      </Button>
         </div>
 
         {/* Results */}
         {results.length > 0 && (
           <div className="space-y-4">
-            <h2 className="font-display text-xl font-bold text-foreground">Recommended Cast</h2>
-            <div className="grid gap-4">
+            <h2 className="font-display text-xl font-bold text-foreground">Recomm{t.client.recommendedCast}            <div className="grid gap-4">
               {results.map((result, i) => {
                 const talent = talents.find(t => t.id === result.recommendedActorId);
                 if (!talent) return null;
