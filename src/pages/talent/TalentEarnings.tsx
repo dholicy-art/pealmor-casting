@@ -136,7 +136,7 @@ export default function TalentEarnings() {
         {/* Payment Status from PEALMOR */}
         <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center gap-2 mb-4">
-            <h2 className="font-display font-semibold text-foreground">PEALMOR Payment Status</h2>
+            <h2 className="font-display font-semibold text-foreground">{t.client.pealmorPayment}</h2>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-mono">Read-only</span>
           </div>
           <div className="space-y-2">

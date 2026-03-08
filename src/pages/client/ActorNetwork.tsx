@@ -27,6 +27,7 @@ const relationColors: Record<string, string> = {
 };
 
 export default function ActorNetwork() {
+  const { t } = useI18n();
   const [edges, setEdges] = useState<ActorGraphEdge[]>([]);
   const [filterType, setFilterType] = useState<string>("all");
 

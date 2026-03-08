@@ -21,6 +21,7 @@ const roleLabels: Record<string, string> = {
 };
 
 export default function AutoCasting() {
+  const { t } = useI18n();
   const [script, setScript] = useState("");
   const [results, setResults] = useState<AutoCastingResult[]>([]);
   const [loading, setLoading] = useState(false);
