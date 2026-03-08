@@ -25,7 +25,7 @@ export default function ClientCompare() {
     );
   }
 
-  const rows: { label: string; getValue: (t: NonNullable<ReturnType<typeof getTalentById>>) => string }[] = [
+  const rows: { label: string; getValue: (t: TalentProfile) => string }[] = [
     { label: t.client.rating, getValue: (a) => `${a.rating} (${a.reviewCount})` },
     { label: t.client.mood, getValue: (a) => a.moodTags.join(", ") },
     { label: t.client.voice, getValue: (a) => a.voiceTags.join(", ") },

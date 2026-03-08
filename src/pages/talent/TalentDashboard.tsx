@@ -10,7 +10,9 @@ import { getSettlementStatus } from "@/services/pealmorApi";
 import type { PealmorSettlement } from "@/types/pealmor";
 
 export default function TalentDashboard() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
+  const currentTalent = talents[0];
   const allRequests = usePlatformStore((s) => s.requests);
   const requests = allRequests.filter((r) => r.talentId === "t1");
   const pendingRequests = requests.filter((r) => r.status === "pending");

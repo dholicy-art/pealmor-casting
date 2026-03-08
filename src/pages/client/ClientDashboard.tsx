@@ -6,6 +6,7 @@ import { projects } from "@/data/mockData";
 import { getLocalizedTalents } from "@/data/localizedData";
 import { usePlatformStore } from "@/store/platformStore";
 import { useI18n } from "@/i18n/I18nContext";
+import { useMemo } from "react";
 
 export default function ClientDashboard() {
   const { t, language } = useI18n();
