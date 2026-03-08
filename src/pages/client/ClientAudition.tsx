@@ -9,10 +9,10 @@ import { Link } from "react-router-dom";
 import { useI18n } from "@/i18n/I18nContext";
 
 const emotionOptions = ["Neutral", "Warm", "Excited", "Serious", "Playful", "Dramatic"];
-const typeOptions: { value: "voice" | "face" | "full"; label: string; icon: typeof Mic }[] = [
-  { value: "voice", label: "Voice Performance", icon: Mic },
-  { value: "face", label: "Face Acting", icon: Eye },
-  { value: "full", label: "Full Performance", icon: Sparkles },
+const typeOptionsBase: { value: "voice" | "face" | "full"; labelKey: "voicePerformance" | "faceActing" | "fullPerformance"; icon: typeof Mic }[] = [
+  { value: "voice", labelKey: "voicePerformance", icon: Mic },
+  { value: "face", labelKey: "faceActing", icon: Eye },
+  { value: "full", labelKey: "fullPerformance", icon: Sparkles },
 ];
 
 export default function ClientAudition() {
@@ -58,9 +58,9 @@ export default function ClientAudition() {
     <ClientLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <h1 className="font-display text-2xl font-bold text-foreground">AI Audition</h1>
+          <h1 className="font-display text-2xl font-bold text-foreground">{t.client.aiAudition}</h1>
           <p className="text-muted-foreground text-sm mt-1">
-            Generate sample performances from AI actors to compare before casting
+            {t.client.generateAudition}
           </p>
         </div>
 
@@ -68,7 +68,7 @@ export default function ClientAudition() {
         <div className="bg-card rounded-xl border border-border p-6 space-y-4">
           <div className="flex items-center gap-2">
             <Upload className="w-4 h-4 text-primary" />
-            <h2 className="font-display font-semibold text-foreground">Script</h2>
+            <h2 className="font-display font-semibold text-foreground">{t.client.script}</h2>
           </div>
           <textarea
             rows={5}
@@ -81,9 +81,9 @@ export default function ClientAudition() {
 
         {/* Performance Type */}
         <div className="bg-card rounded-xl border border-border p-6 space-y-4">
-          <h2 className="font-display font-semibold text-foreground">Performance Type</h2>
+          <h2 className="font-display font-semibold text-foreground">{t.client.performanceType}</h2>
           <div className="flex gap-3">
-            {typeOptions.map((opt) => (
+            {typeOptionsBase.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => setSelectedType(opt.value)}
@@ -94,7 +94,7 @@ export default function ClientAudition() {
                 }`}
               >
                 <opt.icon className="w-4 h-4" />
-                {opt.label}
+                {t.client[opt.labelKey]}
               </button>
             ))}
           </div>
@@ -102,7 +102,7 @@ export default function ClientAudition() {
 
         {/* Emotion Tones */}
         <div className="bg-card rounded-xl border border-border p-6 space-y-4">
-          <h2 className="font-display font-semibold text-foreground">Emotion Tones</h2>
+          <h2 className="font-display font-semibold text-foreground">{t.client.emotionTones}</h2>
           <div className="flex flex-wrap gap-2">
             {emotionOptions.map((tone) => (
               <button
@@ -122,7 +122,7 @@ export default function ClientAudition() {
 
         {/* Select Actors */}
         <div className="bg-card rounded-xl border border-border p-6 space-y-4">
-          <h2 className="font-display font-semibold text-foreground">Select AI Actors (max 4)</h2>
+          <h2 className="font-display font-semibold text-foreground">{t.client.selectActors}</h2>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
             {availableTalents.map((talent) => (
               <button
@@ -164,16 +164,16 @@ export default function ClientAudition() {
           onClick={handleGenerate}
         >
           <Sparkles className="w-4 h-4" />
-          {generating ? "Generating Performances..." : "Generate AI Audition"}
+          {generating ? t.client.generatingPerformances : t.client.generateAudition}
         </Button>
 
         {/* Results */}
         {performances.length > 0 && (
           <div className="space-y-6">
             <div className="flex items-center gap-2">
-              <h2 className="font-display text-xl font-bold text-foreground">Audition Results</h2>
+              <h2 className="font-display text-xl font-bold text-foreground">{t.client.auditionResults}</h2>
               <span className="text-xs px-2 py-0.5 rounded-full bg-success/10 text-success font-medium">
-                {performances.length} performances
+                {performances.length} {t.client.performances}
               </span>
             </div>
 

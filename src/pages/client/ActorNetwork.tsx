@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { talents } from "@/data/mockData";
 import { getActorGraph } from "@/services/pealmorApi";
 import type { ActorGraphEdge } from "@/types/pealmor";
+import { useI18n } from "@/i18n/I18nContext";
 
 const relationLabels: Record<string, string> = {
   co_actor: "Co-Actor",
@@ -26,6 +27,7 @@ const relationColors: Record<string, string> = {
 };
 
 export default function ActorNetwork() {
+  const { t } = useI18n();
   const [edges, setEdges] = useState<ActorGraphEdge[]>([]);
   const [filterType, setFilterType] = useState<string>("all");
 
@@ -84,7 +86,7 @@ export default function ActorNetwork() {
 
         {/* Network Graph (Visual representation) */}
         <div className="bg-card rounded-xl border border-border p-6">
-          <h2 className="font-display font-semibold text-foreground mb-4">Actor Graph</h2>
+          <h2 className="font-display font-semibold text-foreground mb-4">{t.client.actorGraph}</h2>
           <div className="grid gap-3">
             {filteredEdges.map(edge => {
               const actor = talents.find(t => t.id === edge.actorId);

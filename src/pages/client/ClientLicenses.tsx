@@ -41,7 +41,7 @@ export default function ClientLicenses() {
           <h1 className="font-display text-2xl font-bold text-foreground">{t.client.licenses}</h1>
           <p className="text-muted-foreground text-sm mt-1 flex items-center gap-2">
             <Shield className="w-3 h-3" />
-            PEALMOR License Status — Read-only view
+            PEALMOR {t.client.licenses} — {t.client.readOnlyView}
           </p>
         </div>
 

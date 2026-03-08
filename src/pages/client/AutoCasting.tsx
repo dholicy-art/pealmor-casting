@@ -6,6 +6,7 @@ import { autocast } from "@/services/pealmorApi";
 import { talents } from "@/data/mockData";
 import type { AutoCastingResult } from "@/types/pealmor";
 import { Link } from "react-router-dom";
+import { useI18n } from "@/i18n/I18nContext";
 
 const roleColors: Record<string, string> = {
   lead: "bg-primary/10 text-primary border-primary/30",
@@ -20,6 +21,7 @@ const roleLabels: Record<string, string> = {
 };
 
 export default function AutoCasting() {
+  const { t } = useI18n();
   const [script, setScript] = useState("");
   const [results, setResults] = useState<AutoCastingResult[]>([]);
   const [loading, setLoading] = useState(false);
@@ -46,7 +48,7 @@ export default function AutoCasting() {
 
         {/* Script Input */}
         <div className="bg-card rounded-xl border border-border p-6 space-y-4">
-          <h2 className="font-display font-semibold text-foreground">Script / Project Description</h2>
+          <h2 className="font-display font-semibold text-foreground">{t.client.scriptDescription}</h2>
           <textarea
             rows={6}
             placeholder="Describe your project or paste your script...&#10;&#10;Example: 'A luxury beauty brand summer campaign featuring elegant models. The campaign needs an energetic young face for TikTok content and a virtual avatar for interactive gaming elements.'"
@@ -61,15 +63,13 @@ export default function AutoCasting() {
             onClick={handleAutocast}
           >
             <Sparkles className="w-4 h-4" />
-            {loading ? "Analyzing Script..." : "Auto Cast — Find Best Actors"}
-          </Button>
+            {loading ? t.client.analyzingScript : t.client.autoCastButton      </Button>
         </div>
 
         {/* Results */}
         {results.length > 0 && (
           <div className="space-y-4">
-            <h2 className="font-display text-xl font-bold text-foreground">Recommended Cast</h2>
-            <div className="grid gap-4">
+            <h2 className="font-display text-xl font-bold text-foreground">Recomm{t.client.recommendedCast}            <div className="grid gap-4">
               {results.map((result, i) => {
                 const talent = talents.find(t => t.id === result.recommendedActorId);
                 if (!talent) return null;

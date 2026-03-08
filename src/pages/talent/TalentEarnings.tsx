@@ -45,7 +45,7 @@ export default function TalentEarnings() {
           <h1 className="font-display text-2xl font-bold text-foreground">{t.talent.earnings}</h1>
           <p className="text-muted-foreground text-sm mt-1 flex items-center gap-2">
             <Shield className="w-3 h-3" />
-            PEALMOR Revenue Dashboard — Settlement & Payment Status
+            {t.client.revenueDashboard}
           </p>
         </div>
 
@@ -64,7 +64,7 @@ export default function TalentEarnings() {
             <p className="font-display text-2xl font-bold text-warning">${pendingAmount.toLocaleString()}</p>
           </div>
           <div className="bg-card rounded-xl p-5 border border-border">
-            <p className="text-xs text-muted-foreground mb-2">Paid Settlements</p>
+            <p className="text-xs text-muted-foreground mb-2">{t.client.paidSettlements}</p>
             <p className="font-display text-2xl font-bold text-success">{payments.filter((p) => p.status === "paid").length}</p>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default function TalentEarnings() {
         {/* Settlement History from PEALMOR */}
         <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center gap-2 mb-4">
-            <h2 className="font-display font-semibold text-foreground">PEALMOR Settlement History</h2>
+            <h2 className="font-display font-semibold text-foreground">{t.client.pealmorSettlement}</h2>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-mono">PEALMOR API</span>
           </div>
           <div className="space-y-3">
@@ -101,7 +101,7 @@ export default function TalentEarnings() {
 
         {/* Settlement Line Items */}
         <div className="bg-card rounded-xl border border-border p-6">
-          <h2 className="font-display font-semibold text-foreground mb-4">Settlement Details</h2>
+          <h2 className="font-display font-semibold text-foreground mb-4">{t.client.settlementDetails}</h2>
           <div className="space-y-3">
             {settlements.map((s) => (
               <div key={s.id} className="border border-border rounded-lg p-4">
@@ -136,7 +136,7 @@ export default function TalentEarnings() {
         {/* Payment Status from PEALMOR */}
         <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center gap-2 mb-4">
-            <h2 className="font-display font-semibold text-foreground">PEALMOR Payment Status</h2>
+            <h2 className="font-display font-semibold text-foreground">{t.client.pealmorPayment}</h2>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-mono">Read-only</span>
           </div>
           <div className="space-y-2">
