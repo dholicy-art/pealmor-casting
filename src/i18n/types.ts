@@ -56,6 +56,36 @@ export interface Translations {
     themeDescription: string;
     darkMode: string;
     lightMode: string;
+    help: string;
+    helpTitle: string;
+    helpIntro: string;
+    helpClientTitle: string;
+    helpClientDesc: string;
+    helpTalentTitle: string;
+    helpTalentDesc: string;
+    helpAdminTitle: string;
+    helpAdminDesc: string;
+    helpSearchTitle: string;
+    helpSearchDesc: string;
+    helpNetworkTitle: string;
+    helpNetworkDesc: string;
+    helpTeamsTitle: string;
+    helpTeamsDesc: string;
+    helpUniversesTitle: string;
+    helpUniversesDesc: string;
+    helpAuditionTitle: string;
+    helpAuditionDesc: string;
+    helpAutoCastTitle: string;
+    helpAutoCastDesc: string;
+    helpProjectsTitle: string;
+    helpProjectsDesc: string;
+    helpCompareTitle: string;
+    helpCompareDesc: string;
+    helpLicensesTitle: string;
+    helpLicensesDesc: string;
+    helpSettingsTitle: string;
+    helpSettingsDesc: string;
+    helpTip: string;
   };
 
   // Landing
