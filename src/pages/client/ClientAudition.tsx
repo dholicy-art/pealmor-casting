@@ -9,10 +9,10 @@ import { Link } from "react-router-dom";
 import { useI18n } from "@/i18n/I18nContext";
 
 const emotionOptions = ["Neutral", "Warm", "Excited", "Serious", "Playful", "Dramatic"];
-const typeOptions: { value: "voice" | "face" | "full"; label: string; icon: typeof Mic }[] = [
-  { value: "voice", label: "Voice Performance", icon: Mic },
-  { value: "face", label: "Face Acting", icon: Eye },
-  { value: "full", label: "Full Performance", icon: Sparkles },
+const typeOptionsBase: { value: "voice" | "face" | "full"; labelKey: "voicePerformance" | "faceActing" | "fullPerformance"; icon: typeof Mic }[] = [
+  { value: "voice", labelKey: "voicePerformance", icon: Mic },
+  { value: "face", labelKey: "faceActing", icon: Eye },
+  { value: "full", labelKey: "fullPerformance", icon: Sparkles },
 ];
 
 export default function ClientAudition() {
