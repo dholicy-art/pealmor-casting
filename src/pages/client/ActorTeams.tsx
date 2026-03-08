@@ -1,11 +1,12 @@
 import ClientLayout from "@/components/layouts/ClientLayout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Users, Star, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getLocalizedTalents } from "@/data/localizedData";
 import { getActorTeamsApi } from "@/services/pealmorApi";
 import type { ActorTeam } from "@/types/pealmor";
+import { useI18n } from "@/i18n/I18nContext";
 
 const teamTypeLabels: Record<string, string> = {
   kpop_group: "Idol Group",
