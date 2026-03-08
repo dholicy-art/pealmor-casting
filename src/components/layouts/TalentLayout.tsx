@@ -2,21 +2,23 @@ import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Home, User, ShieldCheck, DollarSign, Bell, Settings, FileText, Menu, X } from "lucide-react";
 import { usePlatformStore } from "@/store/platformStore";
-
-const navItems = [
-  { icon: Home, label: "Dashboard", path: "/talent" },
-  { icon: User, label: "Profile", path: "/talent/profile" },
-  { icon: ShieldCheck, label: "Approvals", path: "/talent/approvals" },
-  { icon: DollarSign, label: "Earnings", path: "/talent/earnings" },
-  { icon: FileText, label: "Licenses", path: "/talent/licenses" },
-  { icon: Bell, label: "Notifications", path: "/talent/notifications" },
-  { icon: Settings, label: "Settings", path: "/talent/settings" },
-];
+import { useI18n } from "@/i18n/I18nContext";
 
 export default function TalentLayout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const pendingCount = usePlatformStore((s) => s.requests.filter((r) => r.talentId === "t1" && r.status === "pending").length);
+  const { t } = useI18n();
+
+  const navItems = [
+    { icon: Home, label: t.talent.dashboard, path: "/talent" },
+    { icon: User, label: t.talent.profile, path: "/talent/profile" },
+    { icon: ShieldCheck, label: t.talent.approvals, path: "/talent/approvals" },
+    { icon: DollarSign, label: t.talent.earnings, path: "/talent/earnings" },
+    { icon: FileText, label: t.client.licenses, path: "/talent/licenses" },
+    { icon: Bell, label: t.common.notifications, path: "/talent/notifications" },
+    { icon: Settings, label: t.common.settings, path: "/talent/settings" },
+  ];
 
   const nav = (
     <>
@@ -31,20 +33,14 @@ export default function TalentLayout({ children }: { children: ReactNode }) {
         {navItems.map((item) => {
           const active = location.pathname === item.path;
           return (
-            <Link
-              key={item.label}
-              to={item.path}
-              onClick={() => setMobileOpen(false)}
+            <Link key={item.path} to={item.path} onClick={() => setMobileOpen(false)}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 active ? "bg-accent/10 text-accent" : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-              }`}
-            >
+              }`}>
               <item.icon className="w-4 h-4" />
               {item.label}
-              {item.label === "Approvals" && pendingCount > 0 && (
-                <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded-full gradient-accent text-accent-foreground font-bold">
-                  {pendingCount}
-                </span>
+              {item.path === "/talent/approvals" && pendingCount > 0 && (
+                <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded-full gradient-accent text-accent-foreground font-bold">{pendingCount}</span>
               )}
             </Link>
           );
@@ -55,7 +51,7 @@ export default function TalentLayout({ children }: { children: ReactNode }) {
           <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-semibold text-secondary-foreground">YP</div>
           <div>
             <p className="text-sm font-medium text-foreground">Yuna Park</p>
-            <p className="text-xs text-muted-foreground">Talent Portal</p>
+            <p className="text-xs text-muted-foreground">{t.landing.talentPortal}</p>
           </div>
         </div>
       </div>
@@ -67,7 +63,7 @@ export default function TalentLayout({ children }: { children: ReactNode }) {
       <aside className="hidden lg:flex w-64 flex-col border-r border-border bg-card p-4 shrink-0">{nav}</aside>
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 glass h-14 flex items-center justify-between px-4">
         <button onClick={() => setMobileOpen(true)} className="text-foreground"><Menu className="w-5 h-5" /></button>
-        <span className="font-display font-bold text-sm text-foreground">Talent Portal</span>
+        <span className="font-display font-bold text-sm text-foreground">{t.landing.talentPortal}</span>
         <div className="w-5" />
       </div>
       {mobileOpen && (
