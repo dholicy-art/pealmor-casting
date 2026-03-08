@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Home, Search, FolderOpen, BarChart3, Bookmark, Settings, Menu, X, Bell, Sparkles, Network, Users, Globe, Wand2 } from "lucide-react";
+import HelpGuide from "@/components/HelpGuide";
 import { usePlatformStore } from "@/store/platformStore";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nContext";
@@ -52,8 +53,9 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
           );
         })}
       </nav>
-      <div className="border-t border-border pt-3 mt-3">
-        <p className="text-[10px] text-muted-foreground px-3 mb-2 font-mono">PEALMOR Connected</p>
+      <div className="border-t border-border pt-3 mt-3 flex items-center justify-between px-3">
+        <p className="text-[10px] text-muted-foreground font-mono">PEALMOR Connected</p>
+        <HelpGuide />
       </div>
       <div className="border-t border-border pt-4 mt-1">
         <div className="flex items-center gap-3 px-3">
@@ -78,11 +80,14 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
           </div>
           <span className="font-display font-bold text-sm text-foreground">PEALMOR</span>
         </Link>
-        <div className="relative">
-          <Bell className="w-5 h-5 text-muted-foreground" />
-          {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full gradient-accent text-[10px] flex items-center justify-center text-accent-foreground font-bold">{unreadCount}</span>
-          )}
+        <div className="flex items-center gap-2">
+          <HelpGuide />
+          <div className="relative">
+            <Bell className="w-5 h-5 text-muted-foreground" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full gradient-accent text-[10px] flex items-center justify-center text-accent-foreground font-bold">{unreadCount}</span>
+            )}
+          </div>
         </div>
       </div>
       {mobileOpen && (

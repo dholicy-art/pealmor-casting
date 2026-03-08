@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Home, User, ShieldCheck, DollarSign, Bell, Settings, FileText, Menu, X } from "lucide-react";
+import HelpGuide from "@/components/HelpGuide";
 import { usePlatformStore } from "@/store/platformStore";
 import { useI18n } from "@/i18n/I18nContext";
 
@@ -64,7 +65,7 @@ export default function TalentLayout({ children }: { children: ReactNode }) {
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 glass h-14 flex items-center justify-between px-4">
         <button onClick={() => setMobileOpen(true)} className="text-foreground"><Menu className="w-5 h-5" /></button>
         <span className="font-display font-bold text-sm text-foreground">{t.landing.talentPortal}</span>
-        <div className="w-5" />
+        <HelpGuide />
       </div>
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-[100]">

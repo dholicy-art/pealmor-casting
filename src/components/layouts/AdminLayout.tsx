@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, Users, ShieldCheck, FileCheck, AlertTriangle, ScrollText, Settings, Menu, X } from "lucide-react";
+import HelpGuide from "@/components/HelpGuide";
 import { useI18n } from "@/i18n/I18nContext";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -59,7 +60,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-4 border-b" style={{ background: "hsl(var(--admin-card))", borderColor: "hsl(var(--admin-border))" }}>
         <button onClick={() => setMobileOpen(true)}><Menu className="w-5 h-5" style={{ color: "hsl(var(--admin-fg))" }} /></button>
         <span className="font-display font-bold text-sm" style={{ color: "hsl(var(--admin-fg))" }}>{t.landing.adminPortal}</span>
-        <div className="w-5" />
+        <HelpGuide />
       </div>
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-[100]">
