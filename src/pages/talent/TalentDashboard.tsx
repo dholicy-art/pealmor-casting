@@ -1,10 +1,13 @@
 import TalentLayout from "@/components/layouts/TalentLayout";
 import { Link } from "react-router-dom";
-import { DollarSign, Eye, FileCheck, AlertTriangle, TrendingUp, ArrowRight } from "lucide-react";
+import { DollarSign, Eye, FileCheck, AlertTriangle, TrendingUp, ArrowRight, Shield } from "lucide-react";
 import { usePlatformStore } from "@/store/platformStore";
 import { talents } from "@/data/mockData";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nContext";
+import { useEffect, useState } from "react";
+import { getSettlementStatus } from "@/services/pealmorApi";
+import type { PealmorSettlement } from "@/types/pealmor";
 
 const currentTalent = talents[0];
 
@@ -13,6 +16,16 @@ export default function TalentDashboard() {
   const allRequests = usePlatformStore((s) => s.requests);
   const requests = allRequests.filter((r) => r.talentId === "t1");
   const pendingRequests = requests.filter((r) => r.status === "pending");
+  const [settlements, setSettlements] = useState<PealmorSettlement[]>([]);
+
+  useEffect(() => {
+    getSettlementStatus("t1").then(setSettlements);
+  }, []);
+
+  const completedSettlements = settlements.filter((s) => s.status === "completed");
+  const totalEarnings = completedSettlements.reduce((sum, s) => sum + s.netAmount, 0);
+  const latestMonth = completedSettlements[0];
+  const monthlyEarnings = latestMonth?.netAmount || 0;
 
   return (
     <TalentLayout>
@@ -26,7 +39,7 @@ export default function TalentDashboard() {
           {[
             { icon: FileCheck, label: t.talent.pendingRequests, value: String(pendingRequests.length), color: "text-warning" },
             { icon: Eye, label: t.talent.profileViews, value: String(currentTalent.profileViews), color: "text-info" },
-            { icon: DollarSign, label: t.talent.thisMonth, value: `$${currentTalent.monthlyEarnings.toLocaleString()}`, color: "text-success" },
+            { icon: DollarSign, label: t.talent.thisMonth, value: `$${monthlyEarnings.toLocaleString()}`, color: "text-success", sub: "via PEALMOR" },
             { icon: AlertTriangle, label: t.talent.policyAlerts, value: String(requests.filter((r) => r.policyConflicts.length > 0).length), color: "text-destructive" },
           ].map((s) => (
             <div key={s.label} className="bg-card rounded-xl p-5 border border-border">
@@ -35,30 +48,34 @@ export default function TalentDashboard() {
                 <span className="text-xs text-muted-foreground">{s.label}</span>
               </div>
               <p className="font-display text-2xl font-bold text-foreground">{s.value}</p>
+              {"sub" in s && <p className="text-[10px] text-muted-foreground mt-1 flex items-center gap-1"><Shield className="w-2.5 h-2.5" />{s.sub}</p>}
             </div>
           ))}
         </div>
 
         <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="font-display font-semibold text-foreground">{t.talent.earningsOverview}</h2>
-            <div className="flex items-center gap-1 text-sm text-success"><TrendingUp className="w-4 h-4" /><span>+23%</span></div>
+            <div className="flex items-center gap-2">
+              <h2 className="font-display font-semibold text-foreground">{t.talent.earningsOverview}</h2>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-mono">PEALMOR Settlement</span>
+            </div>
+            <div className="flex items-center gap-1 text-sm text-success"><TrendingUp className="w-4 h-4" /></div>
           </div>
           <div className="grid grid-cols-4 gap-4 mb-4">
-            {[{ month: "Dec", value: 3200 }, { month: "Jan", value: 3800 }, { month: "Feb", value: 3400 }, { month: "Mar", value: 4200 }].map((m) => (
-              <div key={m.month} className="text-center">
+            {completedSettlements.slice(0, 4).reverse().map((s) => (
+              <div key={s.id} className="text-center">
                 <div className="h-32 flex items-end justify-center mb-2">
-                  <div className="w-10 rounded-t-lg gradient-primary" style={{ height: `${(m.value / 4200) * 100}%` }} />
+                  <div className="w-10 rounded-t-lg gradient-primary" style={{ height: `${(s.netAmount / (Math.max(...completedSettlements.map(x => x.netAmount)) || 1)) * 100}%` }} />
                 </div>
-                <p className="text-xs text-muted-foreground">{m.month}</p>
-                <p className="text-xs font-medium text-foreground">${m.value.toLocaleString()}</p>
+                <p className="text-xs text-muted-foreground">{s.period.slice(0, 3)}</p>
+                <p className="text-xs font-medium text-foreground">${s.netAmount.toLocaleString()}</p>
               </div>
             ))}
           </div>
           <div className="flex items-center justify-between pt-4 border-t border-border">
             <div>
               <p className="text-xs text-muted-foreground">{t.talent.totalEarnings}</p>
-              <p className="font-display text-lg font-bold text-foreground">${currentTalent.totalEarnings.toLocaleString()}</p>
+              <p className="font-display text-lg font-bold text-foreground">${totalEarnings.toLocaleString()}</p>
             </div>
             <Button variant="ghost" size="sm" asChild>
               <Link to="/talent/earnings">{t.common.viewAll} <ArrowRight className="w-3 h-3 ml-1" /></Link>

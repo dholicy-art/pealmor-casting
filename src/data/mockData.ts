@@ -1,9 +1,11 @@
 import type {
-  TalentProfile, CastingProject, CastingRequest, LicenseGrant,
+  TalentProfile, CastingProject, CastingRequest,
   AuditLogEntry, Notification, VerificationCase, DisputeCase
 } from "@/types/platform";
 
 // ── Talent Profiles ──
+// NOTE: totalEarnings, monthlyEarnings removed from TalentProfile.
+// Revenue data is now fetched from PEALMOR Settlement API.
 export const talents: TalentProfile[] = [
   {
     id: "t1", name: "Yuna Park", stageName: "Yuna", initials: "YP",
@@ -16,7 +18,7 @@ export const talents: TalentProfile[] = [
     voiceTags: ["Soft", "Warm", "Clear"],
     rating: 4.9, reviewCount: 47, startingPrice: 800, currency: "USD",
     avgApprovalHours: 12, verified: true, available: true,
-    profileCompleteness: 85, totalEarnings: 42500, monthlyEarnings: 4200, profileViews: 347,
+    profileCompleteness: 85, profileViews: 347,
     assets: [
       { id: "a1", type: "face", label: "Face Image Set", status: "active", quality: "A+", fileCount: 24 },
       { id: "a2", type: "voice", label: "Voice Clone", status: "active", quality: "A", fileCount: 8 },
@@ -44,7 +46,7 @@ export const talents: TalentProfile[] = [
     voiceTags: ["Clear", "Engaging", "Natural"],
     rating: 4.7, reviewCount: 32, startingPrice: 600, currency: "USD",
     avgApprovalHours: 8, verified: true, available: true,
-    profileCompleteness: 92, totalEarnings: 28400, monthlyEarnings: 3100, profileViews: 256,
+    profileCompleteness: 92, profileViews: 256,
     assets: [
       { id: "a4", type: "face", label: "Face Image Set", status: "active", quality: "A", fileCount: 18 },
       { id: "a5", type: "voice", label: "Voice Clone", status: "active", quality: "A+", fileCount: 12 },
@@ -72,7 +74,7 @@ export const talents: TalentProfile[] = [
     voiceTags: ["Bright", "Lively", "Expressive"],
     rating: 4.8, reviewCount: 38, startingPrice: 700, currency: "USD",
     avgApprovalHours: 6, verified: true, available: true,
-    profileCompleteness: 95, totalEarnings: 35800, monthlyEarnings: 3800, profileViews: 412,
+    profileCompleteness: 95, profileViews: 412,
     assets: [
       { id: "a7", type: "face", label: "Face Image Set", status: "active", quality: "A+", fileCount: 30 },
       { id: "a8", type: "voice", label: "Voice Clone", status: "active", quality: "A", fileCount: 6 },
@@ -99,7 +101,7 @@ export const talents: TalentProfile[] = [
     voiceTags: ["Deep", "Resonant", "Measured"],
     rating: 4.6, reviewCount: 21, startingPrice: 900, currency: "USD",
     avgApprovalHours: 24, verified: true, available: false,
-    profileCompleteness: 78, totalEarnings: 18900, monthlyEarnings: 2200, profileViews: 156,
+    profileCompleteness: 78, profileViews: 156,
     assets: [
       { id: "a9", type: "face", label: "Face Image Set", status: "active", quality: "A", fileCount: 15 },
     ],
@@ -125,7 +127,7 @@ export const talents: TalentProfile[] = [
     voiceTags: ["Sweet", "High-pitched", "Animated"],
     rating: 4.9, reviewCount: 55, startingPrice: 750, currency: "USD",
     avgApprovalHours: 4, verified: true, available: true,
-    profileCompleteness: 100, totalEarnings: 52100, monthlyEarnings: 5600, profileViews: 580,
+    profileCompleteness: 100, profileViews: 580,
     assets: [
       { id: "a10", type: "face", label: "Face Image Set", status: "active", quality: "A+", fileCount: 40 },
       { id: "a11", type: "voice", label: "Voice Clone", status: "active", quality: "A+", fileCount: 15 },
@@ -153,7 +155,7 @@ export const talents: TalentProfile[] = [
     voiceTags: ["Resonant", "Deep", "Steady"],
     rating: 4.5, reviewCount: 15, startingPrice: 1100, currency: "USD",
     avgApprovalHours: 36, verified: true, available: true,
-    profileCompleteness: 70, totalEarnings: 12300, monthlyEarnings: 1800, profileViews: 98,
+    profileCompleteness: 70, profileViews: 98,
     assets: [
       { id: "a13", type: "face", label: "Face Image Set", status: "active", quality: "A", fileCount: 12 },
       { id: "a14", type: "voice", label: "Voice Clone", status: "active", quality: "B+", fileCount: 4 },
@@ -172,6 +174,7 @@ export const talents: TalentProfile[] = [
 ];
 
 // ── Projects ──
+// NOTE: "licensed" status removed from ProjectStatus — licensing is PEALMOR's domain
 export const projects: CastingProject[] = [
   {
     id: "p1", clientId: "c1", title: "Summer Campaign 2026", brand: "LuxeBeauty",
@@ -197,7 +200,7 @@ export const projects: CastingProject[] = [
     productionType: "Short-form", targetRegions: ["Korea", "Japan", "Southeast Asia"],
     mediaChannels: ["TikTok", "Instagram"], campaignPeriod: "Mar 2026",
     scriptSummary: "Short-form video series for skincare product launch across Asian markets.",
-    status: "licensed", riskLevel: "low", actorCount: 2, createdAt: "2026-02-20",
+    status: "in_production", riskLevel: "low", actorCount: 2, createdAt: "2026-02-20",
     requests: [],
   },
   {
@@ -212,6 +215,7 @@ export const projects: CastingProject[] = [
 ];
 
 // ── Casting Requests ──
+// These are local to the casting platform. Once approved, they trigger PEALMOR UsageRequest → Approval → LicenseGrant flow.
 export const castingRequests: CastingRequest[] = [
   {
     id: "r1", projectId: "p1", talentId: "t1", talentName: "Yuna Park",
@@ -241,7 +245,7 @@ export const castingRequests: CastingRequest[] = [
     proposedFee: 1200, proposedRevenueShare: "10%", requestedTermDays: 30,
     notes: "Energetic short-form content for skincare launch targeting young audience.",
     status: "approved", riskLevel: "low", policyConflicts: [], createdAt: "2026-02-22",
-    respondedAt: "2026-02-23",
+    respondedAt: "2026-02-23", pealmorRequestRef: "PEALMOR-REQ-001",
   },
   {
     id: "r4", projectId: "p1", talentId: "t5", talentName: "Hana Ito",
@@ -254,45 +258,16 @@ export const castingRequests: CastingRequest[] = [
   },
 ];
 
-// ── Licenses ──
-export const licenses: LicenseGrant[] = [
-  {
-    id: "l1", requestId: "r3", projectTitle: "Product Launch Intro",
-    talentName: "Mika Tanaka", companyName: "NovaSkin",
-    grantedAssets: ["face", "voice"], grantedScope: "Short-form content for TikTok and Instagram",
-    startAt: "2026-02-25", endAt: "2026-03-27", status: "active",
-    fee: 1200, revenueShare: "10%",
-  },
-  {
-    id: "l2", requestId: "r5", projectTitle: "Holiday Short-form Series",
-    talentName: "Yuna Park", companyName: "LuxeBeauty Co.",
-    grantedAssets: ["face", "voice", "persona"], grantedScope: "Holiday campaign content",
-    startAt: "2025-12-15", endAt: "2026-01-31", status: "expired",
-    fee: 3500, revenueShare: "15%",
-  },
-];
-
-// ── Audit Logs ──
-export const auditLogs: AuditLogEntry[] = [
-  { id: "al1", timestamp: "2026-03-08 10:32", userId: "c1", userName: "LuxeBeauty", userRole: "client", action: "Casting request submitted", target: "Yuna Park", severity: "info" },
-  { id: "al2", timestamp: "2026-03-08 10:15", userId: "t1", userName: "Yuna Park", userRole: "talent", action: "Approved casting request", target: "NovaSkin — Brand Video", severity: "info" },
-  { id: "al3", timestamp: "2026-03-08 09:48", userId: "sys", userName: "System", userRole: "system", action: "Policy conflict detected", target: "TechFlow request #r2", severity: "warning" },
-  { id: "al4", timestamp: "2026-03-08 09:30", userId: "admin1", userName: "Admin Kim", userRole: "admin", action: "Verified talent identity", target: "Hana Ito", severity: "info" },
-  { id: "al5", timestamp: "2026-03-08 09:12", userId: "sys", userName: "System", userRole: "system", action: "License expired", target: "Project #p4 — Holiday Series", severity: "warning" },
-  { id: "al6", timestamp: "2026-03-07 18:45", userId: "t3", userName: "Mika Tanaka", userRole: "talent", action: "Updated consent policy", target: "Policy v4", severity: "info" },
-  { id: "al7", timestamp: "2026-03-07 16:20", userId: "c1", userName: "LuxeBeauty", userRole: "client", action: "Created project", target: "Summer Campaign 2026", severity: "info" },
-  { id: "al8", timestamp: "2026-03-07 14:10", userId: "sys", userName: "System", userRole: "system", action: "Unauthorized use detected", target: "TikTok content — unlicensed region", severity: "critical" },
-  { id: "al9", timestamp: "2026-03-07 11:30", userId: "admin1", userName: "Admin Kim", userRole: "admin", action: "Resolved dispute #d1", target: "Scope violation case", severity: "info" },
-  { id: "al10", timestamp: "2026-03-06 09:00", userId: "t5", userName: "Hana Ito", userRole: "talent", action: "Registered new asset", target: "Virtual Avatar v2", severity: "info" },
-];
+// NOTE: Licenses have been removed from local mock data.
+// License data must be fetched from PEALMOR via getLicenseStatus() in pealmorApi.ts
 
 // ── Notifications ──
 export const notifications: Notification[] = [
   { id: "n1", title: "New Casting Request", message: "LuxeBeauty submitted a casting request for Summer Campaign 2026", type: "request", read: false, createdAt: "2026-03-08 10:32", link: "/talent/approvals" },
   { id: "n2", title: "Request Approved", message: "Mika Tanaka approved your casting request for Product Launch Intro", type: "approval", read: false, createdAt: "2026-03-08 10:15", link: "/client/projects" },
   { id: "n3", title: "Policy Conflict", message: "TechFlow request has a region policy conflict", type: "warning", read: false, createdAt: "2026-03-08 09:48" },
-  { id: "n4", title: "License Expiring", message: "Holiday Short-form Series license expires in 3 days", type: "warning", read: true, createdAt: "2026-03-07 16:00", link: "/client/projects" },
-  { id: "n5", title: "Settlement Completed", message: "March settlement of $3,200 has been processed", type: "settlement", read: true, createdAt: "2026-03-05 09:00" },
+  { id: "n4", title: "PEALMOR License Expiring", message: "Holiday Short-form Series license expires in 3 days", type: "warning", read: true, createdAt: "2026-03-07 16:00", link: "/client/licenses" },
+  { id: "n5", title: "PEALMOR Settlement", message: "March settlement of $3,200 has been processed via PEALMOR", type: "settlement", read: true, createdAt: "2026-03-05 09:00" },
 ];
 
 // ── Verification Cases ──

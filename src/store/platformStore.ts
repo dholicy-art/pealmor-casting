@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { CastingRequest, Notification } from "@/types/platform";
 import { castingRequests as initialRequests, notifications as initialNotifications } from "@/data/mockData";
+import * as pealmorApi from "@/services/pealmorApi";
 
 interface PlatformStore {
   // Bookmarks
@@ -13,7 +14,7 @@ interface PlatformStore {
   removeFromCompare: (talentId: string) => void;
   clearCompare: () => void;
 
-  // Casting Requests
+  // Casting Requests (local orchestration — triggers PEALMOR UsageRequest)
   requests: CastingRequest[];
   updateRequestStatus: (requestId: string, status: CastingRequest["status"], counterNotes?: string) => void;
   addRequest: (request: CastingRequest) => void;
@@ -49,7 +50,14 @@ export const usePlatformStore = create<PlatformStore>((set, get) => ({
     set((s) => ({
       requests: s.requests.map((r) =>
         r.id === requestId
-          ? { ...r, status, respondedAt: new Date().toISOString().slice(0, 10), counterOfferNotes: counterNotes }
+          ? {
+              ...r,
+              status,
+              respondedAt: new Date().toISOString().slice(0, 10),
+              counterOfferNotes: counterNotes,
+              // When approved, mark that it will be forwarded to PEALMOR
+              pealmorRequestRef: status === "approved" ? `PEALMOR-REQ-${Date.now()}` : r.pealmorRequestRef,
+            }
           : r
       ),
     })),

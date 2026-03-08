@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Search, FolderOpen, BarChart3, Bookmark, Settings, Menu, X, Bell } from "lucide-react";
+import { Home, Search, FolderOpen, BarChart3, Bookmark, Settings, Menu, X, Bell, Sparkles } from "lucide-react";
 import { usePlatformStore } from "@/store/platformStore";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nContext";
@@ -14,6 +14,7 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
   const navItems = [
     { icon: Home, label: t.client.dashboard, path: "/client" },
     { icon: Search, label: t.client.searchActors, path: "/client/search" },
+    { icon: Sparkles, label: "AI Audition", path: "/client/audition" },
     { icon: FolderOpen, label: t.client.projects, path: "/client/projects" },
     { icon: Bookmark, label: t.client.compare, path: "/client/compare" },
     { icon: BarChart3, label: t.client.licenses, path: "/client/licenses" },
@@ -47,7 +48,10 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
           );
         })}
       </nav>
-      <div className="border-t border-border pt-4 mt-4">
+      <div className="border-t border-border pt-3 mt-3">
+        <p className="text-[10px] text-muted-foreground px-3 mb-2 font-mono">PEALMOR Connected</p>
+      </div>
+      <div className="border-t border-border pt-4 mt-1">
         <div className="flex items-center gap-3 px-3">
           <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-semibold text-secondary-foreground">JK</div>
           <div>

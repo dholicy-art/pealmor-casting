@@ -14,11 +14,13 @@ import ClientCompare from "./pages/client/ClientCompare";
 import ClientProjects from "./pages/client/ClientProjects";
 import ClientCastingRequest from "./pages/client/ClientCastingRequest";
 import ClientLicenses from "./pages/client/ClientLicenses";
+import ClientAudition from "./pages/client/ClientAudition";
 import ClientSettings from "./pages/client/ClientSettings";
 import TalentDashboard from "./pages/talent/TalentDashboard";
 import TalentApprovals from "./pages/talent/TalentApprovals";
 import TalentProfile from "./pages/talent/TalentProfile";
 import TalentEarnings from "./pages/talent/TalentEarnings";
+import TalentLicenses from "./pages/talent/TalentLicenses";
 import TalentNotifications from "./pages/talent/TalentNotifications";
 import TalentSettings from "./pages/talent/TalentSettings";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -40,7 +42,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            {/* Client */}
+            {/* Client — Discovery & Orchestration */}
             <Route path="/client" element={<ClientDashboard />} />
             <Route path="/client/search" element={<ClientSearch />} />
             <Route path="/client/actor/:id" element={<ClientActorDetail />} />
@@ -48,15 +50,17 @@ const App = () => (
             <Route path="/client/projects" element={<ClientProjects />} />
             <Route path="/client/casting-request/:talentId" element={<ClientCastingRequest />} />
             <Route path="/client/licenses" element={<ClientLicenses />} />
+            <Route path="/client/audition" element={<ClientAudition />} />
             <Route path="/client/settings" element={<ClientSettings />} />
-            {/* Talent */}
+            {/* Talent — Profile & Approvals */}
             <Route path="/talent" element={<TalentDashboard />} />
             <Route path="/talent/approvals" element={<TalentApprovals />} />
             <Route path="/talent/profile" element={<TalentProfile />} />
             <Route path="/talent/earnings" element={<TalentEarnings />} />
+            <Route path="/talent/licenses" element={<TalentLicenses />} />
             <Route path="/talent/notifications" element={<TalentNotifications />} />
             <Route path="/talent/settings" element={<TalentSettings />} />
-            {/* Admin */}
+            {/* Admin — Compliance via PEALMOR */}
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/verification" element={<AdminVerification />} />
             <Route path="/admin/disputes" element={<AdminDisputes />} />

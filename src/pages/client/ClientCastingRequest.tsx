@@ -87,6 +87,7 @@ export default function ClientCastingRequest() {
     if (!validate()) return;
 
     const project = projects.find((p) => p.id === form.projectId);
+    // Create casting request locally — this will trigger PEALMOR UsageRequest API
     const newRequest: CastingRequest = {
       id: `r${Date.now()}`,
       projectId: form.projectId,
@@ -106,13 +107,14 @@ export default function ClientCastingRequest() {
       riskLevel: policyWarnings.length > 0 ? "medium" : "low",
       policyConflicts: policyWarnings,
       createdAt: new Date().toISOString().slice(0, 10),
+      pealmorRequestRef: `PEALMOR-REQ-${Date.now()}`, // Will be assigned by PEALMOR API
     };
 
     addRequest(newRequest);
     addNotification({
       id: `n${Date.now()}`,
-      title: "Casting Request Sent",
-      message: `Your request to ${talent.name} for "${project?.title}" has been submitted.`,
+      title: "Usage Request Submitted",
+      message: `Your PEALMOR usage request to ${talent.name} for "${project?.title}" has been submitted.`,
       type: "request",
       read: false,
       createdAt: new Date().toISOString(),

@@ -1,9 +1,9 @@
-import ClientLayout from "@/components/layouts/ClientLayout";
-import { FileCheck, Clock, AlertTriangle, Shield } from "lucide-react";
+import TalentLayout from "@/components/layouts/TalentLayout";
 import { useI18n } from "@/i18n/I18nContext";
 import { useEffect, useState } from "react";
 import { getLicenseStatus } from "@/services/pealmorApi";
 import type { PealmorLicenseGrant } from "@/types/pealmor";
+import { Shield, FileCheck, Clock, AlertTriangle } from "lucide-react";
 
 const statusColors: Record<string, string> = {
   active: "bg-success/10 text-success",
@@ -12,13 +12,13 @@ const statusColors: Record<string, string> = {
   pending: "bg-warning/10 text-warning",
 };
 
-export default function ClientLicenses() {
+export default function TalentLicenses() {
   const { t } = useI18n();
   const [licenses, setLicenses] = useState<PealmorLicenseGrant[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getLicenseStatus({ clientId: "c1" }).then((data) => {
+    getLicenseStatus({ talentId: "t1" }).then((data) => {
       setLicenses(data);
       setLoading(false);
     });
@@ -26,16 +26,16 @@ export default function ClientLicenses() {
 
   if (loading) {
     return (
-      <ClientLayout>
+      <TalentLayout>
         <div className="p-6 lg:p-8 flex items-center justify-center py-20">
           <p className="text-muted-foreground">{t.common.loading}</p>
         </div>
-      </ClientLayout>
+      </TalentLayout>
     );
   }
 
   return (
-    <ClientLayout>
+    <TalentLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground">{t.client.licenses}</h1>
@@ -51,10 +51,8 @@ export default function ClientLicenses() {
             <p className="font-display text-2xl font-bold text-foreground">{licenses.filter((l) => l.status === "active").length}</p>
           </div>
           <div className="bg-card rounded-xl p-5 border border-border">
-            <div className="flex items-center gap-2 mb-2"><Clock className="w-4 h-4 text-warning" /><span className="text-xs text-muted-foreground">{t.client.expiringSoon}</span></div>
-            <p className="font-display text-2xl font-bold text-foreground">
-              {licenses.filter((l) => l.status === "active" && new Date(l.endAt) < new Date(Date.now() + 7 * 86400000)).length}
-            </p>
+            <div className="flex items-center gap-2 mb-2"><Clock className="w-4 h-4 text-warning" /><span className="text-xs text-muted-foreground">{t.common.pending}</span></div>
+            <p className="font-display text-2xl font-bold text-foreground">{licenses.filter((l) => l.status === "pending").length}</p>
           </div>
           <div className="bg-card rounded-xl p-5 border border-border">
             <div className="flex items-center gap-2 mb-2"><AlertTriangle className="w-4 h-4 text-muted-foreground" /><span className="text-xs text-muted-foreground">{t.common.expired}</span></div>
@@ -68,12 +66,10 @@ export default function ClientLicenses() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                 <div>
                   <h3 className="font-semibold text-foreground">{l.projectTitle}</h3>
-                  <p className="text-sm text-muted-foreground">{l.talentName} • {l.clientName}</p>
+                  <p className="text-sm text-muted-foreground">{l.clientName}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusColors[l.status]}`}>
-                    {l.status}
-                  </span>
+                  <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusColors[l.status]}`}>{l.status}</span>
                   <span className="text-[10px] px-2 py-0.5 rounded font-mono bg-primary/5 text-primary">{l.pealmorRef}</span>
                 </div>
               </div>
@@ -100,16 +96,15 @@ export default function ClientLicenses() {
                 </div>
               </div>
               <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-border">{l.grantedScope}</p>
-              {l.accessKeyId && (
-                <div className="mt-2 flex items-center gap-2">
-                  <Shield className="w-3 h-3 text-success" />
-                  <span className="text-[10px] text-success font-medium">AccessKey: {l.accessKeyId}</span>
-                </div>
-              )}
             </div>
           ))}
+          {licenses.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">{t.common.noResults}</p>
+            </div>
+          )}
         </div>
       </div>
-    </ClientLayout>
+    </TalentLayout>
   );
 }
