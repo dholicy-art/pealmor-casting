@@ -9,6 +9,7 @@ export const fr: Translations = {
     loading: 'Chargement...', noResults: 'Aucun résultat', confirm: 'Confirmer', delete: 'Supprimer',
     edit: 'Modifier', create: 'Créer', submit: 'Soumettre', close: 'Fermer', yes: 'Oui', no: 'Non',
     appearance: 'Apparence', notifications: 'Notifications', general: 'Général', account: 'Compte',
+    themeDescription: 'Choisir le mode clair ou sombre', darkMode: 'Mode sombre', lightMode: 'Mode clair',
   },
   landing: {
     title: 'PEALMOR Casting', subtitle: 'Plateforme de casting d\'acteurs IA',

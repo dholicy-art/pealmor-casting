@@ -8,6 +8,7 @@ export const zh: Translations = {
     loading: '加载中...', noResults: '未找到结果', confirm: '确认', delete: '删除', edit: '编辑',
     create: '创建', submit: '提交', close: '关闭', yes: '是', no: '否',
     appearance: '外观', notifications: '通知', general: '常规', account: '账户',
+    themeDescription: '选择浅色或深色模式', darkMode: '深色模式', lightMode: '浅色模式',
   },
   landing: {
     title: 'PEALMOR Casting', subtitle: 'AI演员选角平台',

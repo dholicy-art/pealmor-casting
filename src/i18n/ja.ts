@@ -32,6 +32,9 @@ export const ja: Translations = {
     notifications: '通知',
     general: '一般',
     account: 'アカウント',
+    themeDescription: 'ライトまたはダークモードを選択',
+    darkMode: 'ダークモード',
+    lightMode: 'ライトモード',
   },
   landing: {
     title: 'PEALMOR Casting',
