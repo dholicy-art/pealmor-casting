@@ -84,7 +84,7 @@ export default function ActorNetwork() {
 
         {/* Network Graph (Visual representation) */}
         <div className="bg-card rounded-xl border border-border p-6">
-          <h2 className="font-display font-semibold text-foreground mb-4">Actor Graph</h2>
+          <h2 className="font-display font-semibold text-foreground mb-4">{t.client.actorGraph}</h2>
           <div className="grid gap-3">
             {filteredEdges.map(edge => {
               const actor = talents.find(t => t.id === edge.actorId);
