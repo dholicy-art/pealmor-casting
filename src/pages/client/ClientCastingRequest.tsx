@@ -7,6 +7,7 @@ import { usePlatformStore } from "@/store/platformStore";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { CastingRequest, AssetType } from "@/types/platform";
+import { useI18n } from "@/i18n/I18nContext";
 
 export default function ClientCastingRequest() {
   const { talentId } = useParams();
