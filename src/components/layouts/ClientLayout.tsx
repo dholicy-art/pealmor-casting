@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Home, Search, FolderOpen, BarChart3, Bookmark, Settings, Menu, X, Bell, Sparkles, Network, Users, Globe, Wand2 } from "lucide-react";
+import HelpGuide from "@/components/HelpGuide";
 import { usePlatformStore } from "@/store/platformStore";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nContext";
