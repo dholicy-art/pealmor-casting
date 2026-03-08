@@ -101,7 +101,7 @@ export default function TalentEarnings() {
 
         {/* Settlement Line Items */}
         <div className="bg-card rounded-xl border border-border p-6">
-          <h2 className="font-display font-semibold text-foreground mb-4">Settlement Details</h2>
+          <h2 className="font-display font-semibold text-foreground mb-4">{t.client.settlementDetails}</h2>
           <div className="space-y-3">
             {settlements.map((s) => (
               <div key={s.id} className="border border-border rounded-lg p-4">
