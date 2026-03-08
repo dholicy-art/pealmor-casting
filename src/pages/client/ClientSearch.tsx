@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Search, Filter, Star, Bookmark, BookmarkCheck, ChevronDown } from "lucide-react";
 import { useState, useMemo } from "react";
-import { talents } from "@/data/mockData";
+import { getLocalizedTalents } from "@/data/localizedData";
 import { usePlatformStore } from "@/store/platformStore";
 import { useI18n } from "@/i18n/I18nContext";
 
