@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, Users, ShieldCheck, FileCheck, AlertTriangle, ScrollText, Settings, Menu, X } from "lucide-react";
+import HelpGuide from "@/components/HelpGuide";
 import { useI18n } from "@/i18n/I18nContext";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
