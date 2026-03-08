@@ -1,6 +1,6 @@
 // Types for PEALMOR Casting Platform
-// NOTE: Licensing, settlement, payment, and access control types have been
-// moved to src/types/pealmor.ts — they are managed by PEALMOR Core.
+// NOTE: Licensing, settlement, payment, and access control types are in src/types/pealmor.ts
+// They are managed exclusively by PEALMOR Core.
 
 export type AssetType = "face" | "voice" | "persona" | "avatar" | "motion";
 export type RequestStatus = "pending" | "approved" | "rejected" | "counter_offered" | "cancelled";
@@ -100,22 +100,7 @@ export interface CastingRequest {
   createdAt: string;
   respondedAt?: string;
   counterOfferNotes?: string;
-  pealmorRequestRef?: string; // Reference to PEALMOR UsageRequest
-}
-
-// NOTE: LicenseGrant, settlement, payment types are now in src/types/pealmor.ts
-// The casting platform must NOT create licenses directly.
-
-export interface AuditLogEntry {
-  id: string;
-  timestamp: string;
-  userId: string;
-  userName: string;
-  userRole: "client" | "talent" | "admin" | "system";
-  action: string;
-  target: string;
-  details?: string;
-  severity: "info" | "warning" | "critical";
+  pealmorRequestRef?: string;
 }
 
 export interface Notification {

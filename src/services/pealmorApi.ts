@@ -1,7 +1,7 @@
 /**
  * PEALMOR Core API Service Layer
  *
- * This module provides mock implementations of all PEALMOR Core APIs.
+ * Mock implementations of all PEALMOR Core APIs.
  * When PEALMOR Core APIs become available, replace mock data with real fetch calls.
  *
  * Architecture principle:
@@ -21,7 +21,12 @@ import type {
   PealmorPayment,
   PealmorAuditEntry,
   AIAuditionPerformance,
+  ActorGraphEdge,
+  ActorTeam,
+  ActorUniverse,
+  AutoCastingResult,
 } from "@/types/pealmor";
+import { talents, actorGraph, actorTeams, actorUniverses } from "@/data/mockData";
 
 // ═══════════════════════════════════════
 // Mock Data
@@ -123,7 +128,6 @@ const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export async function getIPAssets(talentId: string): Promise<PealmorIPAsset[]> {
   await delay(100);
-  // Mock: derive from talent data
   return [];
 }
 
@@ -141,14 +145,13 @@ export async function getTalentProfile(talentId: string): Promise<PealmorTalentP
 
 export async function submitUsageRequest(request: Omit<PealmorUsageRequest, "id" | "pealmorRef" | "status" | "createdAt">): Promise<PealmorUsageRequest> {
   await delay(200);
-  const newRequest: PealmorUsageRequest = {
+  return {
     ...request,
     id: `pur-${Date.now()}`,
     status: "pending",
     createdAt: new Date().toISOString(),
     pealmorRef: `PEALMOR-REQ-${Date.now()}`,
   };
-  return newRequest;
 }
 
 export async function updateUsageRequest(requestId: string, update: { status: string; counterNotes?: string }): Promise<void> {
@@ -163,8 +166,7 @@ export async function cancelUsageRequest(requestId: string): Promise<void> {
 
 export async function approveRequest(requestId: string): Promise<PealmorLicenseGrant> {
   await delay(200);
-  // Mock: create a license grant
-  const grant: PealmorLicenseGrant = {
+  return {
     id: `pl-${Date.now()}`,
     usageRequestId: requestId,
     projectTitle: "Auto-generated",
@@ -179,7 +181,6 @@ export async function approveRequest(requestId: string): Promise<PealmorLicenseG
     revenueShare: "—",
     pealmorRef: `PEALMOR-LIC-${Date.now()}`,
   };
-  return grant;
 }
 
 export async function rejectRequest(requestId: string): Promise<void> {
@@ -201,7 +202,7 @@ export async function grantLicense(usageRequestId: string): Promise<PealmorLicen
 
 export async function issueAccessKey(licenseId: string): Promise<PealmorAccessKey> {
   await delay(100);
-  const key: PealmorAccessKey = {
+  return {
     id: `ak-${Date.now()}`,
     licenseId,
     talentId: "",
@@ -214,7 +215,6 @@ export async function issueAccessKey(licenseId: string): Promise<PealmorAccessKe
     maxUsage: 100,
     pealmorRef: `PEALMOR-AK-${Date.now()}`,
   };
-  return key;
 }
 
 export async function validateAccessKey(accessKeyId: string): Promise<PealmorAccessValidation> {
@@ -305,4 +305,86 @@ export async function generateAuditionPerformances(
     }
   }
   return performances;
+}
+
+// ── Actor Network ──
+
+export async function getActorGraph(actorId?: string): Promise<ActorGraphEdge[]> {
+  await delay(100);
+  if (actorId) {
+    return actorGraph.filter(e => e.actorId === actorId || e.relatedActorId === actorId);
+  }
+  return actorGraph;
+}
+
+export async function getActorTeamsApi(actorId?: string): Promise<ActorTeam[]> {
+  await delay(100);
+  if (actorId) {
+    return actorTeams.filter(t => t.members.some(m => m.actorId === actorId));
+  }
+  return actorTeams;
+}
+
+export async function getActorUniversesApi(actorId?: string): Promise<ActorUniverse[]> {
+  await delay(100);
+  if (actorId) {
+    return actorUniverses.filter(u => u.actors.some(a => a.actorId === actorId));
+  }
+  return actorUniverses;
+}
+
+// ── Auto Casting ──
+
+export async function autocast(scriptSummary: string): Promise<AutoCastingResult[]> {
+  await delay(800);
+
+  // Mock: analyze script and recommend actors based on keywords
+  const script = scriptSummary.toLowerCase();
+  const results: AutoCastingResult[] = [];
+
+  // Lead role
+  if (script.includes("beauty") || script.includes("luxury") || script.includes("elegant")) {
+    results.push({
+      role: "lead", characterName: "Brand Muse", characterDescription: "Elegant, sophisticated presence for luxury brand representation.",
+      recommendedActorId: "t1", matchScore: 95, matchReasons: ["Style: Luxury/Premium", "Mood: Sophisticated", "Voice: Warm & Clear"],
+    });
+  } else if (script.includes("tech") || script.includes("education") || script.includes("demo")) {
+    results.push({
+      role: "lead", characterName: "Tech Presenter", characterDescription: "Knowledgeable and approachable tech narrator.",
+      recommendedActorId: "t2", matchScore: 92, matchReasons: ["Style: Tech-savvy", "Multilingual", "Voice: Engaging"],
+    });
+  } else {
+    results.push({
+      role: "lead", characterName: "Main Character", characterDescription: "Versatile lead actor for general content.",
+      recommendedActorId: "t1", matchScore: 88, matchReasons: ["High rating", "Versatile style", "Fast approval"],
+    });
+  }
+
+  // Supporting role
+  if (script.includes("fun") || script.includes("energetic") || script.includes("young")) {
+    results.push({
+      role: "supporting", characterName: "Energetic Co-Star", characterDescription: "Playful and dynamic supporting presence.",
+      recommendedActorId: "t3", matchScore: 90, matchReasons: ["Mood: Energetic", "Style: Trendy", "Short-form specialist"],
+    });
+  } else {
+    results.push({
+      role: "supporting", characterName: "Supporting Narrator", characterDescription: "Professional supporting voice.",
+      recommendedActorId: "t6", matchScore: 78, matchReasons: ["Voice: Deep & Steady", "Professional demeanor"],
+    });
+  }
+
+  // Side character
+  if (script.includes("gaming") || script.includes("virtual") || script.includes("avatar")) {
+    results.push({
+      role: "side", characterName: "Virtual Character", characterDescription: "Cute virtual avatar for interactive content.",
+      recommendedActorId: "t5", matchScore: 93, matchReasons: ["Avatar available", "Gaming specialist", "High engagement"],
+    });
+  } else {
+    results.push({
+      role: "side", characterName: "Expert Cameo", characterDescription: "Authoritative brief appearance.",
+      recommendedActorId: "t4", matchScore: 72, matchReasons: ["Authoritative tone", "Corporate fit"],
+    });
+  }
+
+  return results;
 }

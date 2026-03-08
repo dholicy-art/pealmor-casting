@@ -1,11 +1,12 @@
 import type {
   TalentProfile, CastingProject, CastingRequest,
-  AuditLogEntry, Notification, VerificationCase, DisputeCase
+  Notification, VerificationCase, DisputeCase
 } from "@/types/platform";
+import type {
+  ActorGraphEdge, ActorTeam, ActorUniverse
+} from "@/types/pealmor";
 
 // ── Talent Profiles ──
-// NOTE: totalEarnings, monthlyEarnings removed from TalentProfile.
-// Revenue data is now fetched from PEALMOR Settlement API.
 export const talents: TalentProfile[] = [
   {
     id: "t1", name: "Yuna Park", stageName: "Yuna", initials: "YP",
@@ -173,8 +174,101 @@ export const talents: TalentProfile[] = [
   },
 ];
 
+// ── Actor Graph ──
+export const actorGraph: ActorGraphEdge[] = [
+  { id: "ag1", actorId: "t1", relatedActorId: "t3", relationshipType: "co_actor", strengthScore: 92, createdAt: "2025-11-01" },
+  { id: "ag2", actorId: "t1", relatedActorId: "t5", relationshipType: "frequent_collaboration", strengthScore: 85, createdAt: "2025-10-15" },
+  { id: "ag3", actorId: "t3", relatedActorId: "t5", relationshipType: "team_member", strengthScore: 95, createdAt: "2025-09-20" },
+  { id: "ag4", actorId: "t2", relatedActorId: "t4", relationshipType: "style_similarity", strengthScore: 78, createdAt: "2025-12-01" },
+  { id: "ag5", actorId: "t2", relatedActorId: "t6", relationshipType: "co_actor", strengthScore: 70, createdAt: "2026-01-10" },
+  { id: "ag6", actorId: "t1", relatedActorId: "t4", relationshipType: "agency_member", strengthScore: 60, createdAt: "2026-02-01" },
+  { id: "ag7", actorId: "t3", relatedActorId: "t1", relationshipType: "universe_member", strengthScore: 88, createdAt: "2025-08-15" },
+  { id: "ag8", actorId: "t5", relatedActorId: "t3", relationshipType: "frequent_collaboration", strengthScore: 90, createdAt: "2025-11-20" },
+  { id: "ag9", actorId: "t6", relatedActorId: "t4", relationshipType: "style_similarity", strengthScore: 82, createdAt: "2026-01-05" },
+  { id: "ag10", actorId: "t1", relatedActorId: "t2", relationshipType: "co_actor", strengthScore: 65, createdAt: "2026-02-15" },
+];
+
+// ── Actor Teams ──
+export const actorTeams: ActorTeam[] = [
+  {
+    id: "team1",
+    teamName: "Luxe Girls",
+    teamType: "brand_ambassadors",
+    description: "Premium beauty & luxury brand ambassador group featuring elegant AI personas.",
+    members: [
+      { id: "tm1", teamId: "team1", actorId: "t1", role: "Lead Ambassador", createdAt: "2025-09-01" },
+      { id: "tm2", teamId: "team1", actorId: "t3", role: "Campaign Face", createdAt: "2025-09-01" },
+      { id: "tm3", teamId: "team1", actorId: "t5", role: "Digital Ambassador", createdAt: "2025-09-15" },
+    ],
+    createdAt: "2025-09-01",
+  },
+  {
+    id: "team2",
+    teamName: "Tech Voices",
+    teamType: "custom",
+    description: "Professional AI presenters for technology and education content.",
+    members: [
+      { id: "tm4", teamId: "team2", actorId: "t2", role: "Lead Presenter", createdAt: "2025-10-01" },
+      { id: "tm5", teamId: "team2", actorId: "t4", role: "Corporate Narrator", createdAt: "2025-10-01" },
+      { id: "tm6", teamId: "team2", actorId: "t6", role: "Finance Expert", createdAt: "2025-10-15" },
+    ],
+    createdAt: "2025-10-01",
+  },
+  {
+    id: "team3",
+    teamName: "J-Pop Stars",
+    teamType: "kpop_group",
+    description: "Energetic Japanese AI idol group for entertainment and gaming content.",
+    members: [
+      { id: "tm7", teamId: "team3", actorId: "t3", role: "Center", createdAt: "2025-11-01" },
+      { id: "tm8", teamId: "team3", actorId: "t5", role: "Visual", createdAt: "2025-11-01" },
+    ],
+    createdAt: "2025-11-01",
+  },
+];
+
+// ── Actor Universes ──
+export const actorUniverses: ActorUniverse[] = [
+  {
+    id: "uni1",
+    universeName: "PEALMOR Universe",
+    description: "The core PEALMOR AI actor universe spanning beauty, tech, and entertainment verticals.",
+    tags: ["core", "multi-genre", "premium"],
+    actors: [
+      { id: "ua1", universeId: "uni1", actorId: "t1", role: "Lead — Beauty", createdAt: "2025-08-01" },
+      { id: "ua2", universeId: "uni1", actorId: "t2", role: "Lead — Tech", createdAt: "2025-08-01" },
+      { id: "ua3", universeId: "uni1", actorId: "t3", role: "Lead — Entertainment", createdAt: "2025-08-01" },
+      { id: "ua4", universeId: "uni1", actorId: "t5", role: "Lead — Gaming", createdAt: "2025-08-15" },
+    ],
+    createdAt: "2025-08-01",
+  },
+  {
+    id: "uni2",
+    universeName: "LuxeBeauty Story",
+    description: "Brand story universe for LuxeBeauty seasonal campaigns and content series.",
+    tags: ["beauty", "luxury", "brand-story"],
+    actors: [
+      { id: "ua5", universeId: "uni2", actorId: "t1", role: "Brand Muse", createdAt: "2025-10-01" },
+      { id: "ua6", universeId: "uni2", actorId: "t3", role: "Campaign Star", createdAt: "2025-10-01" },
+      { id: "ua7", universeId: "uni2", actorId: "t5", role: "Digital Twin", createdAt: "2025-10-15" },
+    ],
+    createdAt: "2025-10-01",
+  },
+  {
+    id: "uni3",
+    universeName: "FinTech Presenters",
+    description: "Professional AI presenter universe for finance and technology verticals.",
+    tags: ["finance", "technology", "corporate"],
+    actors: [
+      { id: "ua8", universeId: "uni3", actorId: "t4", role: "Anchor", createdAt: "2025-12-01" },
+      { id: "ua9", universeId: "uni3", actorId: "t6", role: "Expert Analyst", createdAt: "2025-12-01" },
+      { id: "ua10", universeId: "uni3", actorId: "t2", role: "Tech Reporter", createdAt: "2026-01-01" },
+    ],
+    createdAt: "2025-12-01",
+  },
+];
+
 // ── Projects ──
-// NOTE: "licensed" status removed from ProjectStatus — licensing is PEALMOR's domain
 export const projects: CastingProject[] = [
   {
     id: "p1", clientId: "c1", title: "Summer Campaign 2026", brand: "LuxeBeauty",
@@ -215,7 +309,6 @@ export const projects: CastingProject[] = [
 ];
 
 // ── Casting Requests ──
-// These are local to the casting platform. Once approved, they trigger PEALMOR UsageRequest → Approval → LicenseGrant flow.
 export const castingRequests: CastingRequest[] = [
   {
     id: "r1", projectId: "p1", talentId: "t1", talentName: "Yuna Park",
@@ -258,9 +351,6 @@ export const castingRequests: CastingRequest[] = [
   },
 ];
 
-// NOTE: Licenses have been removed from local mock data.
-// License data must be fetched from PEALMOR via getLicenseStatus() in pealmorApi.ts
-
 // ── Notifications ──
 export const notifications: Notification[] = [
   { id: "n1", title: "New Casting Request", message: "LuxeBeauty submitted a casting request for Summer Campaign 2026", type: "request", read: false, createdAt: "2026-03-08 10:32", link: "/talent/approvals" },
@@ -288,7 +378,7 @@ export const disputes: DisputeCase[] = [
   { id: "d3", title: "Settlement Amount Dispute", reporter: "Alex Chen", reported: "TechFlow Inc.", type: "settlement_dispute", status: "open", description: "Talent disputes the settlement calculation for Q1 2026 project.", createdAt: "2026-03-05", priority: "medium" },
 ];
 
-// Helper to get talent by ID
+// ── Helpers ──
 export function getTalentById(id: string): TalentProfile | undefined {
   return talents.find(t => t.id === id);
 }
@@ -303,4 +393,16 @@ export function getRequestsForTalent(talentId: string): CastingRequest[] {
 
 export function getRequestsForProject(projectId: string): CastingRequest[] {
   return castingRequests.filter(r => r.projectId === projectId);
+}
+
+export function getActorRelations(actorId: string): ActorGraphEdge[] {
+  return actorGraph.filter(e => e.actorId === actorId || e.relatedActorId === actorId);
+}
+
+export function getActorTeams(actorId: string): ActorTeam[] {
+  return actorTeams.filter(t => t.members.some(m => m.actorId === actorId));
+}
+
+export function getActorUniverses(actorId: string): ActorUniverse[] {
+  return actorUniverses.filter(u => u.actors.some(a => a.actorId === actorId));
 }
