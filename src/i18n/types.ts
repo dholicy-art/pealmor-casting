@@ -185,6 +185,43 @@ export interface Translations {
     available: string;
     unavailable: string;
     backToSearch: string;
+    // Network & PEALMOR
+    actorNetwork: string;
+    teams: string;
+    universes: string;
+    aiAudition: string;
+    autoCast: string;
+    pealmorLicenses: string;
+    readOnlyView: string;
+    revenueDashboard: string;
+    script: string;
+    performanceType: string;
+    emotionTones: string;
+    selectActors: string;
+    generateAudition: string;
+    generatingPerformances: string;
+    auditionResults: string;
+    performances: string;
+    bestScore: string;
+    recommendedCast: string;
+    scriptDescription: string;
+    analyzingScript: string;
+    autoCastButton: string;
+    actorGraph: string;
+    totalActors: string;
+    connections: string;
+    avgStrength: string;
+    relationshipTypes: string;
+    castTeam: string;
+    voicePerformance: string;
+    faceActing: string;
+    fullPerformance: string;
+    pealmorSettlement: string;
+    pealmorPayment: string;
+    settlementHistory: string;
+    settlementDetails: string;
+    paymentStatus: string;
+    paidSettlements: string;
   };
 
   // Talent
