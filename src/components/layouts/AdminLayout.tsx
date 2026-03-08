@@ -1,20 +1,22 @@
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { LayoutDashboard, Users, ShieldCheck, FileCheck, AlertTriangle, ScrollText, Settings, Menu, X } from "lucide-react";
-
-const navItems = [
-  { icon: LayoutDashboard, label: "Overview", path: "/admin" },
-  { icon: Users, label: "Users", path: "/admin/users" },
-  { icon: ShieldCheck, label: "Verification", path: "/admin/verification" },
-  { icon: FileCheck, label: "Requests", path: "/admin/requests" },
-  { icon: AlertTriangle, label: "Disputes", path: "/admin/disputes" },
-  { icon: ScrollText, label: "Audit Logs", path: "/admin/audit" },
-  { icon: Settings, label: "Settings", path: "/admin/settings" },
-];
+import { useI18n } from "@/i18n/I18nContext";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { t } = useI18n();
+
+  const navItems = [
+    { icon: LayoutDashboard, label: t.admin.overview, path: "/admin" },
+    { icon: Users, label: t.admin.users, path: "/admin/users" },
+    { icon: ShieldCheck, label: t.admin.verification, path: "/admin/verification" },
+    { icon: FileCheck, label: t.admin.requestReview, path: "/admin/requests" },
+    { icon: AlertTriangle, label: t.admin.disputes, path: "/admin/disputes" },
+    { icon: ScrollText, label: t.admin.auditLogs, path: "/admin/audit" },
+    { icon: Settings, label: t.common.settings, path: "/admin/settings" },
+  ];
 
   const nav = (
     <>
@@ -28,15 +30,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         {navItems.map((item) => {
           const active = location.pathname === item.path;
           return (
-            <Link
-              key={item.label}
-              to={item.path}
-              onClick={() => setMobileOpen(false)}
+            <Link key={item.path} to={item.path} onClick={() => setMobileOpen(false)}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 active ? "bg-primary/10 text-primary" : "hover:bg-gray-100"
               }`}
-              style={!active ? { color: "hsl(var(--admin-muted-fg))" } : undefined}
-            >
+              style={!active ? { color: "hsl(var(--admin-muted-fg))" } : undefined}>
               <item.icon className="w-4 h-4" />
               {item.label}
             </Link>
@@ -57,12 +55,10 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen" style={{ background: "hsl(var(--admin-bg))" }}>
-      <aside className="hidden lg:flex w-60 flex-col border-r p-4 shrink-0" style={{ borderColor: "hsl(var(--admin-border))", background: "hsl(var(--admin-card))" }}>
-        {nav}
-      </aside>
+      <aside className="hidden lg:flex w-60 flex-col border-r p-4 shrink-0" style={{ borderColor: "hsl(var(--admin-border))", background: "hsl(var(--admin-card))" }}>{nav}</aside>
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-4 border-b" style={{ background: "hsl(var(--admin-card))", borderColor: "hsl(var(--admin-border))" }}>
         <button onClick={() => setMobileOpen(true)}><Menu className="w-5 h-5" style={{ color: "hsl(var(--admin-fg))" }} /></button>
-        <span className="font-display font-bold text-sm" style={{ color: "hsl(var(--admin-fg))" }}>Admin Portal</span>
+        <span className="font-display font-bold text-sm" style={{ color: "hsl(var(--admin-fg))" }}>{t.landing.adminPortal}</span>
         <div className="w-5" />
       </div>
       {mobileOpen && (
