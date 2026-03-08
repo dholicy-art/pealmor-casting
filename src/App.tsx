@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { I18nProvider } from "@/i18n/I18nContext";
-import Index from "./pages/Index";
+import { ThemeProvider } from "@/theme/ThemeContext";
 import NotFound from "./pages/NotFound";
 import ClientDashboard from "./pages/client/ClientDashboard";
 import ClientSearch from "./pages/client/ClientSearch";
