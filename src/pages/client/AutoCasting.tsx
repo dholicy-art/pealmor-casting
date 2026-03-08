@@ -46,7 +46,7 @@ export default function AutoCasting() {
 
         {/* Script Input */}
         <div className="bg-card rounded-xl border border-border p-6 space-y-4">
-          <h2 className="font-display font-semibold text-foreground">Script / Project Description</h2>
+          <h2 className="font-display font-semibold text-foreground">{t.client.scriptDescription}</h2>
           <textarea
             rows={6}
             placeholder="Describe your project or paste your script...&#10;&#10;Example: 'A luxury beauty brand summer campaign featuring elegant models. The campaign needs an energetic young face for TikTok content and a virtual avatar for interactive gaming elements.'"
