@@ -10,7 +10,6 @@ const statusColors: Record<string, string> = {
   draft: "bg-muted text-muted-foreground",
   casting: "bg-primary/10 text-primary",
   pending_approval: "bg-warning/10 text-warning",
-  licensed: "bg-success/10 text-success",
   in_production: "bg-info/10 text-info",
   completed: "bg-muted text-muted-foreground",
 };
