@@ -1,6 +1,7 @@
 import ClientLayout from "@/components/layouts/ClientLayout";
 import { licenses } from "@/data/mockData";
 import { FileCheck, Clock, AlertTriangle } from "lucide-react";
+import { useI18n } from "@/i18n/I18nContext";
 
 const statusColors: Record<string, string> = {
   active: "bg-success/10 text-success",
@@ -10,25 +11,27 @@ const statusColors: Record<string, string> = {
 };
 
 export default function ClientLicenses() {
+  const { t } = useI18n();
+
   return (
     <ClientLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <h1 className="font-display text-2xl font-bold text-foreground">Licenses</h1>
-          <p className="text-muted-foreground text-sm mt-1">Active and past license grants</p>
+          <h1 className="font-display text-2xl font-bold text-foreground">{t.client.licenses}</h1>
+          <p className="text-muted-foreground text-sm mt-1">{t.common.active} / {t.common.expired}</p>
         </div>
 
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-card rounded-xl p-5 border border-border">
-            <div className="flex items-center gap-2 mb-2"><FileCheck className="w-4 h-4 text-success" /><span className="text-xs text-muted-foreground">Active</span></div>
+            <div className="flex items-center gap-2 mb-2"><FileCheck className="w-4 h-4 text-success" /><span className="text-xs text-muted-foreground">{t.common.active}</span></div>
             <p className="font-display text-2xl font-bold text-foreground">{licenses.filter((l) => l.status === "active").length}</p>
           </div>
           <div className="bg-card rounded-xl p-5 border border-border">
-            <div className="flex items-center gap-2 mb-2"><Clock className="w-4 h-4 text-warning" /><span className="text-xs text-muted-foreground">Expiring Soon</span></div>
+            <div className="flex items-center gap-2 mb-2"><Clock className="w-4 h-4 text-warning" /><span className="text-xs text-muted-foreground">{t.client.expiringSoon}</span></div>
             <p className="font-display text-2xl font-bold text-foreground">1</p>
           </div>
           <div className="bg-card rounded-xl p-5 border border-border">
-            <div className="flex items-center gap-2 mb-2"><AlertTriangle className="w-4 h-4 text-muted-foreground" /><span className="text-xs text-muted-foreground">Expired</span></div>
+            <div className="flex items-center gap-2 mb-2"><AlertTriangle className="w-4 h-4 text-muted-foreground" /><span className="text-xs text-muted-foreground">{t.common.expired}</span></div>
             <p className="font-display text-2xl font-bold text-foreground">{licenses.filter((l) => l.status === "expired").length}</p>
           </div>
         </div>
@@ -47,7 +50,7 @@ export default function ClientLicenses() {
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div>
-                  <span className="text-muted-foreground text-xs">Assets</span>
+                  <span className="text-muted-foreground text-xs">{t.client.assets}</span>
                   <div className="flex gap-1 mt-1">
                     {l.grantedAssets.map((a) => (
                       <span key={a} className="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary font-medium capitalize">{a}</span>
@@ -55,15 +58,15 @@ export default function ClientLicenses() {
                   </div>
                 </div>
                 <div>
-                  <span className="text-muted-foreground text-xs">Period</span>
+                  <span className="text-muted-foreground text-xs">{t.client.period}</span>
                   <p className="text-foreground mt-1">{l.startAt} — {l.endAt}</p>
                 </div>
                 <div>
-                  <span className="text-muted-foreground text-xs">Fee</span>
+                  <span className="text-muted-foreground text-xs">{t.client.fee}</span>
                   <p className="text-foreground mt-1 font-medium">${l.fee.toLocaleString()}</p>
                 </div>
                 <div>
-                  <span className="text-muted-foreground text-xs">Revenue Share</span>
+                  <span className="text-muted-foreground text-xs">{t.client.revenueShare}</span>
                   <p className="text-foreground mt-1">{l.revenueShare}</p>
                 </div>
               </div>

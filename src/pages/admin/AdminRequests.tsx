@@ -3,8 +3,10 @@ import { usePlatformStore } from "@/store/platformStore";
 import { useState } from "react";
 import { AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
+import { useI18n } from "@/i18n/I18nContext";
 
 export default function AdminRequests() {
+  const { t } = useI18n();
   const { requests, updateRequestStatus } = usePlatformStore();
   const [filter, setFilter] = useState("all");
   const fg = "hsl(var(--admin-fg))";
@@ -29,8 +31,8 @@ export default function AdminRequests() {
     <AdminLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <h1 className="font-display text-2xl font-bold" style={{ color: fg }}>Request Review</h1>
-          <p className="text-sm mt-1" style={{ color: mfg }}>{requests.length} total requests</p>
+          <h1 className="font-display text-2xl font-bold" style={{ color: fg }}>{t.admin.requestReview}</h1>
+          <p className="text-sm mt-1" style={{ color: mfg }}>{requests.length} {t.admin.totalRequests}</p>
         </div>
 
         <div className="flex gap-2 flex-wrap">
@@ -42,8 +44,8 @@ export default function AdminRequests() {
                 filter === f ? "bg-purple-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
               }`}
             >
-              {f === "flagged" ? `Flagged (${requests.filter((r) => r.policyConflicts.length > 0).length})` :
-               f === "all" ? `All (${requests.length})` :
+              {f === "flagged" ? `${t.admin.flagged} (${requests.filter((r) => r.policyConflicts.length > 0).length})` :
+               f === "all" ? `${t.common.all} (${requests.length})` :
                `${f} (${requests.filter((r) => r.status === f).length})`}
             </button>
           ))}
@@ -61,7 +63,7 @@ export default function AdminRequests() {
                     </span>
                     {r.policyConflicts.length > 0 && (
                       <span className="text-[10px] px-2 py-0.5 rounded-full font-medium bg-red-100 text-red-800 flex items-center gap-1">
-                        <AlertTriangle className="w-3 h-3" /> {r.policyConflicts.length} conflict(s)
+                        <AlertTriangle className="w-3 h-3" /> {r.policyConflicts.length} {t.admin.conflicts}
                       </span>
                     )}
                   </div>
@@ -83,16 +85,16 @@ export default function AdminRequests() {
                 {r.status === "pending" && (
                   <>
                     <button
-                      onClick={() => { updateRequestStatus(r.id, "approved"); toast.success("요청 승인됨"); }}
+                      onClick={() => { updateRequestStatus(r.id, "approved"); toast.success(t.toast.requestForceApproved); }}
                       className="text-xs px-3 py-1.5 rounded-lg font-medium bg-green-600 text-white hover:bg-green-700 flex items-center gap-1"
                     >
-                      <CheckCircle className="w-3 h-3" /> Force Approve
+                      <CheckCircle className="w-3 h-3" /> {t.admin.forceApprove}
                     </button>
                     <button
-                      onClick={() => { updateRequestStatus(r.id, "rejected"); toast.info("요청 거부됨"); }}
+                      onClick={() => { updateRequestStatus(r.id, "rejected"); toast.info(t.toast.requestForceRejected); }}
                       className="text-xs px-3 py-1.5 rounded-lg font-medium bg-red-600 text-white hover:bg-red-700 flex items-center gap-1"
                     >
-                      <XCircle className="w-3 h-3" /> Force Reject
+                      <XCircle className="w-3 h-3" /> {t.admin.forceReject}
                     </button>
                   </>
                 )}
@@ -102,7 +104,7 @@ export default function AdminRequests() {
 
           {filtered.length === 0 && (
             <div className="text-center py-12 rounded-xl border" style={{ background: card, borderColor: border }}>
-              <p style={{ color: mfg }}>No requests matching this filter.</p>
+              <p style={{ color: mfg }}>{t.common.noResults}</p>
             </div>
           )}
         </div>

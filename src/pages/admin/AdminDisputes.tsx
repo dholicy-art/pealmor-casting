@@ -2,7 +2,7 @@ import AdminLayout from "@/components/layouts/AdminLayout";
 import { disputes } from "@/data/mockData";
 import { useState } from "react";
 import { toast } from "sonner";
-import { AlertTriangle } from "lucide-react";
+import { useI18n } from "@/i18n/I18nContext";
 
 const priorityColors: Record<string, string> = {
   low: "bg-gray-100 text-gray-700",
@@ -19,6 +19,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function AdminDisputes() {
+  const { t } = useI18n();
   const [cases, setCases] = useState(disputes);
   const fg = "hsl(var(--admin-fg))";
   const mfg = "hsl(var(--admin-muted-fg))";
@@ -27,15 +28,15 @@ export default function AdminDisputes() {
 
   const updateStatus = (id: string, status: "investigating" | "resolved" | "escalated") => {
     setCases((prev) => prev.map((d) => d.id === id ? { ...d, status } : d));
-    toast.success(`분쟁 상태가 "${status}"(으)로 변경되었습니다`);
+    toast.success(`${t.toast.disputeStatusChanged} "${status}"`);
   };
 
   return (
     <AdminLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <h1 className="font-display text-2xl font-bold" style={{ color: fg }}>Dispute Center</h1>
-          <p className="text-sm mt-1" style={{ color: mfg }}>{cases.filter((d) => d.status !== "resolved").length} active disputes</p>
+          <h1 className="font-display text-2xl font-bold" style={{ color: fg }}>{t.admin.disputeCenter}</h1>
+          <p className="text-sm mt-1" style={{ color: mfg }}>{cases.filter((d) => d.status !== "resolved").length} {t.admin.activeDisputes}</p>
         </div>
 
         <div className="space-y-4">
@@ -67,22 +68,22 @@ export default function AdminDisputes() {
                       onClick={() => updateStatus(d.id, "investigating")}
                       className="text-xs px-3 py-1.5 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700"
                     >
-                      Start Investigation
+                      {t.admin.startInvestigation}
                     </button>
                   )}
                   {d.status === "investigating" && (
                     <>
                       <button onClick={() => updateStatus(d.id, "resolved")} className="text-xs px-3 py-1.5 rounded-lg font-medium bg-green-600 text-white hover:bg-green-700">
-                        Resolve
+                        {t.admin.resolve}
                       </button>
                       <button onClick={() => updateStatus(d.id, "escalated")} className="text-xs px-3 py-1.5 rounded-lg font-medium bg-red-600 text-white hover:bg-red-700">
-                        Escalate
+                        {t.admin.escalate}
                       </button>
                     </>
                   )}
                   {d.status === "escalated" && (
                     <button onClick={() => updateStatus(d.id, "resolved")} className="text-xs px-3 py-1.5 rounded-lg font-medium bg-green-600 text-white hover:bg-green-700">
-                      Resolve
+                      {t.admin.resolve}
                     </button>
                   )}
                 </div>

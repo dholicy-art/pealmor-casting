@@ -2,8 +2,10 @@ import AdminLayout from "@/components/layouts/AdminLayout";
 import { auditLogs } from "@/data/mockData";
 import { useState, useMemo } from "react";
 import { Search } from "lucide-react";
+import { useI18n } from "@/i18n/I18nContext";
 
 export default function AdminAuditLogs() {
+  const { t } = useI18n();
   const [query, setQuery] = useState("");
   const [severityFilter, setSeverityFilter] = useState<string>("all");
   const [roleFilter, setRoleFilter] = useState<string>("all");
@@ -35,19 +37,19 @@ export default function AdminAuditLogs() {
     <AdminLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <h1 className="font-display text-2xl font-bold" style={{ color: fg }}>Audit Logs</h1>
-          <p className="text-sm mt-1" style={{ color: mfg }}>{auditLogs.length} total entries</p>
+          <h1 className="font-display text-2xl font-bold" style={{ color: fg }}>{t.admin.auditLogs}</h1>
+          <p className="text-sm mt-1" style={{ color: mfg }}>{auditLogs.length} {t.admin.totalEntries}</p>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: mfg }} />
+            <Search className="absolute start-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: mfg }} />
             <input
               type="text"
-              placeholder="Search actions, users, targets..."
+              placeholder={t.common.search + "..."}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full h-10 pl-10 pr-3 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="w-full h-10 ps-10 pe-3 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
               style={{ background: card, borderColor: border, color: fg }}
             />
           </div>
@@ -57,7 +59,7 @@ export default function AdminAuditLogs() {
             className="h-10 px-3 rounded-lg border text-sm"
             style={{ background: card, borderColor: border, color: fg }}
           >
-            <option value="all">All Severity</option>
+            <option value="all">{t.admin.allSeverity}</option>
             <option value="info">Info</option>
             <option value="warning">Warning</option>
             <option value="critical">Critical</option>
@@ -68,7 +70,7 @@ export default function AdminAuditLogs() {
             className="h-10 px-3 rounded-lg border text-sm"
             style={{ background: card, borderColor: border, color: fg }}
           >
-            <option value="all">All Roles</option>
+            <option value="all">{t.admin.allRoles}</option>
             <option value="client">Client</option>
             <option value="talent">Talent</option>
             <option value="admin">Admin</option>
@@ -81,8 +83,8 @@ export default function AdminAuditLogs() {
             <table className="w-full min-w-[700px]">
               <thead>
                 <tr className="border-b" style={{ borderColor: border }}>
-                  {["Time", "Severity", "User", "Role", "Action", "Target"].map((h) => (
-                    <th key={h} className="px-4 py-3 text-left text-xs font-medium" style={{ color: mfg }}>{h}</th>
+                  {[t.admin.time, t.admin.severity, t.admin.user, t.admin.role, t.admin.action, t.admin.target].map((h) => (
+                    <th key={h} className="px-4 py-3 text-start text-xs font-medium" style={{ color: mfg }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -105,7 +107,7 @@ export default function AdminAuditLogs() {
             </table>
           </div>
           {filtered.length === 0 && (
-            <div className="p-8 text-center" style={{ color: mfg }}>No logs match your filters.</div>
+            <div className="p-8 text-center" style={{ color: mfg }}>{t.common.noResults}</div>
           )}
         </div>
       </div>
