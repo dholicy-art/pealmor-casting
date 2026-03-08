@@ -1,19 +1,42 @@
 import ClientLayout from "@/components/layouts/ClientLayout";
 import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
-import { Star, Bookmark, BookmarkCheck, Share2, Shield, CheckCircle, XCircle, Clock, ArrowLeft } from "lucide-react";
-import { useState } from "react";
-import { getTalentById } from "@/data/mockData";
+import { Star, Bookmark, BookmarkCheck, Share2, Shield, CheckCircle, XCircle, Clock, ArrowLeft, Network, Users, Globe } from "lucide-react";
+import { useState, useEffect } from "react";
+import { getTalentById, getActorRelations, getActorTeams, getActorUniverses } from "@/data/mockData";
+import { talents } from "@/data/mockData";
 import { usePlatformStore } from "@/store/platformStore";
 import { toast } from "sonner";
+import type { ActorGraphEdge, ActorTeam, ActorUniverse } from "@/types/pealmor";
 
-const tabs = ["Overview", "Samples", "Voice", "Persona", "Usage Policy", "Reviews"];
+const tabs = ["Overview", "Network", "Samples", "Voice", "Persona", "Usage Policy", "Reviews"];
+
+const relationLabels: Record<string, string> = {
+  co_actor: "Co-Actor",
+  team_member: "Team Member",
+  universe_member: "Universe",
+  agency_member: "Agency",
+  style_similarity: "Similar Style",
+  frequent_collaboration: "Frequent Collab",
+};
 
 export default function ClientActorDetail() {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("Overview");
   const talent = getTalentById(id || "");
   const { bookmarkedTalents, toggleBookmark, addToCompare, compareTalents } = usePlatformStore();
+
+  const [relations, setRelations] = useState<ActorGraphEdge[]>([]);
+  const [teams, setTeams] = useState<ActorTeam[]>([]);
+  const [universes, setUniverses] = useState<ActorUniverse[]>([]);
+
+  useEffect(() => {
+    if (id) {
+      setRelations(getActorRelations(id));
+      setTeams(getActorTeams(id));
+      setUniverses(getActorUniverses(id));
+    }
+  }, [id]);
 
   if (!talent) {
     return (
@@ -37,16 +60,10 @@ export default function ClientActorDetail() {
   ];
 
   const handleAddCompare = () => {
-    if (isInCompare) {
-      toast.info("이미 비교 목록에 있습니다");
-      return;
-    }
-    if (compareTalents.length >= 4) {
-      toast.error("비교는 최대 4명까지 가능합니다");
-      return;
-    }
+    if (isInCompare) { toast.info("Already in compare list"); return; }
+    if (compareTalents.length >= 4) { toast.error("Max 4 actors can be compared"); return; }
     addToCompare(talent.id);
-    toast.success(`${talent.name}을 비교 목록에 추가했습니다`);
+    toast.success(`${talent.name} added to compare`);
   };
 
   return (
@@ -56,6 +73,7 @@ export default function ClientActorDetail() {
           <Link to="/client/search"><ArrowLeft className="w-4 h-4 mr-1" /> Back to Search</Link>
         </Button>
 
+        {/* Header */}
         <div className="bg-card rounded-xl border border-border p-6 lg:p-8">
           <div className="flex flex-col lg:flex-row gap-6">
             <div className="w-28 h-28 rounded-2xl bg-secondary flex items-center justify-center font-display font-bold text-3xl text-secondary-foreground shrink-0">
@@ -73,7 +91,7 @@ export default function ClientActorDetail() {
                     )}
                   </div>
                   <p className="text-muted-foreground text-sm mb-3">{talent.intro}</p>
-                  <div className="flex items-center gap-4 text-sm">
+                  <div className="flex items-center gap-4 text-sm flex-wrap">
                     <div className="flex items-center gap-1">
                       <Star className="w-4 h-4 text-warning fill-warning" />
                       <span className="font-semibold text-foreground">{talent.rating}</span>
@@ -88,13 +106,29 @@ export default function ClientActorDetail() {
                       <span className={`w-2 h-2 rounded-full ${talent.available ? "bg-success" : "bg-muted-foreground"}`} />
                       {talent.available ? "Available" : "Unavailable"}
                     </span>
+                    {teams.length > 0 && (
+                      <>
+                        <span className="text-muted-foreground">•</span>
+                        <span className="flex items-center gap-1 text-accent text-xs">
+                          <Users className="w-3 h-3" /> {teams.length} team{teams.length > 1 ? "s" : ""}
+                        </span>
+                      </>
+                    )}
+                    {universes.length > 0 && (
+                      <>
+                        <span className="text-muted-foreground">•</span>
+                        <span className="flex items-center gap-1 text-info text-xs">
+                          <Globe className="w-3 h-3" /> {universes.length} universe{universes.length > 1 ? "s" : ""}
+                        </span>
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button variant="glass" size="icon" onClick={() => { toggleBookmark(talent.id); toast.success(isBookmarked ? "북마크 해제" : "북마크 추가"); }}>
+                  <Button variant="glass" size="icon" onClick={() => { toggleBookmark(talent.id); toast.success(isBookmarked ? "Bookmark removed" : "Bookmark added"); }}>
                     {isBookmarked ? <BookmarkCheck className="w-4 h-4 text-accent" /> : <Bookmark className="w-4 h-4" />}
                   </Button>
-                  <Button variant="glass" size="icon" onClick={() => { navigator.clipboard.writeText(window.location.href); toast.success("링크가 복사되었습니다"); }}>
+                  <Button variant="glass" size="icon" onClick={() => { navigator.clipboard.writeText(window.location.href); toast.success("Link copied"); }}>
                     <Share2 className="w-4 h-4" />
                   </Button>
                 </div>
@@ -116,6 +150,7 @@ export default function ClientActorDetail() {
           </div>
         </div>
 
+        {/* Tabs */}
         <div className="flex gap-1 border-b border-border overflow-x-auto">
           {tabs.map((tab) => (
             <button
@@ -126,10 +161,16 @@ export default function ClientActorDetail() {
               }`}
             >
               {tab}
+              {tab === "Network" && relations.length > 0 && (
+                <span className="ml-1.5 text-[10px] px-1.5 py-0.5 rounded-full gradient-primary text-primary-foreground font-bold">
+                  {relations.length}
+                </span>
+              )}
             </button>
           ))}
         </div>
 
+        {/* Overview Tab */}
         {activeTab === "Overview" && (
           <div className="grid lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
@@ -159,6 +200,37 @@ export default function ClientActorDetail() {
                   ))}
                 </div>
               </div>
+
+              {/* Teams & Universes preview */}
+              {(teams.length > 0 || universes.length > 0) && (
+                <div className="bg-card rounded-xl border border-border p-6">
+                  <h3 className="font-display font-semibold mb-4 text-foreground">Teams & Universes</h3>
+                  {teams.length > 0 && (
+                    <div className="mb-4">
+                      <p className="text-xs text-muted-foreground mb-2 uppercase font-medium">Teams</p>
+                      <div className="flex flex-wrap gap-2">
+                        {teams.map(t => (
+                          <Link key={t.id} to="/client/teams" className="text-xs px-3 py-1.5 rounded-full bg-accent/10 text-accent font-medium hover:bg-accent/20 transition-colors">
+                            <Users className="w-3 h-3 inline mr-1" />{t.teamName}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {universes.length > 0 && (
+                    <div>
+                      <p className="text-xs text-muted-foreground mb-2 uppercase font-medium">Universes</p>
+                      <div className="flex flex-wrap gap-2">
+                        {universes.map(u => (
+                          <Link key={u.id} to="/client/universes" className="text-xs px-3 py-1.5 rounded-full bg-info/10 text-info font-medium hover:bg-info/20 transition-colors">
+                            <Globe className="w-3 h-3 inline mr-1" />{u.universeName}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             <div className="space-y-6">
               <div className="bg-card rounded-xl border border-border p-6">
@@ -194,6 +266,94 @@ export default function ClientActorDetail() {
           </div>
         )}
 
+        {/* Network Tab */}
+        {activeTab === "Network" && (
+          <div className="space-y-6">
+            {/* Related Actors */}
+            <div className="bg-card rounded-xl border border-border p-6">
+              <h3 className="font-display font-semibold mb-4 text-foreground flex items-center gap-2">
+                <Network className="w-4 h-4 text-primary" /> Connections ({relations.length})
+              </h3>
+              {relations.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No connections found.</p>
+              ) : (
+                <div className="grid gap-3">
+                  {relations.map(edge => {
+                    const relatedId = edge.actorId === talent.id ? edge.relatedActorId : edge.actorId;
+                    const related = talents.find(t => t.id === relatedId);
+                    if (!related) return null;
+                    return (
+                      <Link key={edge.id} to={`/client/actor/${related.id}`}
+                        className="flex items-center gap-3 p-3 rounded-lg bg-background border border-border/50 hover:border-primary/30 transition-colors">
+                        <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center font-display font-bold text-secondary-foreground text-sm">
+                          {related.initials}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium text-foreground">{related.name}</p>
+                          <p className="text-xs text-muted-foreground">{relationLabels[edge.relationshipType]} · Strength {edge.strengthScore}</p>
+                        </div>
+                        <Star className="w-3 h-3 text-warning fill-warning" />
+                        <span className="text-xs text-muted-foreground">{related.rating}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Teams */}
+            {teams.length > 0 && (
+              <div className="bg-card rounded-xl border border-border p-6">
+                <h3 className="font-display font-semibold mb-4 text-foreground flex items-center gap-2">
+                  <Users className="w-4 h-4 text-accent" /> Teams
+                </h3>
+                {teams.map(team => (
+                  <div key={team.id} className="p-4 rounded-lg bg-background border border-border/50 mb-3 last:mb-0">
+                    <p className="font-semibold text-foreground">{team.teamName}</p>
+                    <p className="text-xs text-muted-foreground mb-2">{team.description}</p>
+                    <div className="flex gap-2 flex-wrap">
+                      {team.members.map(m => {
+                        const t = talents.find(x => x.id === m.actorId);
+                        return t ? (
+                          <Link key={m.id} to={`/client/actor/${t.id}`} className="text-xs px-2 py-1 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                            {t.name} ({m.role})
+                          </Link>
+                        ) : null;
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Universes */}
+            {universes.length > 0 && (
+              <div className="bg-card rounded-xl border border-border p-6">
+                <h3 className="font-display font-semibold mb-4 text-foreground flex items-center gap-2">
+                  <Globe className="w-4 h-4 text-info" /> Universes
+                </h3>
+                {universes.map(uni => (
+                  <div key={uni.id} className="p-4 rounded-lg bg-background border border-border/50 mb-3 last:mb-0">
+                    <p className="font-semibold text-foreground">{uni.universeName}</p>
+                    <p className="text-xs text-muted-foreground mb-2">{uni.description}</p>
+                    <div className="flex gap-2 flex-wrap">
+                      {uni.actors.map(a => {
+                        const t = talents.find(x => x.id === a.actorId);
+                        return t ? (
+                          <Link key={a.id} to={`/client/actor/${t.id}`} className="text-xs px-2 py-1 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                            {t.name} ({a.role})
+                          </Link>
+                        ) : null;
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Usage Policy Tab */}
         {activeTab === "Usage Policy" && (
           <div className="bg-card rounded-xl border border-border p-6 space-y-6">
             <div>
@@ -239,7 +399,7 @@ export default function ClientActorDetail() {
           </div>
         )}
 
-        {activeTab !== "Overview" && activeTab !== "Usage Policy" && (
+        {activeTab !== "Overview" && activeTab !== "Usage Policy" && activeTab !== "Network" && (
           <div className="bg-card rounded-xl border border-border p-12 text-center">
             <p className="text-muted-foreground">"{activeTab}" content — connect to PEALMOR API for live data</p>
           </div>
