@@ -10,7 +10,8 @@ const currentTalent = talents[0];
 
 export default function TalentDashboard() {
   const { t } = useI18n();
-  const requests = usePlatformStore((s) => s.requests.filter((r) => r.talentId === "t1"));
+  const allRequests = usePlatformStore((s) => s.requests);
+  const requests = allRequests.filter((r) => r.talentId === "t1");
   const pendingRequests = requests.filter((r) => r.status === "pending");
 
   return (
