@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { talents } from "@/data/mockData";
 import { getActorGraph } from "@/services/pealmorApi";
 import type { ActorGraphEdge } from "@/types/pealmor";
+import { useI18n } from "@/i18n/I18nContext";
 
 const relationLabels: Record<string, string> = {
   co_actor: "Co-Actor",
