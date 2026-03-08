@@ -1,11 +1,12 @@
 // Types for PEALMOR Casting Platform
+// NOTE: Licensing, settlement, payment, and access control types have been
+// moved to src/types/pealmor.ts — they are managed by PEALMOR Core.
 
 export type AssetType = "face" | "voice" | "persona" | "avatar" | "motion";
 export type RequestStatus = "pending" | "approved" | "rejected" | "counter_offered" | "cancelled";
-export type ProjectStatus = "draft" | "casting" | "pending_approval" | "licensed" | "in_production" | "completed";
+export type ProjectStatus = "draft" | "casting" | "pending_approval" | "in_production" | "completed";
 export type RiskLevel = "low" | "medium" | "high";
 export type VerificationStatus = "pending" | "verified" | "rejected" | "suspended";
-export type LicenseStatus = "active" | "expired" | "revoked" | "pending";
 
 export interface TalentProfile {
   id: string;
@@ -31,8 +32,6 @@ export interface TalentProfile {
   assets: AIAsset[];
   consentPolicy: ConsentPolicy;
   profileCompleteness: number;
-  totalEarnings: number;
-  monthlyEarnings: number;
   profileViews: number;
 }
 
@@ -101,22 +100,11 @@ export interface CastingRequest {
   createdAt: string;
   respondedAt?: string;
   counterOfferNotes?: string;
+  pealmorRequestRef?: string; // Reference to PEALMOR UsageRequest
 }
 
-export interface LicenseGrant {
-  id: string;
-  requestId: string;
-  projectTitle: string;
-  talentName: string;
-  companyName: string;
-  grantedAssets: AssetType[];
-  grantedScope: string;
-  startAt: string;
-  endAt: string;
-  status: LicenseStatus;
-  fee: number;
-  revenueShare: string;
-}
+// NOTE: LicenseGrant, settlement, payment types are now in src/types/pealmor.ts
+// The casting platform must NOT create licenses directly.
 
 export interface AuditLogEntry {
   id: string;
