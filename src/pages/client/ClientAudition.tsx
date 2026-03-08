@@ -171,9 +171,9 @@ export default function ClientAudition() {
         {performances.length > 0 && (
           <div className="space-y-6">
             <div className="flex items-center gap-2">
-              <h2 className="font-display text-xl font-bold text-foreground">Audition Results</h2>
+              <h2 className="font-display text-xl font-bold text-foreground">{t.client.auditionResults}</h2>
               <span className="text-xs px-2 py-0.5 rounded-full bg-success/10 text-success font-medium">
-                {performances.length} performances
+                {performances.length} {t.client.performances}
               </span>
             </div>
 
