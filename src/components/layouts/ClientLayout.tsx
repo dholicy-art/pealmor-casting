@@ -8,7 +8,7 @@ import { useI18n } from "@/i18n/I18nContext";
 export default function ClientLayout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const unreadCount = usePlatformStore((s) => s.unreadCount());
+  const unreadCount = usePlatformStore((s) => s.notifications.filter((n) => !n.read).length);
   const { t } = useI18n();
 
   const navItems = [
