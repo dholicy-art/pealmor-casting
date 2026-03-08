@@ -1,9 +1,9 @@
 import ClientLayout from "@/components/layouts/ClientLayout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Network, Users, Globe, ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { talents } from "@/data/mockData";
+import { getLocalizedTalents } from "@/data/localizedData";
 import { getActorGraph } from "@/services/pealmorApi";
 import type { ActorGraphEdge } from "@/types/pealmor";
 import { useI18n } from "@/i18n/I18nContext";
@@ -27,7 +27,8 @@ const relationColors: Record<string, string> = {
 };
 
 export default function ActorNetwork() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
   const [edges, setEdges] = useState<ActorGraphEdge[]>([]);
   const [filterType, setFilterType] = useState<string>("all");
 

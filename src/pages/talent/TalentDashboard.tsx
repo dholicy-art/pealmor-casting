@@ -2,17 +2,17 @@ import TalentLayout from "@/components/layouts/TalentLayout";
 import { Link } from "react-router-dom";
 import { DollarSign, Eye, FileCheck, AlertTriangle, TrendingUp, ArrowRight, Shield } from "lucide-react";
 import { usePlatformStore } from "@/store/platformStore";
-import { talents } from "@/data/mockData";
+import { getLocalizedTalents } from "@/data/localizedData";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { getSettlementStatus } from "@/services/pealmorApi";
 import type { PealmorSettlement } from "@/types/pealmor";
 
-const currentTalent = talents[0];
-
 export default function TalentDashboard() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
+  const currentTalent = talents[0];
   const allRequests = usePlatformStore((s) => s.requests);
   const requests = allRequests.filter((r) => r.talentId === "t1");
   const pendingRequests = requests.filter((r) => r.status === "pending");

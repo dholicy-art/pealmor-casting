@@ -3,10 +3,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Star, ArrowRight, Wand2 } from "lucide-react";
 import { autocast } from "@/services/pealmorApi";
-import { talents } from "@/data/mockData";
+import { getLocalizedTalents } from "@/data/localizedData";
 import type { AutoCastingResult } from "@/types/pealmor";
 import { Link } from "react-router-dom";
 import { useI18n } from "@/i18n/I18nContext";
+import { useMemo } from "react";
 
 const roleColors: Record<string, string> = {
   lead: "bg-primary/10 text-primary border-primary/30",
@@ -21,7 +22,8 @@ const roleLabels: Record<string, string> = {
 };
 
 export default function AutoCasting() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
   const [script, setScript] = useState("");
   const [results, setResults] = useState<AutoCastingResult[]>([]);
   const [loading, setLoading] = useState(false);

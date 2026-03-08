@@ -2,12 +2,13 @@ import ClientLayout from "@/components/layouts/ClientLayout";
 import { Button } from "@/components/ui/button";
 import { Link, useParams } from "react-router-dom";
 import { Star, Bookmark, BookmarkCheck, Share2, Shield, CheckCircle, XCircle, Clock, ArrowLeft, Network, Users, Globe } from "lucide-react";
-import { useState, useEffect } from "react";
-import { getTalentById, getActorRelations, getActorTeams, getActorUniverses } from "@/data/mockData";
-import { talents } from "@/data/mockData";
+import { useState, useEffect, useMemo } from "react";
+import { getActorRelations, getActorTeams, getActorUniverses } from "@/data/mockData";
+import { getLocalizedTalents, getLocalizedTalentById } from "@/data/localizedData";
 import { usePlatformStore } from "@/store/platformStore";
 import { toast } from "sonner";
 import type { ActorGraphEdge, ActorTeam, ActorUniverse } from "@/types/pealmor";
+import { useI18n } from "@/i18n/I18nContext";
 
 const tabs = ["Overview", "Network", "Samples", "Voice", "Persona", "Usage Policy", "Reviews"];
 
@@ -22,8 +23,10 @@ const relationLabels: Record<string, string> = {
 
 export default function ClientActorDetail() {
   const { id } = useParams();
+  const { language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
   const [activeTab, setActiveTab] = useState("Overview");
-  const talent = getTalentById(id || "");
+  const talent = getLocalizedTalentById(id || "", language);
   const { bookmarkedTalents, toggleBookmark, addToCompare, compareTalents } = usePlatformStore();
 
   const [relations, setRelations] = useState<ActorGraphEdge[]>([]);

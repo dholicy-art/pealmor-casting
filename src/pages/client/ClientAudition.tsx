@@ -1,8 +1,8 @@
 import ClientLayout from "@/components/layouts/ClientLayout";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Mic, Eye, Sparkles, Play, Pause, Star, ArrowRight, Upload } from "lucide-react";
-import { talents } from "@/data/mockData";
+import { getLocalizedTalents } from "@/data/localizedData";
 import { generateAuditionPerformances } from "@/services/pealmorApi";
 import type { AIAuditionPerformance } from "@/types/pealmor";
 import { Link } from "react-router-dom";
@@ -16,7 +16,8 @@ const typeOptionsBase: { value: "voice" | "face" | "full"; labelKey: "voicePerfo
 ];
 
 export default function ClientAudition() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
   const [script, setScript] = useState("");
   const [selectedType, setSelectedType] = useState<"voice" | "face" | "full">("voice");
   const [selectedTones, setSelectedTones] = useState<string[]>(["Neutral", "Warm"]);

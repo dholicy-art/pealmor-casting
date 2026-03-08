@@ -2,7 +2,8 @@ import ClientLayout from "@/components/layouts/ClientLayout";
 import { Button } from "@/components/ui/button";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, AlertTriangle, Shield } from "lucide-react";
-import { getTalentById, projects } from "@/data/mockData";
+import { projects } from "@/data/mockData";
+import { getLocalizedTalentById } from "@/data/localizedData";
 import { usePlatformStore } from "@/store/platformStore";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -10,10 +11,10 @@ import type { CastingRequest, AssetType } from "@/types/platform";
 import { useI18n } from "@/i18n/I18nContext";
 
 export default function ClientCastingRequest() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const { talentId } = useParams();
   const navigate = useNavigate();
-  const talent = getTalentById(talentId || "");
+  const talent = getLocalizedTalentById(talentId || "", language);
   const { addRequest, addNotification } = usePlatformStore();
 
   const [form, setForm] = useState({

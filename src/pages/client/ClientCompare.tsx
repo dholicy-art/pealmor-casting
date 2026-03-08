@@ -2,15 +2,16 @@ import ClientLayout from "@/components/layouts/ClientLayout";
 import { Button } from "@/components/ui/button";
 import { Star, CheckCircle, XCircle, Clock, X, ArrowRight } from "lucide-react";
 import { usePlatformStore } from "@/store/platformStore";
-import { getTalentById } from "@/data/mockData";
+import { getLocalizedTalentById } from "@/data/localizedData";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useI18n } from "@/i18n/I18nContext";
+import type { TalentProfile } from "@/types/platform";
 
 export default function ClientCompare() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const { compareTalents, removeFromCompare, clearCompare } = usePlatformStore();
-  const actors = compareTalents.map(getTalentById).filter(Boolean);
+  const actors = compareTalents.map(id => getLocalizedTalentById(id, language)).filter(Boolean) as TalentProfile[];
 
   if (actors.length === 0) {
     return (
@@ -24,7 +25,7 @@ export default function ClientCompare() {
     );
   }
 
-  const rows: { label: string; getValue: (t: NonNullable<ReturnType<typeof getTalentById>>) => string }[] = [
+  const rows: { label: string; getValue: (t: TalentProfile) => string }[] = [
     { label: t.client.rating, getValue: (a) => `${a.rating} (${a.reviewCount})` },
     { label: t.client.mood, getValue: (a) => a.moodTags.join(", ") },
     { label: t.client.voice, getValue: (a) => a.voiceTags.join(", ") },

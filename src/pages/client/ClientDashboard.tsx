@@ -2,12 +2,15 @@ import ClientLayout from "@/components/layouts/ClientLayout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Search, FolderOpen, Clock, Star, Shield, ArrowRight } from "lucide-react";
-import { talents, projects } from "@/data/mockData";
+import { projects } from "@/data/mockData";
+import { getLocalizedTalents } from "@/data/localizedData";
 import { usePlatformStore } from "@/store/platformStore";
 import { useI18n } from "@/i18n/I18nContext";
+import { useMemo } from "react";
 
 export default function ClientDashboard() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
   const requests = usePlatformStore((s) => s.requests);
   const pendingRequests = requests.filter((r) => r.status === "pending");
   const bookmarked = usePlatformStore((s) => s.bookmarkedTalents);
