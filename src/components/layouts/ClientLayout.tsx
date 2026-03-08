@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Search, FolderOpen, BarChart3, Bookmark, Settings, Menu, X, Bell, Sparkles } from "lucide-react";
+import { Home, Search, FolderOpen, BarChart3, Bookmark, Settings, Menu, X, Bell, Sparkles, Network, Users, Globe, Wand2 } from "lucide-react";
 import { usePlatformStore } from "@/store/platformStore";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nContext";
@@ -14,7 +14,11 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
   const navItems = [
     { icon: Home, label: t.client.dashboard, path: "/client" },
     { icon: Search, label: t.client.searchActors, path: "/client/search" },
+    { icon: Network, label: "Actor Network", path: "/client/network" },
+    { icon: Users, label: "Teams", path: "/client/teams" },
+    { icon: Globe, label: "Universes", path: "/client/universes" },
     { icon: Sparkles, label: "AI Audition", path: "/client/audition" },
+    { icon: Wand2, label: "Auto Cast", path: "/client/autocast" },
     { icon: FolderOpen, label: t.client.projects, path: "/client/projects" },
     { icon: Bookmark, label: t.client.compare, path: "/client/compare" },
     { icon: BarChart3, label: t.client.licenses, path: "/client/licenses" },

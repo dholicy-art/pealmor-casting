@@ -16,6 +16,10 @@ import ClientCastingRequest from "./pages/client/ClientCastingRequest";
 import ClientLicenses from "./pages/client/ClientLicenses";
 import ClientAudition from "./pages/client/ClientAudition";
 import ClientSettings from "./pages/client/ClientSettings";
+import ActorNetwork from "./pages/client/ActorNetwork";
+import ActorTeams from "./pages/client/ActorTeams";
+import ActorUniverses from "./pages/client/ActorUniverses";
+import AutoCasting from "./pages/client/AutoCasting";
 import TalentDashboard from "./pages/talent/TalentDashboard";
 import TalentApprovals from "./pages/talent/TalentApprovals";
 import TalentProfile from "./pages/talent/TalentProfile";
@@ -51,6 +55,10 @@ const App = () => (
             <Route path="/client/casting-request/:talentId" element={<ClientCastingRequest />} />
             <Route path="/client/licenses" element={<ClientLicenses />} />
             <Route path="/client/audition" element={<ClientAudition />} />
+            <Route path="/client/network" element={<ActorNetwork />} />
+            <Route path="/client/teams" element={<ActorTeams />} />
+            <Route path="/client/universes" element={<ActorUniverses />} />
+            <Route path="/client/autocast" element={<AutoCasting />} />
             <Route path="/client/settings" element={<ClientSettings />} />
             {/* Talent — Profile & Approvals */}
             <Route path="/talent" element={<TalentDashboard />} />
