@@ -164,7 +164,7 @@ export default function ClientAudition() {
           onClick={handleGenerate}
         >
           <Sparkles className="w-4 h-4" />
-          {generating ? "Generating Performances..." : "Generate AI Audition"}
+          {generating ? t.client.generatingPerformances : t.client.generateAudition}
         </Button>
 
         {/* Results */}
