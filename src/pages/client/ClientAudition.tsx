@@ -102,7 +102,7 @@ export default function ClientAudition() {
 
         {/* Emotion Tones */}
         <div className="bg-card rounded-xl border border-border p-6 space-y-4">
-          <h2 className="font-display font-semibold text-foreground">Emotion Tones</h2>
+          <h2 className="font-display font-semibold text-foreground">{t.client.emotionTones}</h2>
           <div className="flex flex-wrap gap-2">
             {emotionOptions.map((tone) => (
               <button
