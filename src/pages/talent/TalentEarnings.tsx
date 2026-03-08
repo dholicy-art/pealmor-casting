@@ -45,7 +45,7 @@ export default function TalentEarnings() {
           <h1 className="font-display text-2xl font-bold text-foreground">{t.talent.earnings}</h1>
           <p className="text-muted-foreground text-sm mt-1 flex items-center gap-2">
             <Shield className="w-3 h-3" />
-            PEALMOR Revenue Dashboard — Settlement & Payment Status
+            {t.client.revenueDashboard}
           </p>
         </div>
 
