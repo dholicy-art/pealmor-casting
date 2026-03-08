@@ -2,7 +2,7 @@ import ClientLayout from "@/components/layouts/ClientLayout";
 import { Button } from "@/components/ui/button";
 import { Star, CheckCircle, XCircle, Clock, X, ArrowRight } from "lucide-react";
 import { usePlatformStore } from "@/store/platformStore";
-import { getTalentById } from "@/data/mockData";
+import { getLocalizedTalentById } from "@/data/localizedData";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useI18n } from "@/i18n/I18nContext";

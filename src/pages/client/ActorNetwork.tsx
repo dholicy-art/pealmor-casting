@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Network, Users, Globe, ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { talents } from "@/data/mockData";
+import { getLocalizedTalents } from "@/data/localizedData";
 import { getActorGraph } from "@/services/pealmorApi";
 import type { ActorGraphEdge } from "@/types/pealmor";
 import { useI18n } from "@/i18n/I18nContext";

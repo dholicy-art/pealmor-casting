@@ -2,7 +2,7 @@ import ClientLayout from "@/components/layouts/ClientLayout";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Mic, Eye, Sparkles, Play, Pause, Star, ArrowRight, Upload } from "lucide-react";
-import { talents } from "@/data/mockData";
+import { getLocalizedTalents } from "@/data/localizedData";
 import { generateAuditionPerformances } from "@/services/pealmorApi";
 import type { AIAuditionPerformance } from "@/types/pealmor";
 import { Link } from "react-router-dom";

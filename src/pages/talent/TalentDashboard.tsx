@@ -2,7 +2,7 @@ import TalentLayout from "@/components/layouts/TalentLayout";
 import { Link } from "react-router-dom";
 import { DollarSign, Eye, FileCheck, AlertTriangle, TrendingUp, ArrowRight, Shield } from "lucide-react";
 import { usePlatformStore } from "@/store/platformStore";
-import { talents } from "@/data/mockData";
+import { getLocalizedTalents } from "@/data/localizedData";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nContext";
 import { useEffect, useState } from "react";

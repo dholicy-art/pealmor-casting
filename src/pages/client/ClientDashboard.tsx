@@ -2,7 +2,8 @@ import ClientLayout from "@/components/layouts/ClientLayout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Search, FolderOpen, Clock, Star, Shield, ArrowRight } from "lucide-react";
-import { talents, projects } from "@/data/mockData";
+import { projects } from "@/data/mockData";
+import { getLocalizedTalents } from "@/data/localizedData";
 import { usePlatformStore } from "@/store/platformStore";
 import { useI18n } from "@/i18n/I18nContext";
 

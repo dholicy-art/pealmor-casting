@@ -2,7 +2,7 @@ import ClientLayout from "@/components/layouts/ClientLayout";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Globe, Star, Tag } from "lucide-react";
-import { talents } from "@/data/mockData";
+import { getLocalizedTalents } from "@/data/localizedData";
 import { getActorUniversesApi } from "@/services/pealmorApi";
 import type { ActorUniverse } from "@/types/pealmor";
 

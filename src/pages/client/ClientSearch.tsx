@@ -10,7 +10,8 @@ import { useI18n } from "@/i18n/I18nContext";
 const filterCategories = ["All", "Ad", "Short-form", "Educational", "Gaming", "Corporate", "Entertainment"];
 
 export default function ClientSearch() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
   const [query, setQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
   const [showFilters, setShowFilters] = useState(false);

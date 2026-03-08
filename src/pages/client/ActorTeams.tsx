@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Users, Star, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { talents } from "@/data/mockData";
+import { getLocalizedTalents } from "@/data/localizedData";
 import { getActorTeamsApi } from "@/services/pealmorApi";
 import type { ActorTeam } from "@/types/pealmor";
 

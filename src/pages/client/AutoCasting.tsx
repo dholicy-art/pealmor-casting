@@ -22,7 +22,8 @@ const roleLabels: Record<string, string> = {
 };
 
 export default function AutoCasting() {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
+  const talents = useMemo(() => getLocalizedTalents(language), [language]);
   const [script, setScript] = useState("");
   const [results, setResults] = useState<AutoCastingResult[]>([]);
   const [loading, setLoading] = useState(false);
