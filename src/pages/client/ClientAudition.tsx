@@ -122,7 +122,7 @@ export default function ClientAudition() {
 
         {/* Select Actors */}
         <div className="bg-card rounded-xl border border-border p-6 space-y-4">
-          <h2 className="font-display font-semibold text-foreground">Select AI Actors (max 4)</h2>
+          <h2 className="font-display font-semibold text-foreground">{t.client.selectActors}</h2>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
             {availableTalents.map((talent) => (
               <button
