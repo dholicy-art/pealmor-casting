@@ -32,7 +32,7 @@ export default function ClientDashboard() {
             { icon: FolderOpen, label: t.client.activeProjects, value: String(activeProjects.length), color: "text-primary" },
             { icon: Clock, label: t.client.pendingApprovals, value: String(pendingRequests.length), color: "text-warning" },
             { icon: Star, label: t.client.bookmarked, value: String(bookmarked.length), color: "text-accent" },
-            { icon: FileCheck, label: t.client.activeLicenses, value: "1", color: "text-success" },
+            { icon: Shield, label: "PEALMOR Licenses", value: "→", color: "text-success" },
           ].map((stat) => (
             <div key={stat.label} className="bg-card rounded-xl p-5 border border-border">
               <div className="flex items-center gap-3 mb-2">
