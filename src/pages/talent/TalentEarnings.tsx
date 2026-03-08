@@ -64,7 +64,7 @@ export default function TalentEarnings() {
             <p className="font-display text-2xl font-bold text-warning">${pendingAmount.toLocaleString()}</p>
           </div>
           <div className="bg-card rounded-xl p-5 border border-border">
-            <p className="text-xs text-muted-foreground mb-2">Paid Settlements</p>
+            <p className="text-xs text-muted-foreground mb-2">{t.client.paidSettlements}</p>
             <p className="font-display text-2xl font-bold text-success">{payments.filter((p) => p.status === "paid").length}</p>
           </div>
         </div>
