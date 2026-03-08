@@ -94,7 +94,7 @@ export default function ClientAudition() {
                 }`}
               >
                 <opt.icon className="w-4 h-4" />
-                {opt.label}
+                {t.client[opt.labelKey]}
               </button>
             ))}
           </div>
