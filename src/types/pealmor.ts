@@ -17,7 +17,7 @@ export interface PealmorIPAsset {
   status: "registered" | "verified" | "suspended";
   quality: string;
   registeredAt: string;
-  pealmorRef: string; // PEALMOR registry reference
+  pealmorRef: string;
 }
 
 export interface PealmorPolicy {
@@ -43,7 +43,7 @@ export interface PealmorTalentProfile {
   name: string;
   stageName: string;
   verified: boolean;
-  identityRef: string; // PEALMOR identity reference
+  identityRef: string;
   ipAssets: PealmorIPAsset[];
   policy: PealmorPolicy;
 }
@@ -189,6 +189,70 @@ export interface AIAuditionPerformance {
   emotionTone: string;
   score: number;
   duration: number;
-  previewUrl: string; // mock URL
+  previewUrl: string;
   status: "ready" | "generating";
+}
+
+// ── Actor Network Types ──
+
+export type ActorRelationshipType =
+  | "co_actor"
+  | "team_member"
+  | "universe_member"
+  | "agency_member"
+  | "style_similarity"
+  | "frequent_collaboration";
+
+export interface ActorGraphEdge {
+  id: string;
+  actorId: string;
+  relatedActorId: string;
+  relationshipType: ActorRelationshipType;
+  strengthScore: number; // 0-100
+  createdAt: string;
+}
+
+export interface ActorTeam {
+  id: string;
+  teamName: string;
+  teamType: "kpop_group" | "drama_cast" | "brand_ambassadors" | "custom";
+  description: string;
+  members: ActorTeamMember[];
+  createdAt: string;
+}
+
+export interface ActorTeamMember {
+  id: string;
+  teamId: string;
+  actorId: string;
+  role: string;
+  createdAt: string;
+}
+
+export interface ActorUniverse {
+  id: string;
+  universeName: string;
+  description: string;
+  tags: string[];
+  actors: UniverseActor[];
+  createdAt: string;
+}
+
+export interface UniverseActor {
+  id: string;
+  universeId: string;
+  actorId: string;
+  role: string;
+  createdAt: string;
+}
+
+// ── Auto Casting ──
+
+export interface AutoCastingResult {
+  role: "lead" | "supporting" | "side";
+  characterName: string;
+  characterDescription: string;
+  recommendedActorId: string;
+  matchScore: number;
+  matchReasons: string[];
 }
