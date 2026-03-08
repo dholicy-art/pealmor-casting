@@ -68,7 +68,7 @@ export default function ClientAudition() {
         <div className="bg-card rounded-xl border border-border p-6 space-y-4">
           <div className="flex items-center gap-2">
             <Upload className="w-4 h-4 text-primary" />
-            <h2 className="font-display font-semibold text-foreground">Script</h2>
+            <h2 className="font-display font-semibold text-foreground">{t.client.script}</h2>
           </div>
           <textarea
             rows={5}
