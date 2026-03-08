@@ -1,5 +1,5 @@
 import ClientLayout from "@/components/layouts/ClientLayout";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Network, Users, Globe, ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
