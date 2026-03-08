@@ -119,7 +119,7 @@ export default function ClientCastingRequest() {
       link: "/talent/approvals",
     });
 
-    toast.success(`캐스팅 요청이 ${talent.name}에게 전송되었습니다!`);
+    toast.success(`${t.toast.castingRequestSent} ${talent.name}`);
     navigate("/client/projects");
   };
 
