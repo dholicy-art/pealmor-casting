@@ -61,7 +61,7 @@ export default function AutoCasting() {
             onClick={handleAutocast}
           >
             <Sparkles className="w-4 h-4" />
-            {loading ? "Analyzing Script..." : "Auto Cast — Find Best Actors"}
+            {loading ? t.client.analyzingScript : t.client.autoCastButton}
           </Button>
         </div>
 
