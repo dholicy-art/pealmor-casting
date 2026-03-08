@@ -81,9 +81,9 @@ export default function ClientAudition() {
 
         {/* Performance Type */}
         <div className="bg-card rounded-xl border border-border p-6 space-y-4">
-          <h2 className="font-display font-semibold text-foreground">Performance Type</h2>
+          <h2 className="font-display font-semibold text-foreground">{t.client.performanceType}</h2>
           <div className="flex gap-3">
-            {typeOptions.map((opt) => (
+            {typeOptionsBase.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => setSelectedType(opt.value)}
