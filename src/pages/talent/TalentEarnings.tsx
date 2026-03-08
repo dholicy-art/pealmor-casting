@@ -72,7 +72,7 @@ export default function TalentEarnings() {
         {/* Settlement History from PEALMOR */}
         <div className="bg-card rounded-xl border border-border p-6">
           <div className="flex items-center gap-2 mb-4">
-            <h2 className="font-display font-semibold text-foreground">PEALMOR Settlement History</h2>
+            <h2 className="font-display font-semibold text-foreground">{t.client.pealmorSettlement}</h2>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-mono">PEALMOR API</span>
           </div>
           <div className="space-y-3">
