@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
 import type { Language, Translations } from './types';
 import { LANGUAGES } from './types';
 import { en } from './en';
@@ -40,21 +40,22 @@ const I18nContext = createContext<I18nContextType>({
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(detectLanguage);
 
-  const setLanguage = (lang: Language) => {
+  const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang);
     localStorage.setItem('pealmor-language', lang);
-    // Set HTML dir for RTL languages
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
-  };
+  }, []);
 
   useEffect(() => {
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = language;
   }, []);
 
+  const value = useMemo(() => ({ language, setLanguage, t: translationMap[language] }), [language, setLanguage]);
+
   return (
-    <I18nContext.Provider value={{ language, setLanguage, t: translationMap[language] }}>
+    <I18nContext.Provider value={value}>
       {children}
     </I18nContext.Provider>
   );
