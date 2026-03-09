@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Shield, Search, FileCheck, BarChart3, Users, Zap, ArrowRight } from "lucide-react";
+import { Shield, Search, FileCheck, BarChart3, Users, Zap, ArrowRight, LogOut } from "lucide-react";
 import { useI18n } from "@/i18n/I18nContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const stats = [
   { value: "2,400+", key: "aiActors" as const },
