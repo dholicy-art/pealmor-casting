@@ -6,6 +6,7 @@ import { usePlatformStore } from "@/store/platformStore";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nContext";
 import { useAuth } from "@/hooks/useAuth";
+import ViewModeToggle from "@/components/ViewModeToggle";
 
 export default function ClientLayout({ children }: { children: ReactNode }) {
   const location = useLocation();
@@ -70,9 +71,12 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
           </Link>
         )}
       </nav>
-      <div className="border-t border-border pt-3 mt-3 flex items-center justify-between px-3">
-        <p className="text-[10px] text-muted-foreground font-mono">PEALMOR Connected</p>
-        <HelpGuide />
+      <div className="border-t border-border pt-3 mt-3 space-y-2 px-3">
+        <ViewModeToggle />
+        <div className="flex items-center justify-between">
+          <p className="text-[10px] text-muted-foreground font-mono">PEALMOR Connected</p>
+          <HelpGuide />
+        </div>
       </div>
       <div className="border-t border-border pt-4 mt-1">
         <div className="flex items-center gap-3 px-3">

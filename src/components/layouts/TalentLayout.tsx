@@ -5,6 +5,7 @@ import HelpGuide from "@/components/HelpGuide";
 import { usePlatformStore } from "@/store/platformStore";
 import { useI18n } from "@/i18n/I18nContext";
 import { useAuth } from "@/hooks/useAuth";
+import ViewModeToggle from "@/components/ViewModeToggle";
 
 export default function TalentLayout({ children }: { children: ReactNode }) {
   const location = useLocation();
@@ -64,7 +65,10 @@ export default function TalentLayout({ children }: { children: ReactNode }) {
           </Link>
         )}
       </nav>
-      <div className="border-t border-border pt-4 mt-4">
+      <div className="border-t border-border pt-3 mt-3 px-3">
+        <ViewModeToggle />
+      </div>
+      <div className="border-t border-border pt-4 mt-1">
         <div className="flex items-center gap-3 px-3">
           <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-semibold text-secondary-foreground">{initials}</div>
           <div>

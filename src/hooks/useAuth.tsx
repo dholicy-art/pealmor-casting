@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
+import { useViewModeStore } from "@/store/viewModeStore";
 
 type AppRole = "admin" | "user";
 
@@ -9,6 +10,8 @@ interface AuthContextType {
   session: Session | null;
   roles: AppRole[];
   isAdmin: boolean;
+  /** True admin status regardless of view mode */
+  isActualAdmin: boolean;
   loading: boolean;
   signOut: () => Promise<void>;
 }
@@ -18,6 +21,7 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   roles: [],
   isAdmin: false,
+  isActualAdmin: false,
   loading: true,
   signOut: async () => {},
 });
@@ -44,7 +48,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
-          // Use setTimeout to avoid deadlock with Supabase auth
           setTimeout(() => fetchRoles(session.user.id), 0);
         } else {
           setRoles([]);
@@ -72,8 +75,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setRoles([]);
   };
 
+  const isActualAdmin = roles.includes("admin");
+  const viewAsNormalUser = useViewModeStore((s) => s.viewAsNormalUser);
+  const isAdmin = isActualAdmin && !viewAsNormalUser;
+
   return (
-    <AuthContext.Provider value={{ user, session, roles, isAdmin: roles.includes("admin"), loading, signOut }}>
+    <AuthContext.Provider value={{ user, session, roles, isAdmin, isActualAdmin, loading, signOut }}>
       {children}
     </AuthContext.Provider>
   );
