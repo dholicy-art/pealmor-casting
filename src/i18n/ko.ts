@@ -362,6 +362,7 @@ export const ko: Translations = {
     incomingApiDesc: 'PEALMOR Core에서 이벤트를 수신하는 Webhook 엔드포인트',
     apiLastCalled: '마지막 호출',
     api: 'API',
+    settingsGlobalNote: '여기에서 저장한 변경 사항은 모든 신규 및 기존 사용자에게 기본값으로 적용됩니다.',
   },
   toast: {
     requestApproved: '요청이 승인되었습니다',
