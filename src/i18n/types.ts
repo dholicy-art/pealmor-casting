@@ -21,7 +21,6 @@ export const LANGUAGES: LanguageOption[] = [
 ];
 
 export interface Translations {
-  // Common
   common: {
     settings: string;
     language: string;
@@ -86,9 +85,19 @@ export interface Translations {
     helpSettingsTitle: string;
     helpSettingsDesc: string;
     helpTip: string;
+    logout: string;
+    days: string;
+    allowed: string;
+    notAllowed: string;
+    conditional: string;
+    ready: string;
+    notFound: string;
+    strength: string;
+    match: string;
+    matchScore: string;
+    processing: string;
   };
 
-  // Landing
   landing: {
     title: string;
     subtitle: string;
@@ -129,9 +138,9 @@ export interface Translations {
     featureMultiPortalDesc: string;
     featureConnected: string;
     featureConnectedDesc: string;
+    login: string;
   };
 
-  // Client
   client: {
     dashboard: string;
     searchActors: string;
@@ -215,7 +224,6 @@ export interface Translations {
     available: string;
     unavailable: string;
     backToSearch: string;
-    // Network & PEALMOR
     actorNetwork: string;
     teams: string;
     universes: string;
@@ -252,9 +260,42 @@ export interface Translations {
     settlementDetails: string;
     paymentStatus: string;
     paidSettlements: string;
+    // Network relation labels
+    coActor: string;
+    teamMember: string;
+    universe: string;
+    agency: string;
+    similarStyle: string;
+    frequentCollab: string;
+    // Actor detail
+    networkDesc: string;
+    teamsDesc: string;
+    universesDesc: string;
+    autoCastDesc: string;
+    network: string;
+    teamsAndUniverses: string;
+    noConnections: string;
+    // Team types
+    idolGroup: string;
+    dramaCast: string;
+    brandAmbassadors: string;
+    customTeam: string;
+    // Auto casting
+    leadActor: string;
+    supportingActor: string;
+    sideCharacter: string;
+    // Casting request form
+    selectPurpose: string;
+    purposeRequired: string;
+    selectAsset: string;
+    regionRequired: string;
+    selectChannel: string;
+    minFee: string;
+    backTo: string;
+    startingAt: string;
+    avgApproval: string;
   };
 
-  // Talent
   talent: {
     dashboard: string;
     profile: string;
@@ -298,7 +339,6 @@ export interface Translations {
     unread: string;
   };
 
-  // Admin
   admin: {
     dashboard: string;
     overview: string;
@@ -340,7 +380,6 @@ export interface Translations {
     forceReject: string;
   };
 
-  // Toast messages
   toast: {
     requestApproved: string;
     requestRejected: string;
@@ -361,5 +400,11 @@ export interface Translations {
     requestForceApproved: string;
     requestForceRejected: string;
     languageChanged: string;
+  };
+
+  viewMode: {
+    viewAsUser: string;
+    viewingAsUser: string;
+    restoreAdmin: string;
   };
 }
