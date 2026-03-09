@@ -127,9 +127,9 @@ export default function Index() {
           <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-16">{t.landing.choosePortal}</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { title: t.landing.clientPortal, desc: t.landing.clientPortalDesc, link: "/client", variant: "hero" as const },
-              { title: t.landing.talentPortal, desc: t.landing.talentPortalDesc, link: "/talent", variant: "accent" as const },
-              { title: t.landing.adminPortal, desc: t.landing.adminPortalDesc, link: "/admin", variant: "glass" as const },
+              { title: t.landing.clientPortal, desc: t.landing.clientPortalDesc, link: user ? "/client" : "/login", variant: "hero" as const },
+              { title: t.landing.talentPortal, desc: t.landing.talentPortalDesc, link: user ? "/talent" : "/login", variant: "accent" as const },
+              ...(isAdmin ? [{ title: t.landing.adminPortal, desc: t.landing.adminPortalDesc, link: "/admin", variant: "glass" as const }] : []),
             ].map((p) => (
               <div key={p.title} className="gradient-card rounded-xl p-8 border border-border text-center flex flex-col">
                 <h3 className="font-display font-semibold text-xl mb-3 text-foreground">{p.title}</h3>
