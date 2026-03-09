@@ -5,6 +5,8 @@ import HelpGuide from "@/components/HelpGuide";
 import { usePlatformStore } from "@/store/platformStore";
 import { useI18n } from "@/i18n/I18nContext";
 import { useAuth } from "@/hooks/useAuth";
+import ViewModeToggle from "@/components/ViewModeToggle";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function TalentLayout({ children }: { children: ReactNode }) {
   const location = useLocation();
