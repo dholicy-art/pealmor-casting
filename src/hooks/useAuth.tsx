@@ -69,6 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = async () => {
+    localStorage.removeItem("pealmor-auto-login");
     await supabase.auth.signOut();
     setUser(null);
     setSession(null);
