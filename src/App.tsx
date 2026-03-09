@@ -36,6 +36,7 @@ import AdminDisputes from "./pages/admin/AdminDisputes";
 import AdminAuditLogs from "./pages/admin/AdminAuditLogs";
 import AdminRequests from "./pages/admin/AdminRequests";
 import AdminSettings from "./pages/admin/AdminSettings";
+import AdminApi from "./pages/admin/AdminApi";
 
 const queryClient = new QueryClient();
 
