@@ -2,9 +2,20 @@ import TalentLayout from "@/components/layouts/TalentLayout";
 import LanguageSelector from "@/components/LanguageSelector";
 import ThemeSelector from "@/components/ThemeSelector";
 import { useI18n } from "@/i18n/I18nContext";
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function TalentSettings() {
   const { t } = useI18n();
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <TalentLayout>
@@ -15,6 +26,12 @@ export default function TalentSettings() {
         </div>
         <ThemeSelector />
         <LanguageSelector />
+        <div className="pt-4 border-t border-border">
+          <Button variant="destructive" onClick={handleLogout} className="gap-2">
+            <LogOut className="w-4 h-4" />
+            로그아웃
+          </Button>
+        </div>
       </div>
     </TalentLayout>
   );
