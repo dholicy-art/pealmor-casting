@@ -32,7 +32,8 @@ export default function Login() {
       if (error) {
         toast.error(error.message);
       } else {
-        toast.success("회원가입 성공! 이메일을 확인해주세요.");
+        toast.success("회원가입 성공!");
+        navigate("/");
       }
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
