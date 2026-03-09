@@ -4,6 +4,7 @@ import { LANGUAGES } from './types';
 import { en } from './en';
 import { ko } from './ko';
 import { withDefaults } from './i18n-defaults';
+import { supabase } from '@/integrations/supabase/client';
 
 // Lazy load other languages with defaults applied
 import { ja as jaRaw } from './ja';

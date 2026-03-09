@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export type Theme = 'dark' | 'light';
 
@@ -17,6 +18,23 @@ function detectTheme(): Theme {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(detectTheme);
+
+  // Load platform default if user has no personal preference
+  useEffect(() => {
+    const saved = localStorage.getItem('pealmor-theme');
+    if (!saved) {
+      supabase
+        .from('platform_settings' as any)
+        .select('value')
+        .eq('key', 'default_theme')
+        .maybeSingle()
+        .then(({ data }: any) => {
+          if (data?.value && (data.value === 'light' || data.value === 'dark')) {
+            setThemeState(data.value);
+          }
+        });
+    }
+  }, []);
 
   const setTheme = useCallback((t: Theme) => {
     setThemeState(t);
