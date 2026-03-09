@@ -1,17 +1,11 @@
 import { useI18n } from '@/i18n/I18nContext';
 import { LANGUAGES } from '@/i18n/types';
+import type { Language } from '@/i18n/types';
 import { Globe, Check } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function LanguageSelector() {
   const { language, setLanguage, t } = useI18n();
-
-  const handleLanguageChange = (code: string) => {
-    if (code === language) return;
-    setLanguage(code as any);
-    // Toast will show in new language on next render, use a simple confirmation
-    toast.success('✓');
-  };
 
   return (
     <div className="space-y-4">
@@ -25,27 +19,36 @@ export default function LanguageSelector() {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-2">
-        {LANGUAGES.map((lang) => (
-          <button
-            key={lang.code}
-            type="button"
-            onClick={() => handleLanguageChange(lang.code)}
-            className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border text-left transition-all active:scale-[0.98] ${
-              language === lang.code
-                ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
-                : 'border-border bg-card hover:border-primary/30'
-            }`}
-          >
-            <span className="text-lg sm:text-xl shrink-0">{lang.flag}</span>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs sm:text-sm font-medium text-foreground truncate">{lang.nativeLabel}</p>
-              <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{lang.label}</p>
-            </div>
-            {language === lang.code && (
-              <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary shrink-0" />
-            )}
-          </button>
-        ))}
+        {LANGUAGES.map((lang) => {
+          const isSelected = language === lang.code;
+          return (
+            <button
+              key={lang.code}
+              type="button"
+              onClick={() => {
+                if (lang.code === language) return;
+                setLanguage(lang.code);
+                setTimeout(() => {
+                  toast.success('✓');
+                }, 50);
+              }}
+              className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl border text-left transition-all active:scale-[0.98] ${
+                isSelected
+                  ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
+                  : 'border-border bg-card hover:border-primary/30'
+              }`}
+            >
+              <span className="text-lg sm:text-xl shrink-0">{lang.flag}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs sm:text-sm font-medium text-foreground truncate">{lang.nativeLabel}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{lang.label}</p>
+              </div>
+              {isSelected && (
+                <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary shrink-0" />
+              )}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
