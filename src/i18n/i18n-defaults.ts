@@ -14,6 +14,8 @@ export function withDefaults(partial: any): Translations {
     common: { ...extraCommon, ...partial.common },
     landing: { ...extraLanding, ...partial.landing },
     client: { ...extraClient, ...partial.client },
+    admin: { ...extraAdmin, ...partial.admin },
+    toast: { ...extraToast, ...partial.toast },
     viewMode: partial.viewMode || extraViewMode,
   };
 }
