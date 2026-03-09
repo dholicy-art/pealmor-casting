@@ -27,7 +27,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
           <span className="text-primary-foreground font-display font-bold text-sm">P</span>
         </div>
-        <span className="font-display font-bold text-lg text-foreground"ctive = location.pathname === item.path;
+        <span className="font-display font-bold text-lg text-foreground"=== item.path;
           return (
             <Link key={item.path} to={item.path} onClick={() => setMobileOpen(false)}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
@@ -40,9 +40,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           );
         })}
       </nav>
-      <div className="border-t pt-3 mt-3 px-3" style={{ bborder-border pt-3 mt-3 pxborder-border pt-3 mt-3 pxborder-border pt-3 mt-3 pxborder-border pt-3 mt-3 px-3"order-border pt-4 mt-1"mibold text-primary">AK</div>
-          border-border pt-4 mt-1"color: "hsl(var(--admin-fg))" }}>Admin Kim</p>
-            <p className="text-xs" style={{ color: "hsl(var(--admin-muted-fg))" }}>Super Admin</p>
+      <div className="border-t pt-3 mt-3 px-3" style={{ bborder-border pt-3 mt-3 pxborder-border pt-3 mt-3 pxborder-border pt-3 mt-3 pxborder-border pt-3 mt-3 pxborder-border pt-3 mt-3 px-3"order-border pt-4 mt-1"color: "hsl(var(--admin-fg))" }}>Admin Kborder-border pt-4 mt-1"(var(--admin-muted-fg))" }}>Super Admin</p>
           </div>
         </div>
       </div>
