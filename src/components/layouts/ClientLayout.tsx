@@ -1,16 +1,21 @@
 import { ReactNode, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Search, FolderOpen, BarChart3, Bookmark, Settings, Menu, X, Bell, Sparkles, Network, Users, Globe, Wand2 } from "lucide-react";
+import { Home, Search, FolderOpen, BarChart3, Bookmark, Settings, Menu, X, Bell, Sparkles, Network, Users, Globe, Wand2, ShieldAlert } from "lucide-react";
 import HelpGuide from "@/components/HelpGuide";
 import { usePlatformStore } from "@/store/platformStore";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nContext";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function ClientLayout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const unreadCount = usePlatformStore((s) => s.notifications.filter((n) => !n.read).length);
   const { t } = useI18n();
+  const { user, isAdmin } = useAuth();
+
+  const displayName = user?.user_metadata?.display_name || user?.email?.split("@")[0] || "User";
+  const initials = displayName.slice(0, 2).toUpperCase();
 
   const navItems = [
     { icon: Home, label: t.client.dashboard, path: "/client" },
@@ -52,6 +57,18 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
             </Link>
           );
         })}
+        {isAdmin && (
+          <Link
+            to="/admin"
+            onClick={() => setMobileOpen(false)}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors mt-2 border border-destructive/20 ${
+              location.pathname.startsWith("/admin") ? "bg-destructive/10 text-destructive" : "text-destructive/70 hover:bg-destructive/10 hover:text-destructive"
+            }`}
+          >
+            <ShieldAlert className="w-4 h-4" />
+            {t.landing.adminPortal}
+          </Link>
+        )}
       </nav>
       <div className="border-t border-border pt-3 mt-3 flex items-center justify-between px-3">
         <p className="text-[10px] text-muted-foreground font-mono">PEALMOR Connected</p>
@@ -59,9 +76,14 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
       </div>
       <div className="border-t border-border pt-4 mt-1">
         <div className="flex items-center gap-3 px-3">
-          <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-semibold text-secondary-foreground">JK</div>
+          <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-semibold text-secondary-foreground">{initials}</div>
           <div>
-            <p className="text-sm font-medium text-foreground">Jun Kim</p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm font-medium text-foreground">{displayName}</p>
+              {isAdmin && (
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-destructive/10 text-destructive font-bold">Admin</span>
+              )}
+            </div>
             <p className="text-xs text-muted-foreground">{t.landing.clientPortal}</p>
           </div>
         </div>
