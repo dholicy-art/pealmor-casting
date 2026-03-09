@@ -391,6 +391,7 @@ export interface Translations {
     incomingApiDesc: string;
     apiLastCalled: string;
     api: string;
+    settingsGlobalNote: string;
   };
 
   toast: {
@@ -413,6 +414,7 @@ export interface Translations {
     requestForceApproved: string;
     requestForceRejected: string;
     languageChanged: string;
+    settingsSaved: string;
   };
 
   viewMode: {

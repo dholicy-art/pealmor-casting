@@ -4,6 +4,7 @@ import { LANGUAGES } from './types';
 import { en } from './en';
 import { ko } from './ko';
 import { withDefaults } from './i18n-defaults';
+import { supabase } from '@/integrations/supabase/client';
 
 // Lazy load other languages with defaults applied
 import { ja as jaRaw } from './ja';
@@ -55,9 +56,26 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = lang;
   }, []);
 
+  // Load platform default language if user has no personal preference
   useEffect(() => {
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = language;
+
+    const saved = localStorage.getItem('pealmor-language');
+    if (!saved) {
+      supabase
+        .from('platform_settings' as any)
+        .select('value')
+        .eq('key', 'default_language')
+        .maybeSingle()
+        .then(({ data }: any) => {
+          if (data?.value && translationMap[data.value as Language]) {
+            setLanguageState(data.value as Language);
+            document.documentElement.dir = data.value === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = data.value;
+          }
+        });
+    }
   }, []);
 
   const value = useMemo(() => ({ language, setLanguage, t: translationMap[language] }), [language, setLanguage]);
