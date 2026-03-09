@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Shield, Search, FileCheck, BarChart3, Users, Zap, ArrowRight } from "lucide-react";
+import { Shield, Search, FileCheck, BarChart3, Users, Zap, ArrowRight, LogOut } from "lucide-react";
 import { useI18n } from "@/i18n/I18nContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const stats = [
   { value: "2,400+", key: "aiActors" as const },
@@ -22,6 +23,7 @@ const featureKeys = [
 
 export default function Index() {
   const { t } = useI18n();
+  const { user, isAdmin, signOut } = useAuth();
 
   return (
     <div className="min-h-screen bg-background">
@@ -39,12 +41,23 @@ export default function Index() {
             <a href="#portals" className="hover:text-foreground transition-colors">{t.landing.portals}</a>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="glass" size="sm" asChild>
-              <Link to="/talent">{t.landing.talentPortal}</Link>
-            </Button>
-            <Button variant="hero" size="sm" asChild>
-              <Link to="/client">{t.landing.clientPortal}</Link>
-            </Button>
+            {user ? (
+              <>
+                <Button variant="glass" size="sm" asChild>
+                  <Link to="/talent">{t.landing.talentPortal}</Link>
+                </Button>
+                <Button variant="hero" size="sm" asChild>
+                  <Link to="/client">{t.landing.clientPortal}</Link>
+                </Button>
+                <Button variant="ghost" size="sm" onClick={signOut}>
+                  <LogOut className="w-4 h-4" />
+                </Button>
+              </>
+            ) : (
+              <Button variant="hero" size="sm" asChild>
+                <Link to="/login">로그인</Link>
+              </Button>
+            )}
           </div>
         </div>
       </nav>
@@ -114,9 +127,9 @@ export default function Index() {
           <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-16">{t.landing.choosePortal}</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { title: t.landing.clientPortal, desc: t.landing.clientPortalDesc, link: "/client", variant: "hero" as const },
-              { title: t.landing.talentPortal, desc: t.landing.talentPortalDesc, link: "/talent", variant: "accent" as const },
-              { title: t.landing.adminPortal, desc: t.landing.adminPortalDesc, link: "/admin", variant: "glass" as const },
+              { title: t.landing.clientPortal, desc: t.landing.clientPortalDesc, link: user ? "/client" : "/login", variant: "hero" as const },
+              { title: t.landing.talentPortal, desc: t.landing.talentPortalDesc, link: user ? "/talent" : "/login", variant: "accent" as const },
+              ...(isAdmin ? [{ title: t.landing.adminPortal, desc: t.landing.adminPortalDesc, link: "/admin", variant: "glass" as const }] : []),
             ].map((p) => (
               <div key={p.title} className="gradient-card rounded-xl p-8 border border-border text-center flex flex-col">
                 <h3 className="font-display font-semibold text-xl mb-3 text-foreground">{p.title}</h3>

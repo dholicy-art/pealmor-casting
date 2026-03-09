@@ -5,7 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { I18nProvider } from "@/i18n/I18nContext";
 import { ThemeProvider } from "@/theme/ThemeContext";
+import { AuthProvider } from "@/hooks/useAuth";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
+import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import ClientDashboard from "./pages/client/ClientDashboard";
 import ClientSearch from "./pages/client/ClientSearch";
@@ -40,45 +43,48 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
     <I18nProvider>
+      <AuthProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            {/* Client — Discovery & Orchestration */}
-            <Route path="/client" element={<ClientDashboard />} />
-            <Route path="/client/search" element={<ClientSearch />} />
-            <Route path="/client/actor/:id" element={<ClientActorDetail />} />
-            <Route path="/client/compare" element={<ClientCompare />} />
-            <Route path="/client/projects" element={<ClientProjects />} />
-            <Route path="/client/casting-request/:talentId" element={<ClientCastingRequest />} />
-            <Route path="/client/licenses" element={<ClientLicenses />} />
-            <Route path="/client/audition" element={<ClientAudition />} />
-            <Route path="/client/network" element={<ActorNetwork />} />
-            <Route path="/client/teams" element={<ActorTeams />} />
-            <Route path="/client/universes" element={<ActorUniverses />} />
-            <Route path="/client/autocast" element={<AutoCasting />} />
-            <Route path="/client/settings" element={<ClientSettings />} />
-            {/* Talent — Profile & Approvals */}
-            <Route path="/talent" element={<TalentDashboard />} />
-            <Route path="/talent/approvals" element={<TalentApprovals />} />
-            <Route path="/talent/profile" element={<TalentProfile />} />
-            <Route path="/talent/earnings" element={<TalentEarnings />} />
-            <Route path="/talent/licenses" element={<TalentLicenses />} />
-            <Route path="/talent/notifications" element={<TalentNotifications />} />
-            <Route path="/talent/settings" element={<TalentSettings />} />
-            {/* Admin — Compliance via PEALMOR */}
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/verification" element={<AdminVerification />} />
-            <Route path="/admin/disputes" element={<AdminDisputes />} />
-            <Route path="/admin/audit" element={<AdminAuditLogs />} />
-            <Route path="/admin/requests" element={<AdminRequests />} />
-            <Route path="/admin/settings" element={<AdminSettings />} />
+            <Route path="/login" element={<Login />} />
+            {/* Client — Discovery & Orchestration (requires login) */}
+            <Route path="/client" element={<ProtectedRoute><ClientDashboard /></ProtectedRoute>} />
+            <Route path="/client/search" element={<ProtectedRoute><ClientSearch /></ProtectedRoute>} />
+            <Route path="/client/actor/:id" element={<ProtectedRoute><ClientActorDetail /></ProtectedRoute>} />
+            <Route path="/client/compare" element={<ProtectedRoute><ClientCompare /></ProtectedRoute>} />
+            <Route path="/client/projects" element={<ProtectedRoute><ClientProjects /></ProtectedRoute>} />
+            <Route path="/client/casting-request/:talentId" element={<ProtectedRoute><ClientCastingRequest /></ProtectedRoute>} />
+            <Route path="/client/licenses" element={<ProtectedRoute><ClientLicenses /></ProtectedRoute>} />
+            <Route path="/client/audition" element={<ProtectedRoute><ClientAudition /></ProtectedRoute>} />
+            <Route path="/client/network" element={<ProtectedRoute><ActorNetwork /></ProtectedRoute>} />
+            <Route path="/client/teams" element={<ProtectedRoute><ActorTeams /></ProtectedRoute>} />
+            <Route path="/client/universes" element={<ProtectedRoute><ActorUniverses /></ProtectedRoute>} />
+            <Route path="/client/autocast" element={<ProtectedRoute><AutoCasting /></ProtectedRoute>} />
+            <Route path="/client/settings" element={<ProtectedRoute><ClientSettings /></ProtectedRoute>} />
+            {/* Talent — Profile & Approvals (requires login) */}
+            <Route path="/talent" element={<ProtectedRoute><TalentDashboard /></ProtectedRoute>} />
+            <Route path="/talent/approvals" element={<ProtectedRoute><TalentApprovals /></ProtectedRoute>} />
+            <Route path="/talent/profile" element={<ProtectedRoute><TalentProfile /></ProtectedRoute>} />
+            <Route path="/talent/earnings" element={<ProtectedRoute><TalentEarnings /></ProtectedRoute>} />
+            <Route path="/talent/licenses" element={<ProtectedRoute><TalentLicenses /></ProtectedRoute>} />
+            <Route path="/talent/notifications" element={<ProtectedRoute><TalentNotifications /></ProtectedRoute>} />
+            <Route path="/talent/settings" element={<ProtectedRoute><TalentSettings /></ProtectedRoute>} />
+            {/* Admin — Compliance via PEALMOR (requires admin role) */}
+            <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/verification" element={<ProtectedRoute requireAdmin><AdminVerification /></ProtectedRoute>} />
+            <Route path="/admin/disputes" element={<ProtectedRoute requireAdmin><AdminDisputes /></ProtectedRoute>} />
+            <Route path="/admin/audit" element={<ProtectedRoute requireAdmin><AdminAuditLogs /></ProtectedRoute>} />
+            <Route path="/admin/requests" element={<ProtectedRoute requireAdmin><AdminRequests /></ProtectedRoute>} />
+            <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><AdminSettings /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
+      </AuthProvider>
     </I18nProvider>
     </ThemeProvider>
   </QueryClientProvider>
