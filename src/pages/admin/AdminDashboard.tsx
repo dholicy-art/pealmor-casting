@@ -20,15 +20,13 @@ export default function AdminDashboard() {
   const pendingVerifications = verificationCases.filter((v) => v.status === "pending").length;
   const highRiskRequests = requests.filter((r) => r.riskLevel === "high" || r.policyConflicts.length > 0).length;
   const openDisputes = disputes.filter((d) => d.status === "open" || d.status === "investigating").length;
-  const fg = "hsl(var(--admin-fg))"; const mfg = "hsl(var(--admin-muted-fg))";
-  const card = "hsl(var(--admin-card))"; const border = "hsl(var(--admin-border))";
 
   return (
     <AdminLayout>
       <div className="p-6 lg:p-8 space-y-8">
         <div>
-          <h1 className="font-display text-2xl font-bold" style={{ color: fg }}>{t.admin.dashboard}</h1>
-          <p className="text-sm mt-1" style={{ color: mfg }}>{t.admin.overview} — PEALMOR Connected</p>
+          <h1 className="font-display text-2xl font-bold text-foreground">{t.admin.dashboard}</h1>
+          <p className="text-sm mt-1 text-muted-foreground">{t.admin.overview} — PEALMOR Connected</p>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -38,9 +36,9 @@ export default function AdminDashboard() {
             { icon: FileCheck, label: t.admin.openDisputes, value: String(openDisputes), color: "#f5a623", link: "/admin/disputes" },
             { icon: DollarSign, label: t.admin.pendingSettlements, value: "via PEALMOR", color: "#30a46c", link: "/admin" },
           ].map((s) => (
-            <Link key={s.label} to={s.link} className="rounded-xl p-5 border hover:shadow-md transition-shadow" style={{ background: card, borderColor: border }}>
-              <div className="flex items-center gap-3 mb-2"><s.icon className="w-4 h-4" style={{ color: s.color }} /><span className="text-xs" style={{ color: mfg }}>{s.label}</span></div>
-              <p className="font-display text-2xl font-bold" style={{ color: fg }}>{s.value}</p>
+            <Link key={s.label} to={s.link} className="rounded-xl p-5 border border-border bg-card hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-2"><s.icon className="w-4 h-4" style={{ color: s.color }} /><span className="text-xs text-muted-foreground">{s.label}</span></div>
+              <p className="font-display text-2xl font-bold text-foreground">{s.value}</p>
             </Link>
           ))}
         </div>
@@ -51,32 +49,32 @@ export default function AdminDashboard() {
             { icon: AlertTriangle, title: t.admin.requestReview, desc: `${highRiskRequests} ${t.admin.highRiskRequests.toLowerCase()}`, link: "/admin/requests" },
             { icon: ScrollText, title: t.admin.disputes, desc: `${openDisputes} ${t.admin.openDisputes.toLowerCase()}`, link: "/admin/disputes" },
           ].map((c) => (
-            <Link key={c.title} to={c.link} className="rounded-xl p-5 border hover:shadow-md transition-shadow" style={{ background: card, borderColor: border }}>
+            <Link key={c.title} to={c.link} className="rounded-xl p-5 border border-border bg-card hover:shadow-md transition-shadow">
               <c.icon className="w-5 h-5 mb-3" style={{ color: "#7c5cfc" }} />
-              <h3 className="font-display font-semibold mb-1" style={{ color: fg }}>{c.title}</h3>
-              <p className="text-xs mb-3" style={{ color: mfg }}>{c.desc}</p>
-              <span className="text-xs font-medium px-3 py-1.5 rounded-lg" style={{ background: "#7c5cfc10", color: "#7c5cfc" }}>→</span>
+              <h3 className="font-display font-semibold mb-1 text-foreground">{c.title}</h3>
+              <p className="text-xs mb-3 text-muted-foreground">{c.desc}</p>
+              <span className="text-xs font-medium px-3 py-1.5 rounded-lg bg-primary/10 text-primary">→</span>
             </Link>
           ))}
         </div>
 
-        <div className="rounded-xl border overflow-hidden" style={{ background: card, borderColor: border }}>
-          <div className="flex items-center justify-between p-5 border-b" style={{ borderColor: border }}>
+        <div className="rounded-xl border border-border bg-card overflow-hidden">
+          <div className="flex items-center justify-between p-5 border-b border-border">
             <div className="flex items-center gap-2">
               <Activity className="w-4 h-4" style={{ color: "#7c5cfc" }} />
-              <h2 className="font-display font-semibold" style={{ color: fg }}>{t.admin.recentActivity}</h2>
-              <span className="text-[10px] px-2 py-0.5 rounded-full font-mono" style={{ background: "#7c5cfc10", color: "#7c5cfc" }}>PEALMOR Audit</span>
+              <h2 className="font-display font-semibold text-foreground">{t.admin.recentActivity}</h2>
+              <span className="text-[10px] px-2 py-0.5 rounded-full font-mono bg-primary/10 text-primary">PEALMOR Audit</span>
             </div>
-            <Link to="/admin/audit" className="text-xs font-medium" style={{ color: "#7c5cfc" }}>{t.admin.viewAllLogs}</Link>
+            <Link to="/admin/audit" className="text-xs font-medium text-primary">{t.admin.viewAllLogs}</Link>
           </div>
           <div>
             {auditLogs.slice(0, 6).map((log) => (
-              <div key={log.id} className="px-5 py-3 flex items-center gap-4 text-sm border-b last:border-0" style={{ borderColor: border }}>
-                <span className="text-xs w-28 shrink-0" style={{ color: mfg }}>{log.timestamp}</span>
+              <div key={log.id} className="px-5 py-3 flex items-center gap-4 text-sm border-b border-border last:border-0">
+                <span className="text-xs w-28 shrink-0 text-muted-foreground">{log.timestamp}</span>
                 <span className={`w-2 h-2 rounded-full shrink-0 ${log.severity === "critical" ? "bg-red-500" : log.severity === "warning" ? "bg-yellow-500" : "bg-green-500"}`} />
-                <span className="font-medium w-24 shrink-0" style={{ color: fg }}>{log.userName}</span>
-                <span className="flex-1" style={{ color: mfg }}>{log.action}</span>
-                <span className="text-xs shrink-0" style={{ color: "#7c5cfc" }}>{log.target}</span>
+                <span className="font-medium w-24 shrink-0 text-foreground">{log.userName}</span>
+                <span className="flex-1 text-muted-foreground">{log.action}</span>
+                <span className="text-xs shrink-0 text-primary">{log.target}</span>
               </div>
             ))}
           </div>

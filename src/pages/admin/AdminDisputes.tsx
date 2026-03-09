@@ -21,10 +21,6 @@ const statusColors: Record<string, string> = {
 export default function AdminDisputes() {
   const { t } = useI18n();
   const [cases, setCases] = useState(disputes);
-  const fg = "hsl(var(--admin-fg))";
-  const mfg = "hsl(var(--admin-muted-fg))";
-  const card = "hsl(var(--admin-card))";
-  const border = "hsl(var(--admin-border))";
 
   const updateStatus = (id: string, status: "investigating" | "resolved" | "escalated") => {
     setCases((prev) => prev.map((d) => d.id === id ? { ...d, status } : d));
@@ -35,17 +31,17 @@ export default function AdminDisputes() {
     <AdminLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <h1 className="font-display text-2xl font-bold" style={{ color: fg }}>{t.admin.disputeCenter}</h1>
-          <p className="text-sm mt-1" style={{ color: mfg }}>{cases.filter((d) => d.status !== "resolved").length} {t.admin.activeDisputes}</p>
+          <h1 className="font-display text-2xl font-bold text-foreground">{t.admin.disputeCenter}</h1>
+          <p className="text-sm mt-1 text-muted-foreground">{cases.filter((d) => d.status !== "resolved").length} {t.admin.activeDisputes}</p>
         </div>
 
         <div className="space-y-4">
           {cases.map((d) => (
-            <div key={d.id} className="rounded-xl border p-6" style={{ background: card, borderColor: border }}>
+            <div key={d.id} className="rounded-xl border border-border bg-card p-6">
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
                 <div>
                   <div className="flex items-center gap-3 mb-1 flex-wrap">
-                    <h3 className="font-display font-semibold" style={{ color: fg }}>{d.title}</h3>
+                    <h3 className="font-display font-semibold text-foreground">{d.title}</h3>
                     <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-medium ${priorityColors[d.priority]}`}>
                       {d.priority}
                     </span>
@@ -53,16 +49,16 @@ export default function AdminDisputes() {
                       {d.status}
                     </span>
                   </div>
-                  <p className="text-xs" style={{ color: mfg }}>
+                  <p className="text-xs text-muted-foreground">
                     {d.type.replace(/_/g, " ")} • Reporter: {d.reporter} → {d.reported} • {d.createdAt}
                   </p>
                 </div>
               </div>
 
-              <p className="text-sm mb-4" style={{ color: mfg }}>{d.description}</p>
+              <p className="text-sm mb-4 text-muted-foreground">{d.description}</p>
 
               {d.status !== "resolved" && (
-                <div className="flex gap-2 pt-4 border-t" style={{ borderColor: border }}>
+                <div className="flex gap-2 pt-4 border-t border-border">
                   {d.status === "open" && (
                     <button
                       onClick={() => updateStatus(d.id, "investigating")}
