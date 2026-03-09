@@ -27,7 +27,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
           <span className="text-primary-foreground font-display font-bold text-sm">P</span>
         </div>
-        <span className="font-display font-bold text-lg" style={{ color: "hsl(var(--admin-fg))" }}>Admin</span>
+        <span className="font-display font-bold text-lg text-foreground">Admin</span>
       </Link>
       <nav className="flex flex-col gap-1 flex-1">
         {navItems.map((item) => {
