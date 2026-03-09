@@ -414,6 +414,7 @@ export interface Translations {
     requestForceApproved: string;
     requestForceRejected: string;
     languageChanged: string;
+    settingsSaved: string;
   };
 
   viewMode: {
