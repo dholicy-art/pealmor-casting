@@ -133,9 +133,46 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, sans-serif;
+    -webkit-overflow-scrolling: touch;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
+
+  /* Mobile scrollbar: hidden by default, visible on scroll */
+  @media (max-width: 768px) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
+    }
+    *:hover,
+    *:active {
+      scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+    }
+    *::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    *::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    *::-webkit-scrollbar-thumb {
+      background: transparent;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    *:hover::-webkit-scrollbar-thumb,
+    *:active::-webkit-scrollbar-thumb {
+      background: hsl(var(--muted-foreground) / 0.3);
+    }
+  }
+
+  /* Prevent text from breaking vertically on mobile */
+  @media (max-width: 640px) {
+    body {
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
   }
 }
 
