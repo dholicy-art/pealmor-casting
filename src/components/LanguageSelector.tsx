@@ -6,10 +6,11 @@ import { toast } from 'sonner';
 export default function LanguageSelector() {
   const { language, setLanguage, t } = useI18n();
 
-  const handleLanguageChange = (code: typeof language) => {
+  const handleLanguageChange = (code: string) => {
     if (code === language) return;
-    setLanguage(code);
-    toast.success(t.toast.languageChanged);
+    setLanguage(code as any);
+    // Toast will show in new language on next render, use a simple confirmation
+    toast.success('✓');
   };
 
   return (
