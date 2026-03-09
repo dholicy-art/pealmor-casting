@@ -27,8 +27,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
           <span className="text-primary-foreground font-display font-bold text-sm">P</span>
         </div>
-        <span className="font-display font-bold text-lg text-foreground">
-      <nav className="flex flex-col gap-1 flex-1">
+        <span className="font-display font-bold text-lg text-foreground"ex flex-col gap-1 flex-1">
         {navItems.map((item) => {
           const active = location.pathname === item.path;
           return (
@@ -43,8 +42,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           );
         })}
       </nav>
-      <div className="border-t pt-3 mt-3 px-3" style={{ borderColor: "hsl(var(--admin-border))" }}>
-        <ViewModeToggle variant="admin" />
+      <div className="border-t pt-3 mt-3 px-3" style={{ bborder-border pt-3 mt-3 px-3"variant="admin" />
       </div>
       <div className="border-t pt-4 mt-1" style={{ borderColor: "hsl(var(--admin-border))" }}>
         <div className="flex items-center gap-3 px-3">
