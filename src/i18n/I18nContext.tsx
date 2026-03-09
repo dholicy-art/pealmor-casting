@@ -3,25 +3,33 @@ import type { Language, Translations } from './types';
 import { LANGUAGES } from './types';
 import { en } from './en';
 import { ko } from './ko';
-import { ja } from './ja';
-import { zh } from './zh';
-import { fr } from './fr';
-import { es, de, pt, ar, vi } from './other-langs';
+import { withDefaults } from './i18n-defaults';
+
+// Lazy load other languages with defaults applied
+import { ja as jaRaw } from './ja';
+import { zh as zhRaw } from './zh';
+import { fr as frRaw } from './fr';
+import { es as esRaw, de as deRaw, pt as ptRaw, ar as arRaw, vi as viRaw } from './other-langs';
+
+const ja = withDefaults(jaRaw);
+const zh = withDefaults(zhRaw);
+const fr = withDefaults(frRaw);
+const es = withDefaults(esRaw);
+const de = withDefaults(deRaw);
+const pt = withDefaults(ptRaw);
+const ar = withDefaults(arRaw);
+const vi = withDefaults(viRaw);
 
 const translationMap: Record<Language, Translations> = { en, ko, ja, zh, fr, es, de, pt, ar, vi };
 
 function detectLanguage(): Language {
-  // Check localStorage first
   const saved = localStorage.getItem('pealmor-language') as Language | null;
   if (saved && translationMap[saved]) return saved;
-
-  // Detect from browser/device
   const browserLangs = navigator.languages || [navigator.language];
   for (const lang of browserLangs) {
     const code = lang.split('-')[0].toLowerCase() as Language;
     if (translationMap[code]) return code;
   }
-
   return 'en';
 }
 

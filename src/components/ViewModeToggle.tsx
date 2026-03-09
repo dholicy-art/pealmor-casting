@@ -1,10 +1,12 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useViewModeStore } from "@/store/viewModeStore";
 import { useAuth } from "@/hooks/useAuth";
+import { useI18n } from "@/i18n/I18nContext";
 
 export default function ViewModeToggle({ variant = "default" }: { variant?: "default" | "admin" }) {
   const { isActualAdmin } = useAuth();
   const { viewAsNormalUser, toggleViewMode } = useViewModeStore();
+  const { t } = useI18n();
 
   if (!isActualAdmin) return null;
 
@@ -24,13 +26,13 @@ export default function ViewModeToggle({ variant = "default" }: { variant?: "def
       {viewAsNormalUser ? (
         <>
           <EyeOff className="w-3.5 h-3.5" />
-          <span>일반 사용자로 보는 중</span>
-          <span className="ml-auto text-[10px] underline">어드민으로 복구</span>
+          <span>{t.viewMode.viewingAsUser}</span>
+          <span className="ml-auto text-[10px] underline">{t.viewMode.restoreAdmin}</span>
         </>
       ) : (
         <>
           <Eye className="w-3.5 h-3.5" />
-          <span>일반 사용자로 보기</span>
+          <span>{t.viewMode.viewAsUser}</span>
         </>
       )}
     </button>
