@@ -6,6 +6,7 @@ import { usePlatformStore } from "@/store/platformStore";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/i18n/I18nContext";
 import { useAuth } from "@/hooks/useAuth";
+import ViewModeToggle from "@/components/ViewModeToggle";
 
 export default function ClientLayout({ children }: { children: ReactNode }) {
   const location = useLocation();
