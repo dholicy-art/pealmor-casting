@@ -41,12 +41,23 @@ export default function Index() {
             <a href="#portals" className="hover:text-foreground transition-colors">{t.landing.portals}</a>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="glass" size="sm" asChild>
-              <Link to="/talent">{t.landing.talentPortal}</Link>
-            </Button>
-            <Button variant="hero" size="sm" asChild>
-              <Link to="/client">{t.landing.clientPortal}</Link>
-            </Button>
+            {user ? (
+              <>
+                <Button variant="glass" size="sm" asChild>
+                  <Link to="/talent">{t.landing.talentPortal}</Link>
+                </Button>
+                <Button variant="hero" size="sm" asChild>
+                  <Link to="/client">{t.landing.clientPortal}</Link>
+                </Button>
+                <Button variant="ghost" size="sm" onClick={signOut}>
+                  <LogOut className="w-4 h-4" />
+                </Button>
+              </>
+            ) : (
+              <Button variant="hero" size="sm" asChild>
+                <Link to="/login">로그인</Link>
+              </Button>
+            )}
           </div>
         </div>
       </nav>
