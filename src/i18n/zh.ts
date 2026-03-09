@@ -1,6 +1,4 @@
-import type { Translations } from './types';
-
-export const zh: Translations = {
+export const zh = {
   common: {
     settings: '设置', language: '语言', languageSettings: '语言设置', languageDescription: '选择您的首选语言',
     save: '保存', cancel: '取消', back: '返回', viewAll: '查看全部', search: '搜索', filters: '筛选',

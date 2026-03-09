@@ -1,6 +1,4 @@
-import type { Translations } from './types';
-
-export const fr: Translations = {
+export const fr = {
   common: {
     settings: 'Paramètres', language: 'Langue', languageSettings: 'Paramètres de langue',
     languageDescription: 'Sélectionnez votre langue préférée', save: 'Enregistrer', cancel: 'Annuler',
