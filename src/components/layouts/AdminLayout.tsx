@@ -44,7 +44,10 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           );
         })}
       </nav>
-      <div className="border-t pt-4 mt-4" style={{ borderColor: "hsl(var(--admin-border))" }}>
+      <div className="border-t pt-3 mt-3 px-3" style={{ borderColor: "hsl(var(--admin-border))" }}>
+        <ViewModeToggle variant="admin" />
+      </div>
+      <div className="border-t pt-4 mt-1" style={{ borderColor: "hsl(var(--admin-border))" }}>
         <div className="flex items-center gap-3 px-3">
           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-semibold text-primary">AK</div>
           <div>
