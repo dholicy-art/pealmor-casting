@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { useI18n } from "@/i18n/I18nContext";
+
+const SAVED_EMAIL_KEY = "pealmor-saved-email";
+const AUTO_LOGIN_KEY = "pealmor-auto-login";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -13,8 +17,23 @@ export default function Login() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [rememberEmail, setRememberEmail] = useState(false);
+  const [autoLogin, setAutoLogin] = useState(false);
   const navigate = useNavigate();
   const { t } = useI18n();
+
+  // Load saved email on mount
+  useEffect(() => {
+    const savedEmail = localStorage.getItem(SAVED_EMAIL_KEY);
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberEmail(true);
+    }
+    const savedAutoLogin = localStorage.getItem(AUTO_LOGIN_KEY);
+    if (savedAutoLogin === "true") {
+      setAutoLogin(true);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,6 +59,17 @@ export default function Login() {
       if (error) {
         toast.error(error.message);
       } else {
+        // Save preferences on successful login
+        if (rememberEmail) {
+          localStorage.setItem(SAVED_EMAIL_KEY, email);
+        } else {
+          localStorage.removeItem(SAVED_EMAIL_KEY);
+        }
+        if (autoLogin) {
+          localStorage.setItem(AUTO_LOGIN_KEY, "true");
+        } else {
+          localStorage.removeItem(AUTO_LOGIN_KEY);
+        }
         navigate("/");
       }
     }
@@ -99,6 +129,41 @@ export default function Login() {
                 className="mt-1"
               />
             </div>
+
+            {!isSignUp && (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="rememberEmail"
+                    checked={rememberEmail}
+                    onCheckedChange={(checked) => {
+                      setRememberEmail(!!checked);
+                      if (!checked) {
+                        setAutoLogin(false);
+                        localStorage.removeItem(SAVED_EMAIL_KEY);
+                      }
+                    }}
+                  />
+                  <Label htmlFor="rememberEmail" className="text-sm text-muted-foreground cursor-pointer">
+                    아이디 저장
+                  </Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="autoLogin"
+                    checked={autoLogin}
+                    onCheckedChange={(checked) => {
+                      setAutoLogin(!!checked);
+                      if (checked) setRememberEmail(true);
+                    }}
+                  />
+                  <Label htmlFor="autoLogin" className="text-sm text-muted-foreground cursor-pointer">
+                    자동 로그인
+                  </Label>
+                </div>
+              </div>
+            )}
+
             <Button type="submit" variant="hero" className="w-full" disabled={loading}>
               {loading ? "처리 중..." : isSignUp ? "회원가입" : "로그인"}
             </Button>
