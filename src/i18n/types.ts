@@ -378,6 +378,19 @@ export interface Translations {
     conflicts: string;
     forceApprove: string;
     forceReject: string;
+    apiManagement: string;
+    apiManagementDesc: string;
+    apiKey: string;
+    apiKeyDesc: string;
+    regenerateKey: string;
+    outgoingApi: string;
+    incomingApi: string;
+    outgoing: string;
+    incoming: string;
+    outgoingApiDesc: string;
+    incomingApiDesc: string;
+    apiLastCalled: string;
+    api: string;
   };
 
   toast: {
