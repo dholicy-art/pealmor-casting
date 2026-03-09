@@ -10,8 +10,8 @@ export default function AdminSettings() {
     <AdminLayout>
       <div className="p-6 lg:p-8 max-w-2xl space-y-8">
         <div>
-          <h1 className="font-display text-2xl font-bold" style={{ color: "hsl(var(--admin-fg))" }}>{t.common.settings}</h1>
-          <p className="text-sm mt-1" style={{ color: "hsl(var(--admin-muted-fg))" }}>{t.landing.adminPortal}</p>
+          <h1 className="font-display text-2xl font-bold text-foreground">{t.common.settings}</h1>
+          <p className="text-sm mt-1 text-muted-foreground">{t.landing.adminPortal}</p>
         </div>
         <ThemeSelector />
         <LanguageSelector />

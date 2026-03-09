@@ -9,10 +9,6 @@ export default function AdminRequests() {
   const { t } = useI18n();
   const { requests, updateRequestStatus } = usePlatformStore();
   const [filter, setFilter] = useState("all");
-  const fg = "hsl(var(--admin-fg))";
-  const mfg = "hsl(var(--admin-muted-fg))";
-  const card = "hsl(var(--admin-card))";
-  const border = "hsl(var(--admin-border))";
 
   const filtered = filter === "all" ? requests : requests.filter((r) => {
     if (filter === "flagged") return r.policyConflicts.length > 0;
@@ -31,8 +27,8 @@ export default function AdminRequests() {
     <AdminLayout>
       <div className="p-6 lg:p-8 space-y-6">
         <div>
-          <h1 className="font-display text-2xl font-bold" style={{ color: fg }}>{t.admin.requestReview}</h1>
-          <p className="text-sm mt-1" style={{ color: mfg }}>{requests.length} {t.admin.totalRequests}</p>
+          <h1 className="font-display text-2xl font-bold text-foreground">{t.admin.requestReview}</h1>
+          <p className="text-sm mt-1 text-muted-foreground">{requests.length} {t.admin.totalRequests}</p>
         </div>
 
         <div className="flex gap-2 flex-wrap">
@@ -41,7 +37,7 @@ export default function AdminRequests() {
               key={f}
               onClick={() => setFilter(f)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                filter === f ? "bg-purple-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                filter === f ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
               }`}
             >
               {f === "flagged" ? `${t.admin.flagged} (${requests.filter((r) => r.policyConflicts.length > 0).length})` :
@@ -53,11 +49,11 @@ export default function AdminRequests() {
 
         <div className="space-y-4">
           {filtered.map((r) => (
-            <div key={r.id} className="rounded-xl border p-5" style={{ background: card, borderColor: border }}>
+            <div key={r.id} className="rounded-xl border border-border bg-card p-5">
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="font-semibold" style={{ color: fg }}>{r.companyName} → {r.talentName}</h3>
+                    <h3 className="font-semibold text-foreground">{r.companyName} → {r.talentName}</h3>
                     <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${statusColors[r.status]}`}>
                       {r.status.replace("_", " ")}
                     </span>
@@ -67,7 +63,7 @@ export default function AdminRequests() {
                       </span>
                     )}
                   </div>
-                  <p className="text-xs mt-1" style={{ color: mfg }}>
+                  <p className="text-xs mt-1 text-muted-foreground">
                     {r.projectTitle} • {r.requestedPurpose} • {r.requestedRegions} • {r.requestedTermDays}d • ${r.proposedFee.toLocaleString()}
                   </p>
                 </div>
@@ -103,8 +99,8 @@ export default function AdminRequests() {
           ))}
 
           {filtered.length === 0 && (
-            <div className="text-center py-12 rounded-xl border" style={{ background: card, borderColor: border }}>
-              <p style={{ color: mfg }}>{t.common.noResults}</p>
+            <div className="text-center py-12 rounded-xl border border-border bg-card">
+              <p className="text-muted-foreground">{t.common.noResults}</p>
             </div>
           )}
         </div>
