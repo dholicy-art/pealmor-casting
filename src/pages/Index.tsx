@@ -23,6 +23,7 @@ const featureKeys = [
 
 export default function Index() {
   const { t } = useI18n();
+  const { user, isAdmin, signOut } = useAuth();
 
   return (
     <div className="min-h-screen bg-background">
