@@ -362,6 +362,7 @@ export const en: Translations = {
     incomingApiDesc: 'Webhook endpoints that receive events from PEALMOR Core',
     apiLastCalled: 'Last called',
     api: 'API',
+    settingsGlobalNote: 'Changes saved here will apply as defaults for all new and existing users.',
   },
   toast: {
     requestApproved: 'Request approved',
