@@ -19,17 +19,17 @@ export default function ClientSettings() {
 
   return (
     <ClientLayout>
-      <div className="p-6 lg:p-8 max-w-2xl space-y-8">
+        <div className="p-4 sm:p-6 lg:p-8 max-w-2xl space-y-6 sm:space-y-8">
         <div>
-          <h1 className="font-display text-2xl font-bold text-foreground">{t.common.settings}</h1>
-          <p className="text-muted-foreground text-sm mt-1">{t.landing.clientPortal}</p>
+          <h1 className="font-display text-xl sm:text-2xl font-bold text-foreground">{t.common.settings}</h1>
+          <p className="text-muted-foreground text-xs sm:text-sm mt-1">{t.landing.clientPortal}</p>
         </div>
         <ThemeSelector />
         <LanguageSelector />
         <div className="pt-4 border-t border-border">
           <Button variant="destructive" onClick={handleLogout} className="gap-2">
             <LogOut className="w-4 h-4" />
-            로그아웃
+            {t.common.logout}
           </Button>
         </div>
       </div>
