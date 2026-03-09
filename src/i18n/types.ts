@@ -391,6 +391,7 @@ export interface Translations {
     incomingApiDesc: string;
     apiLastCalled: string;
     api: string;
+    settingsGlobalNote: string;
   };
 
   toast: {
