@@ -384,6 +384,7 @@ export const ko: Translations = {
     requestForceApproved: '요청 강제 승인됨',
     requestForceRejected: '요청 강제 거부됨',
     languageChanged: '언어가 변경되었습니다',
+    settingsSaved: '설정이 기본값으로 저장되었습니다',
   },
   viewMode: {
     viewAsUser: '일반 사용자로 보기',

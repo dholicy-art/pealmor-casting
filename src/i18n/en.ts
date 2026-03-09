@@ -384,6 +384,7 @@ export const en: Translations = {
     requestForceApproved: 'Request force approved',
     requestForceRejected: 'Request force rejected',
     languageChanged: 'Language changed',
+    settingsSaved: 'Settings saved as default',
   },
   viewMode: {
     viewAsUser: 'View as Normal User',
