@@ -18,6 +18,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     { icon: FileCheck, label: t.admin.requestReview, path: "/admin/requests" },
     { icon: AlertTriangle, label: t.admin.disputes, path: "/admin/disputes" },
     { icon: ScrollText, label: t.admin.auditLogs, path: "/admin/audit" },
+    { icon: Plug, label: t.admin.api, path: "/admin/api" },
     { icon: Settings, label: t.common.settings, path: "/admin/settings" },
   ];
 

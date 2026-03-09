@@ -80,6 +80,7 @@ const App = () => (
             <Route path="/admin/disputes" element={<ProtectedRoute requireAdmin><AdminDisputes /></ProtectedRoute>} />
             <Route path="/admin/audit" element={<ProtectedRoute requireAdmin><AdminAuditLogs /></ProtectedRoute>} />
             <Route path="/admin/requests" element={<ProtectedRoute requireAdmin><AdminRequests /></ProtectedRoute>} />
+            <Route path="/admin/api" element={<ProtectedRoute requireAdmin><AdminApi /></ProtectedRoute>} />
             <Route path="/admin/settings" element={<ProtectedRoute requireAdmin><AdminSettings /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
