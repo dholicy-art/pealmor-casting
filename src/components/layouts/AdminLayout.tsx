@@ -27,20 +27,31 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
           <span className="text-primary-foreground font-display font-bold text-sm">P</span>
         </div>
-        <span className="font-display font-bold text-lg text-foreground"=== item.path;
+        <span className="font-display font-bold text-lg text-foreground">Admin</span>
+      </Link>
+      <nav className="flex flex-col gap-1 flex-1">
+        {navItems.map((item) => {
+          const active = location.pathname === item.path;
           return (
             <Link key={item.path} to={item.path} onClick={() => setMobileOpen(false)}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                active ? "bg-primary/10 text-primary" : "hover:bg-gray-100"
-              }`}
-              style={!active ? { color: "hsl(var(--admin-muted-fg))" } : undefined}>
+                active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+              }`}>
               <item.icon className="w-4 h-4" />
               {item.label}
             </Link>
           );
         })}
       </nav>
-      <div className="border-t pt-3 mt-3 px-3" style={{ bborder-border pt-3 mt-3 pxborder-border pt-3 mt-3 pxborder-border pt-3 mt-3 pxborder-border pt-3 mt-3 pxborder-border pt-3 mt-3 px-3"order-border pt-4 mt-1"color: "hsl(var(--admin-fg))" }}>Admin Kborder-border pt-4 mt-1"(var(--admin-muted-fg))" }}>Super Admin</p>
+      <div className="border-t border-border pt-3 mt-3 px-3">
+        <ViewModeToggle variant="admin" />
+      </div>
+      <div className="border-t border-border pt-4 mt-1">
+        <div className="flex items-center gap-3 px-3">
+          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-semibold text-primary">AK</div>
+          <div>
+            <p className="text-sm font-medium text-foreground">Admin Kim</p>
+            <p className="text-xs text-muted-foreground">Super Admin</p>
           </div>
         </div>
       </div>
@@ -48,18 +59,18 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   );
 
   return (
-    <div className="flex min-h-screen" style={{ background: "hsl(var(--admin-bg))" }}>
-      <aside className="hidden lg:flex w-60 flex-col border-r p-4 shrink-0" style={{ borderColor: "hsl(var(--admin-border))", background: "hsl(var(--admin-card))" }}>{nav}</aside>
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-4 border-b" style={{ background: "hsl(var(--admin-card))", borderColor: "hsl(var(--admin-border))" }}>
-        <button onClick={() => setMobileOpen(true)}><Menu className="w-5 h-5" style={{ color: "hsl(var(--admin-fg))" }} /></button>
-        <span className="font-display font-bold text-sm" style={{ color: "hsl(var(--admin-fg))" }}>{t.landing.adminPortal}</span>
+    <div className="flex min-h-screen bg-background">
+      <aside className="hidden lg:flex w-60 flex-col border-r border-border bg-card p-4 shrink-0">{nav}</aside>
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-4 border-b border-border bg-card">
+        <button onClick={() => setMobileOpen(true)}><Menu className="w-5 h-5 text-foreground" /></button>
+        <span className="font-display font-bold text-sm text-foreground">{t.landing.adminPortal}</span>
         <HelpGuide />
       </div>
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-[100]">
           <div className="absolute inset-0 bg-black/30" onClick={() => setMobileOpen(false)} />
-          <aside className="absolute left-0 top-0 bottom-0 w-64 p-4 border-r flex flex-col" style={{ background: "hsl(var(--admin-card))", borderColor: "hsl(var(--admin-border))" }}>
-            <button onClick={() => setMobileOpen(false)} className="absolute top-4 right-4" style={{ color: "hsl(var(--admin-muted-fg))" }}><X className="w-5 h-5" /></button>
+          <aside className="absolute left-0 top-0 bottom-0 w-64 p-4 border-r border-border bg-card flex flex-col">
+            <button onClick={() => setMobileOpen(false)} className="absolute top-4 right-4 text-muted-foreground"><X className="w-5 h-5" /></button>
             {nav}
           </aside>
         </div>
